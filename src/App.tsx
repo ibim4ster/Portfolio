@@ -22,6 +22,12 @@ export default function App() {
   const [isGlitching, setIsGlitching] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
   
+  // Terminal state
+  const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
+  const [terminalInput, setTerminalInput] = useState("");
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
   const t = translations[lang];
   const fullText = t.boot.init;
 
@@ -42,13 +48,51 @@ export default function App() {
   useEffect(() => {
     let i = 0;
     setTypedText(""); // Reset text when language changes before access
+    setIsTypingComplete(false);
     const interval = setInterval(() => {
       setTypedText(fullText.slice(0, i));
       i++;
-      if (i > fullText.length) clearInterval(interval);
+      if (i > fullText.length) {
+        clearInterval(interval);
+        setIsTypingComplete(true);
+      }
     }, 30);
     return () => clearInterval(interval);
   }, [fullText]);
+
+  const handleTerminalSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const cmd = terminalInput.trim().toLowerCase();
+      const newHistory = [...terminalHistory, `guest@igf-os:~$ ${terminalInput}`];
+      
+      if (cmd === 'help') {
+        newHistory.push('Available commands: help, ls, whoami, date, clear, sudo, access, start');
+      } else if (cmd === 'ls') {
+        newHistory.push('about.txt  skills.sh  projects.exe  contact.cfg');
+      } else if (cmd === 'whoami') {
+        newHistory.push('guest');
+      } else if (cmd === 'date') {
+        newHistory.push(new Date().toString());
+      } else if (cmd === 'clear') {
+        setTerminalHistory([]);
+        setTerminalInput('');
+        return;
+      } else if (cmd === 'sudo') {
+        newHistory.push('guest is not in the sudoers file. This incident will be reported.');
+      } else if (cmd === 'access' || cmd === 'start') {
+        newHistory.push('Accessing system...');
+        setTerminalHistory(newHistory);
+        setTerminalInput('');
+        handleAccess();
+        return;
+      } else if (cmd !== '') {
+        newHistory.push(`bash: ${cmd}: command not found`);
+      }
+      
+      setTerminalHistory(newHistory);
+      setTerminalInput('');
+    }
+  };
 
   // Scroll Reveal effect
   useEffect(() => {
@@ -275,9 +319,32 @@ export default function App() {
 
       {/* 1. SECCIÓN DE BIENVENIDA */}
       <section id="home" className="min-h-screen flex flex-col justify-center items-start p-6 md:p-24 relative scroll-mt-20">
-        <div className="font-mono text-[#00FF41] text-sm md:text-lg mb-8 h-24 whitespace-pre-wrap">
-          {typedText}
-          <span className="animate-pulse">_</span>
+        <div 
+          className="font-mono text-[#00FF41] text-sm md:text-lg mb-8 min-h-[120px] whitespace-pre-wrap w-full max-w-2xl cursor-text"
+          onClick={() => inputRef.current?.focus()}
+        >
+          <div>{typedText}{!isTypingComplete && <span className="animate-pulse">_</span>}</div>
+          {isTypingComplete && !hasAccessed && (
+            <div className="mt-2">
+              {terminalHistory.map((line, i) => (
+                <div key={i} className={line.startsWith('guest@') ? 'text-[#00FF41]' : 'text-gray-400'}>{line}</div>
+              ))}
+              <div className="flex items-center flex-wrap">
+                <span className="mr-2 text-[#BD00FF]">guest@igf-os:~$</span>
+                <input 
+                  ref={inputRef}
+                  type="text" 
+                  value={terminalInput}
+                  onChange={(e) => setTerminalInput(e.target.value)}
+                  onKeyDown={handleTerminalSubmit}
+                  className="bg-transparent border-none outline-none text-[#00FF41] flex-grow font-mono min-w-[100px]"
+                  autoFocus
+                  spellCheck={false}
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+          )}
         </div>
         
         <h1 
