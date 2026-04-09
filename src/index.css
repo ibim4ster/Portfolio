@@ -148,6 +148,38 @@ body {
   100% { clip-path: polygon(0 85%, 100% 85%, 100% 95%, 0 95%); transform: translate(-1px, 1px); }
 }
 
+/* Glitch Transition Effect */
+.glitch-transition {
+  animation: glitch-screen 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes glitch-screen {
+  0% {
+    filter: hue-rotate(0deg) contrast(1);
+    transform: translate(0);
+  }
+  20% {
+    filter: hue-rotate(90deg) contrast(2) invert(0.2);
+    transform: translate(-5px, 5px);
+  }
+  40% {
+    filter: hue-rotate(-90deg) contrast(3) invert(0.1);
+    transform: translate(5px, -5px);
+  }
+  60% {
+    filter: hue-rotate(180deg) contrast(1.5) invert(0.3);
+    transform: translate(-5px, -5px);
+  }
+  80% {
+    filter: hue-rotate(45deg) contrast(2) invert(0);
+    transform: translate(5px, 5px);
+  }
+  100% {
+    filter: hue-rotate(0deg) contrast(1);
+    transform: translate(0);
+  }
+}
+
 /* Flash Effect */
 .flash-active {
   animation: flash 0.5s ease-out forwards;
@@ -170,13 +202,20 @@ body {
 
 /* Scroll Reveal Animations */
 .reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal.active {
   opacity: 1;
   transform: translateY(0);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 1023px) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
@@ -282,7 +321,7 @@ body {
   mix-blend-mode: overlay;
 }
 
-.balatro-card:hover {
+.balatro-card:hover, .balatro-card.mobile-active {
   transform: translateY(-10px) scale(1.02) perspective(1000px) rotateX(5deg) rotateY(-5deg);
   box-shadow: 
     -5px 5px 20px rgba(0, 255, 65, 0.4),
@@ -295,7 +334,7 @@ body {
   border-color: rgba(189, 0, 255, 0.3);
   box-shadow: 0 0 15px rgba(189, 0, 255, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
-.balatro-card.violet-theme:hover {
+.balatro-card.violet-theme:hover, .balatro-card.violet-theme.mobile-active {
   border-color: rgba(189, 0, 255, 0.8);
   box-shadow: 
     -5px 5px 20px rgba(189, 0, 255, 0.4),

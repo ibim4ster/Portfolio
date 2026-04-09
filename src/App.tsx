@@ -19,6 +19,8 @@ export default function App() {
   const [lang, setLang] = useState<Language>('es');
   const [isPoweringOn, setIsPoweringOn] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isGlitching, setIsGlitching] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
   
   const t = translations[lang];
   const fullText = t.boot.init;
@@ -26,7 +28,14 @@ export default function App() {
   // Power on sequence
   useEffect(() => {
     const timer = setTimeout(() => setIsPoweringOn(false), 1500);
-    return () => clearTimeout(timer);
+    
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Typewriter effect
@@ -43,7 +52,7 @@ export default function App() {
 
   // Scroll Reveal effect
   useEffect(() => {
-    if (!hasAccessed) return;
+    if (!hasAccessed || !isMobile) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -59,8 +68,28 @@ export default function App() {
     const elements = document.querySelectorAll('.reveal');
     elements.forEach((el) => observer.observe(el));
 
-    return () => observer.disconnect();
-  }, [hasAccessed, lang]); // Re-run when language changes to catch new elements
+    // Observer for mobile auto-animations
+    const mobileObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('mobile-active');
+          } else {
+            entry.target.classList.remove('mobile-active');
+          }
+        });
+      },
+      { threshold: 0.6 } // Trigger when 60% visible
+    );
+
+    const animateElements = document.querySelectorAll('.auto-animate');
+    animateElements.forEach((el) => mobileObserver.observe(el));
+
+    return () => {
+      observer.disconnect();
+      mobileObserver.disconnect();
+    };
+  }, [hasAccessed, lang, isMobile]); // Re-run when language or screen type changes
 
   // Mouse Glow effect
   useEffect(() => {
@@ -89,7 +118,11 @@ export default function App() {
   };
 
   const toggleLanguage = () => {
-    setLang(prev => prev === 'es' ? 'en' : 'es');
+    setIsGlitching(true);
+    setTimeout(() => {
+      setLang(prev => prev === 'es' ? 'en' : 'es');
+      setTimeout(() => setIsGlitching(false), 300);
+    }, 100);
   };
 
   const skillCategories = [
@@ -99,7 +132,7 @@ export default function App() {
       icon: Code2,
       color: 'text-[#00FF41]',
       gradient: 'from-[#00FF41] to-[#004411]',
-      shadowHover: 'hover:shadow-[0_0_20px_rgba(0,255,65,0.4)]',
+      shadowHover: 'hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(0,255,65,0.4)]',
       skills: [
         { name: 'Java', icon: FaJava },
         { name: 'Python', icon: SiPython },
@@ -117,7 +150,7 @@ export default function App() {
       icon: Database,
       color: 'text-[#00A0DC]',
       gradient: 'from-[#00A0DC] to-[#002244]',
-      shadowHover: 'hover:shadow-[0_0_20px_rgba(0,160,220,0.4)]',
+      shadowHover: 'hover:shadow-[0_0_20px_rgba(0,160,220,0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(0,160,220,0.4)]',
       skills: [
         { name: 'Sage', icon: SiSage },
         { name: 'Ágora', icon: SiAgora },
@@ -132,7 +165,7 @@ export default function App() {
       icon: Wrench,
       color: 'text-[#FF9900]',
       gradient: 'from-[#FF9900] to-[#442200]',
-      shadowHover: 'hover:shadow-[0_0_20px_rgba(255,153,0,0.4)]',
+      shadowHover: 'hover:shadow-[0_0_20px_rgba(255,153,0,0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(255,153,0,0.4)]',
       skills: [
         { name: 'VirtualBox', icon: SiVirtualbox },
         { name: 'VMware', icon: SiVmware },
@@ -148,7 +181,7 @@ export default function App() {
       icon: Palette,
       color: 'text-[#FF003C]',
       gradient: 'from-[#FF003C] to-[#440011]',
-      shadowHover: 'hover:shadow-[0_0_20px_rgba(255,0,60,0.4)]',
+      shadowHover: 'hover:shadow-[0_0_20px_rgba(255,0,60,0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(255,0,60,0.4)]',
       skills: [
         { name: 'Adobe Premiere', icon: TbBrandAdobePremier },
         { name: 'Sony Vegas', icon: SiVegas },
@@ -160,12 +193,12 @@ export default function App() {
   ];
 
   return (
-    <div className={`min-h-screen bg-[#050505] text-[#00FF41] font-mono selection:bg-[#BD00FF] selection:text-white ${isPoweringOn ? 'crt-turn-on' : ''}`}>
+    <div className={`min-h-screen bg-[#050505] text-[#00FF41] font-mono selection:bg-[#BD00FF] selection:text-white ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
       {/* Global CRT Scanlines */}
       <div className="scanlines"></div>
       
       {/* Power On Glitch Overlay */}
-      {isPoweringOn && <div className="glitch-overlay"></div>}
+      {(isPoweringOn || isGlitching) && <div className="glitch-overlay"></div>}
       
       {/* Mouse Glow */}
       <div className="mouse-glow"></div>
@@ -176,7 +209,7 @@ export default function App() {
       {/* Navigation Menu */}
       {hasAccessed && (
         <nav className="fixed top-0 left-0 right-0 z-[50] bg-[#050505]/80 backdrop-blur-md border-b border-[#00FF41]/30 px-6 py-4 flex justify-between items-center">
-          <div className="text-[#00FF41] font-bold font-mono text-xl tracking-widest glitch-text" data-text="IGF">IGF</div>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-[#00FF41] font-bold font-mono text-xl tracking-widest glitch-text" data-text="IGF">IGF</button>
           
           {/* Desktop Menu & Lang */}
           <div className="hidden md:flex items-center gap-8">
@@ -230,6 +263,16 @@ export default function App() {
         </div>
       )}
 
+      {/* Language Toggle (Boot Screen) */}
+      {!hasAccessed && (
+        <button 
+          onClick={toggleLanguage}
+          className="fixed top-6 right-6 z-[60] border-2 border-[#00FF41] bg-[#050505] text-[#00FF41] px-4 py-2 font-bold hover:bg-[#00FF41] hover:text-[#050505] transition-colors shadow-[4px_4px_0px_#00FF41] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
+        >
+          {t.nav.lang}
+        </button>
+      )}
+
       {/* 1. SECCIÓN DE BIENVENIDA */}
       <section id="home" className="min-h-screen flex flex-col justify-center items-start p-6 md:p-24 relative scroll-mt-20">
         <div className="font-mono text-[#00FF41] text-sm md:text-lg mb-8 h-24 whitespace-pre-wrap">
@@ -281,9 +324,9 @@ export default function App() {
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* DAM */}
-                <div className="border border-[#00FF41]/50 p-6 bg-black/50 hover:border-[#00FF41] transition-colors group">
+                <div className="border border-[#00FF41]/50 p-6 bg-black/50 hover:border-[#00FF41] [&.mobile-active]:border-[#00FF41] transition-colors group auto-animate">
                   <div className="text-[#00FF41] font-mono font-bold mb-2">{t.core.dam.date}</div>
-                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-[#00FF41] transition-colors">{t.core.dam.title}</h4>
+                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-[#00FF41] group-[.mobile-active]:text-[#00FF41] transition-colors">{t.core.dam.title}</h4>
                   <p className="font-mono text-sm text-[#BD00FF] mb-6">{t.core.dam.subtitle}</p>
                   <ul className="font-sans text-gray-300 space-y-3 text-sm md:text-base list-disc list-inside">
                     <li>{t.core.dam.p1}</li>
@@ -294,9 +337,9 @@ export default function App() {
                   </ul>
                 </div>
                 {/* SMR */}
-                <div className="border border-[#00FF41]/50 p-6 bg-black/50 hover:border-[#00FF41] transition-colors group">
+                <div className="border border-[#00FF41]/50 p-6 bg-black/50 hover:border-[#00FF41] [&.mobile-active]:border-[#00FF41] transition-colors group auto-animate">
                   <div className="text-[#00FF41] font-mono font-bold mb-2">{t.core.smr.date}</div>
-                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-[#00FF41] transition-colors">{t.core.smr.title}</h4>
+                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-[#00FF41] group-[.mobile-active]:text-[#00FF41] transition-colors">{t.core.smr.title}</h4>
                   <p className="font-mono text-sm text-[#BD00FF] mb-6">{t.core.smr.subtitle}</p>
                   <ul className="font-sans text-gray-300 space-y-3 text-sm md:text-base list-disc list-inside">
                     <li>{t.core.smr.p1}</li>
@@ -321,9 +364,9 @@ export default function App() {
                   </h3>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6">
                     {cat.skills.map((skill, sIdx) => (
-                      <div key={sIdx} className={`relative p-[2px] rounded-xl bg-gradient-to-br ${cat.gradient} group hover:scale-105 transition-all duration-300 ${cat.shadowHover}`}>
+                      <div key={sIdx} className={`relative p-[2px] rounded-xl bg-gradient-to-br ${cat.gradient} group hover:scale-105 [&.mobile-active]:scale-105 transition-all duration-300 ${cat.shadowHover} auto-animate`}>
                         <div className="w-24 h-24 sm:w-32 sm:h-32 bg-[#0a0a0a] rounded-xl flex flex-col items-center justify-center gap-2 sm:gap-3">
-                          <skill.icon className={`w-10 h-10 sm:w-12 sm:h-12 ${cat.color} group-hover:scale-110 transition-transform duration-300`} />
+                          <skill.icon className={`w-10 h-10 sm:w-12 sm:h-12 ${cat.color} group-hover:scale-110 group-[.mobile-active]:scale-110 transition-transform duration-300`} />
                           <span className="text-[10px] sm:text-xs font-mono text-gray-300 font-bold tracking-wider">{skill.name}</span>
                         </div>
                       </div>
@@ -370,8 +413,8 @@ export default function App() {
               </div>
 
               {t.experience.jobs.map((job, idx) => (
-                <div key={idx} className="relative reveal bg-black/40 p-6 md:p-8 border border-[#00FF41]/30 hover:border-[#00FF41] hover:shadow-[0_0_15px_rgba(0,255,65,0.15)] transition-all group">
-                  <div className="absolute -left-[41px] top-8 w-4 h-4 bg-[#00FF41] group-hover:scale-150 transition-transform"></div>
+                <div key={idx} className="relative reveal bg-black/40 p-6 md:p-8 border border-[#00FF41]/30 hover:border-[#00FF41] [&.mobile-active]:border-[#00FF41] hover:shadow-[0_0_15px_rgba(0,255,65,0.15)] [&.mobile-active]:shadow-[0_0_15px_rgba(0,255,65,0.15)] transition-all group auto-animate">
+                  <div className="absolute -left-[41px] top-8 w-4 h-4 bg-[#00FF41] group-hover:scale-150 group-[.mobile-active]:scale-150 transition-transform"></div>
                   <div className="text-[#00FF41] font-mono font-bold mb-2">{job.date}</div>
                   <h3 className="text-white text-2xl md:text-3xl font-bold mb-2">{job.title}</h3>
                   <ul className="text-gray-300 space-y-2 mt-4 list-disc list-inside text-sm md:text-base">
@@ -390,19 +433,19 @@ export default function App() {
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
               {/* Project 1 */}
-              <div className="balatro-card flex flex-col group reveal delay-100">
+              <div className="balatro-card flex flex-col group reveal delay-100 auto-animate">
                 <div className="balatro-banner">TFG-GRAVITY</div>
                 <div className="balatro-illustration">
                   <div className="absolute inset-0 bg-cyber-grid opacity-50"></div>
-                  <Orbit className="w-24 h-24 text-[#00FF41] relative z-10 group-hover:scale-110 group-hover:rotate-180 transition-all duration-700" strokeWidth={1.5} />
+                  <Orbit className="w-24 h-24 text-[#00FF41] relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 group-hover:rotate-180 group-[.mobile-active]:rotate-180 transition-all duration-700" strokeWidth={1.5} />
                 </div>
                 <div className="balatro-content">
                   <p className="text-gray-300 font-sans text-sm md:text-base mb-6 flex-grow">{t.projects.items[0].desc}</p>
                   <div className="flex flex-col gap-3 mt-auto">
-                    <a href="https://github.com/ibim4ster/TFG-GRAVITY" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
+                    <a href="https://github.com/ibim4ster/TFG-GRAVITY" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] [&.mobile-active]:text-white [&.mobile-active]:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
                       {t.projects.repo}
                     </a>
-                    <a href="https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
+                    <a href="https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] [&.mobile-active]:text-[#050505] [&.mobile-active]:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
                       {t.projects.doc}
                     </a>
                   </div>
@@ -410,11 +453,11 @@ export default function App() {
               </div>
               
               {/* Project 2 */}
-              <div className="balatro-card violet-theme flex flex-col group reveal delay-200">
+              <div className="balatro-card violet-theme flex flex-col group reveal delay-200 auto-animate">
                 <div className="balatro-banner violet-theme">GATE PASS</div>
                 <div className="balatro-illustration violet-theme">
                   <div className="absolute inset-0 bg-cyber-grid-violet opacity-50"></div>
-                  <Fingerprint className="w-24 h-24 text-[#BD00FF] relative z-10 group-hover:scale-110 transition-transform duration-500" strokeWidth={1.5} />
+                  <Fingerprint className="w-24 h-24 text-[#BD00FF] relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 transition-transform duration-500" strokeWidth={1.5} />
                 </div>
                 <div className="balatro-content">
                   <p className="text-gray-300 font-sans text-sm md:text-base mb-4 flex-grow">{t.projects.items[1].desc}</p>
@@ -426,10 +469,10 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-col gap-3 mt-auto">
-                    <a href="https://github.com/ibim4ster/gravity-gate-pass" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
+                    <a href="https://github.com/ibim4ster/gravity-gate-pass" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] [&.mobile-active]:text-white [&.mobile-active]:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
                       {t.projects.repo}
                     </a>
-                    <a href="https://gravity-gate-pass.lovable.app/" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
+                    <a href="https://gravity-gate-pass.lovable.app/" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] [&.mobile-active]:text-[#050505] [&.mobile-active]:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
                       {t.projects.demo}
                     </a>
                   </div>
@@ -437,11 +480,11 @@ export default function App() {
               </div>
               
               {/* Project 3 */}
-              <div className="balatro-card flex flex-col group reveal delay-300">
+              <div className="balatro-card flex flex-col group reveal delay-300 auto-animate">
                 <div className="balatro-banner">PRESUPUESTOS</div>
                 <div className="balatro-illustration">
                   <div className="absolute inset-0 bg-cyber-grid opacity-50"></div>
-                  <ReceiptEuro className="w-24 h-24 text-[#00FF41] relative z-10 group-hover:scale-110 transition-transform duration-500" strokeWidth={1.5} />
+                  <ReceiptEuro className="w-24 h-24 text-[#00FF41] relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 transition-transform duration-500" strokeWidth={1.5} />
                 </div>
                 <div className="balatro-content">
                   <p className="text-gray-300 font-sans text-sm md:text-base mb-4 flex-grow">{t.projects.items[2].desc}</p>
@@ -453,10 +496,10 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-col gap-3 mt-auto">
-                    <a href="https://github.com/ibim4ster/PRESUPUESTOS-" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
+                    <a href="https://github.com/ibim4ster/PRESUPUESTOS-" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] [&.mobile-active]:text-white [&.mobile-active]:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
                       {t.projects.repo}
                     </a>
-                    <a href="https://presupuestos-tau.vercel.app/" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
+                    <a href="https://presupuestos-tau.vercel.app/" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] [&.mobile-active]:text-[#050505] [&.mobile-active]:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
                       {t.projects.demo}
                     </a>
                   </div>
