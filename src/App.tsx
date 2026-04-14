@@ -17,6 +17,7 @@ export default function App() {
   const [flash, setFlash] = useState(false);
   const [hasAccessed, setHasAccessed] = useState(false);
   const [lang, setLang] = useState<Language>('es');
+  const [theme, setTheme] = useState<'blue' | 'cyber'>('blue');
   const [isPoweringOn, setIsPoweringOn] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
@@ -97,6 +98,10 @@ export default function App() {
 
   // Scroll Reveal effect
   useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
     if (!hasAccessed || !isMobile) return;
 
     const observer = new IntersectionObserver(
@@ -173,14 +178,22 @@ export default function App() {
     }, 100);
   };
 
+  const toggleTheme = () => {
+    setIsGlitching(true);
+    setTimeout(() => {
+      setTheme(prev => prev === 'blue' ? 'cyber' : 'blue');
+      setTimeout(() => setIsGlitching(false), 300);
+    }, 100);
+  };
+
   const skillCategories = [
     {
       id: 'dev',
       title: t.skills.categories.dev,
       icon: Code2,
-      color: 'text-[#00FF41]',
-      gradient: 'from-[#00FF41] to-[#004411]',
-      shadowHover: 'hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(0,255,65,0.4)]',
+      color: 'text-primary',
+      gradient: 'from-primary to-[#004411]',
+      shadowHover: 'hover:shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.4)]',
       skills: [
         { name: 'Java', icon: FaJava },
         { name: 'Python', icon: SiPython },
@@ -201,9 +214,9 @@ export default function App() {
       id: 'data',
       title: t.skills.categories.data,
       icon: Database,
-      color: 'text-[#00A0DC]',
-      gradient: 'from-[#00A0DC] to-[#002244]',
-      shadowHover: 'hover:shadow-[0_0_20px_rgba(0,160,220,0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(0,160,220,0.4)]',
+      color: 'text-[var(--theme-tertiary)]',
+      gradient: 'from-[var(--theme-tertiary)] to-[#002244]',
+      shadowHover: 'hover:shadow-[0_0_20px_rgba(var(--theme-tertiary-rgb),0.4)] [&.mobile-active]:shadow-[0_0_20px_rgba(var(--theme-tertiary-rgb),0.4)]',
       skills: [
         { name: 'Sage', icon: SiSage },
         { name: 'Ágora', icon: SiAgora },
@@ -250,7 +263,7 @@ export default function App() {
   ];
 
   return (
-    <div className={`min-h-screen bg-[#050505] text-[#00FF41] font-mono selection:bg-[#BD00FF] selection:text-white ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
+    <div className={`min-h-screen bg-bg text-primary font-mono selection:bg-secondary selection:text-white ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
       {/* Global CRT Scanlines */}
       <div className="scanlines"></div>
       
@@ -265,8 +278,8 @@ export default function App() {
 
       {/* Navigation Menu */}
       {hasAccessed && (
-        <nav className="fixed top-0 left-0 right-0 z-[50] bg-[#050505]/95 border-b border-[#00FF41]/30 px-6 py-4 flex justify-between items-center">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-[#00FF41] font-bold font-mono text-xl tracking-widest glitch-text" data-text="IGF">IGF</button>
+        <nav className="fixed top-0 left-0 right-0 z-[50] bg-bg/95 border-b border-primary/30 px-6 py-4 flex justify-between items-center">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary font-bold font-mono text-xl tracking-widest glitch-text" data-text="IGF">IGF</button>
           
           {/* Desktop Menu & Lang */}
           <div className="hidden md:flex items-center gap-8">
@@ -274,14 +287,20 @@ export default function App() {
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)}
-                className="text-gray-300 hover:text-[#00FF41] font-mono text-sm uppercase tracking-wider transition-colors"
+                className="text-gray-300 hover:text-primary font-mono text-sm uppercase tracking-wider transition-colors"
               >
                 {t.nav.menu[item as keyof typeof t.nav.menu]}
               </button>
             ))}
             <button 
+              onClick={toggleTheme}
+              className="border border-secondary bg-bg text-secondary px-3 py-1 font-bold hover:bg-secondary hover:text-bg transition-colors text-sm"
+            >
+              {theme === 'blue' ? 'CYBER' : 'BLUE'}
+            </button>
+            <button 
               onClick={toggleLanguage}
-              className="border border-[#00FF41] bg-[#050505] text-[#00FF41] px-3 py-1 font-bold hover:bg-[#00FF41] hover:text-[#050505] transition-colors text-sm"
+              className="border border-primary bg-bg text-primary px-3 py-1 font-bold hover:bg-primary hover:text-bg transition-colors text-sm"
             >
               {t.nav.lang}
             </button>
@@ -290,13 +309,19 @@ export default function App() {
           {/* Mobile Menu Toggle & Lang */}
           <div className="flex md:hidden items-center gap-4">
             <button 
+              onClick={toggleTheme}
+              className="border border-secondary bg-bg text-secondary px-2 py-1 font-bold hover:bg-secondary hover:text-bg transition-colors text-xs"
+            >
+              {theme === 'blue' ? 'CYBER' : 'BLUE'}
+            </button>
+            <button 
               onClick={toggleLanguage}
-              className="border border-[#00FF41] bg-[#050505] text-[#00FF41] px-2 py-1 font-bold hover:bg-[#00FF41] hover:text-[#050505] transition-colors text-xs"
+              className="border border-primary bg-bg text-primary px-2 py-1 font-bold hover:bg-primary hover:text-bg transition-colors text-xs"
             >
               {t.nav.lang}
             </button>
             <button 
-              className="text-[#00FF41]"
+              className="text-primary"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X /> : <Menu />}
@@ -307,12 +332,12 @@ export default function App() {
 
       {/* Mobile Menu Dropdown */}
       {hasAccessed && isMenuOpen && (
-        <div className="fixed top-[60px] left-0 right-0 bg-[#050505] border-b border-[#00FF41]/30 z-[49] flex flex-col md:hidden">
+        <div className="fixed top-[60px] left-0 right-0 bg-bg border-b border-primary/30 z-[49] flex flex-col md:hidden">
           {['home', 'about', 'skills', 'experience', 'projects'].map((item) => (
             <button 
               key={item}
               onClick={() => scrollToSection(item)}
-              className="text-gray-300 hover:text-[#00FF41] hover:bg-[#00FF41]/10 font-mono text-sm uppercase tracking-wider transition-colors py-4 px-6 text-left border-b border-gray-800 last:border-none"
+              className="text-gray-300 hover:text-primary hover:bg-primary/10 font-mono text-sm uppercase tracking-wider transition-colors py-4 px-6 text-left border-b border-gray-800 last:border-none"
             >
               {t.nav.menu[item as keyof typeof t.nav.menu]}
             </button>
@@ -322,43 +347,53 @@ export default function App() {
 
       {/* Language Toggle (Boot Screen) */}
       {!hasAccessed && (
-        <button 
-          onClick={toggleLanguage}
-          className="fixed top-6 right-6 z-[60] border-2 border-[#00FF41] bg-[#050505] text-[#00FF41] px-4 py-2 font-bold hover:bg-[#00FF41] hover:text-[#050505] transition-colors shadow-[4px_4px_0px_#00FF41] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
-        >
-          {t.nav.lang}
-        </button>
+        <div className="fixed top-6 right-6 z-[60] flex gap-4">
+          <button 
+            onClick={toggleTheme}
+            className="border-2 border-secondary bg-bg text-secondary px-4 py-2 font-bold hover:bg-secondary hover:text-bg transition-colors shadow-[4px_4px_0px_var(--theme-secondary)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
+          >
+            {theme === 'blue' ? 'CYBER' : 'BLUE'}
+          </button>
+          <button 
+            onClick={toggleLanguage}
+            className="border-2 border-primary bg-bg text-primary px-4 py-2 font-bold hover:bg-primary hover:text-bg transition-colors shadow-[4px_4px_0px_var(--theme-primary)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
+          >
+            {t.nav.lang}
+          </button>
+        </div>
       )}
 
       {/* 1. SECCIÓN DE BIENVENIDA */}
       <section id="home" className="min-h-screen flex flex-col justify-center items-start p-6 md:p-24 relative scroll-mt-20">
-        <div 
-          className="font-mono text-[#00FF41] text-sm md:text-lg mb-8 min-h-[120px] whitespace-pre-wrap w-full max-w-2xl cursor-text"
-          onClick={() => inputRef.current?.focus()}
-        >
-          <div>{typedText}{!isTypingComplete && <span className="animate-pulse">_</span>}</div>
-          {isTypingComplete && !hasAccessed && (
-            <div className="mt-2">
-              {terminalHistory.map((line, i) => (
-                <div key={i} className={line.startsWith('guest@') ? 'text-[#00FF41]' : 'text-gray-400'}>{line}</div>
-              ))}
-              <div className="flex items-center flex-wrap">
-                <span className="mr-2 text-[#BD00FF]">guest@igf-os:~$</span>
-                <input 
-                  ref={inputRef}
-                  type="text" 
-                  value={terminalInput}
-                  onChange={(e) => setTerminalInput(e.target.value)}
-                  onKeyDown={handleTerminalSubmit}
-                  className="bg-transparent border-none outline-none text-[#00FF41] flex-grow font-mono min-w-[100px]"
-                  autoFocus
-                  spellCheck={false}
-                  autoComplete="off"
-                />
+        {theme === 'cyber' && (
+          <div 
+            className="font-mono text-primary text-sm md:text-lg mb-8 min-h-[120px] whitespace-pre-wrap w-full max-w-2xl cursor-text"
+            onClick={() => inputRef.current?.focus()}
+          >
+            <div>{typedText}{!isTypingComplete && <span className="animate-pulse">_</span>}</div>
+            {isTypingComplete && !hasAccessed && (
+              <div className="mt-2">
+                {terminalHistory.map((line, i) => (
+                  <div key={i} className={line.startsWith('guest@') ? 'text-primary' : 'text-gray-400'}>{line}</div>
+                ))}
+                <div className="flex items-center flex-wrap">
+                  <span className="mr-2 text-secondary">guest@igf-os:~$</span>
+                  <input 
+                    ref={inputRef}
+                    type="text" 
+                    value={terminalInput}
+                    onChange={(e) => setTerminalInput(e.target.value)}
+                    onKeyDown={handleTerminalSubmit}
+                    className="bg-transparent border-none outline-none text-primary flex-grow font-mono min-w-[100px]"
+                    autoFocus
+                    spellCheck={false}
+                    autoComplete="off"
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
         
         <h1 
           className="font-sans text-5xl md:text-9xl font-black text-white mb-12 uppercase tracking-tighter glitch-text" 
@@ -369,20 +404,20 @@ export default function App() {
         
         {!hasAccessed && (
           <div className="relative z-10 boot-fade-in delay-1000">
-            <div className="absolute -inset-2 bg-[#00FF41] opacity-20 blur-lg animate-pulse rounded-full"></div>
+            <div className="absolute -inset-2 bg-primary opacity-20 blur-lg animate-pulse rounded-full"></div>
             <button 
               onClick={handleAccess} 
-              className="relative font-mono text-[#00FF41] border-2 border-[#00FF41] px-8 py-4 bg-[#050505] shadow-[6px_6px_0px_#00FF41] active:shadow-[0px_0px_0px_#00FF41] active:translate-x-[6px] active:translate-y-[6px] transition-all uppercase font-bold tracking-widest hover:bg-[#00FF41] hover:text-[#050505] animate-bounce"
+              className="relative font-mono text-primary border-2 border-primary px-8 py-4 bg-bg shadow-[6px_6px_0px_var(--theme-primary)] active:shadow-[0px_0px_0px_var(--theme-primary)] active:translate-x-[6px] active:translate-y-[6px] transition-all uppercase font-bold tracking-widest hover:bg-primary hover:text-bg animate-bounce"
             >
               {t.boot.btn}
             </button>
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[#00FF41] text-xs font-mono animate-pulse whitespace-nowrap">
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-primary text-xs font-mono animate-pulse whitespace-nowrap">
               &gt; CLICK TO INITIALIZE &lt;
             </div>
           </div>
         )}
         {hasAccessed && (
-          <div className="text-[#00FF41] font-bold animate-pulse">
+          <div className="text-primary font-bold animate-pulse">
             {t.boot.granted}
           </div>
         )}
@@ -395,19 +430,19 @@ export default function App() {
           <section id="about" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 scroll-mt-20">
             <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal" data-text={t.core.title}>{t.core.title}</h2>
             
-            <div className="clip-cyber border-2 border-[#00FF41] p-8 md:p-12 bg-noise relative reveal delay-100 hover:shadow-[0_0_20px_rgba(0,255,65,0.15)] transition-shadow duration-500">
+            <div className="clip-cyber border-2 border-primary p-8 md:p-12 bg-noise relative reveal delay-100 hover:shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.15)] transition-shadow duration-500">
               <p className="font-sans text-xl md:text-2xl text-gray-200 leading-relaxed mb-12">
                 {t.core.bio}
               </p>
               
-              <h3 className="font-sans text-2xl md:text-4xl font-bold text-[#00FF41] mb-8 uppercase border-b-2 border-[#00FF41] inline-block pb-2">{t.core.academicTitle}</h3>
+              <h3 className="font-sans text-2xl md:text-4xl font-bold text-primary mb-8 uppercase border-b-2 border-primary inline-block pb-2">{t.core.academicTitle}</h3>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* DAM */}
-                <div className="border border-[#00FF41]/50 p-6 bg-black/50 hover:border-[#00FF41] [&.mobile-active]:border-[#00FF41] transition-colors group auto-animate">
-                  <div className="text-[#00FF41] font-mono font-bold mb-2">{t.core.dam.date}</div>
-                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-[#00FF41] group-[.mobile-active]:text-[#00FF41] transition-colors">{t.core.dam.title}</h4>
-                  <p className="font-mono text-sm text-[#BD00FF] mb-6">{t.core.dam.subtitle}</p>
+                <div className="border border-primary/50 p-6 bg-black/50 hover:border-primary [&.mobile-active]:border-primary transition-colors group auto-animate">
+                  <div className="text-primary font-mono font-bold mb-2">{t.core.dam.date}</div>
+                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-primary group-[.mobile-active]:text-primary transition-colors">{t.core.dam.title}</h4>
+                  <p className="font-mono text-sm text-secondary mb-6">{t.core.dam.subtitle}</p>
                   <ul className="font-sans text-gray-300 space-y-3 text-sm md:text-base list-disc list-inside">
                     <li>{t.core.dam.p1}</li>
                     <li>{t.core.dam.p2}</li>
@@ -417,10 +452,10 @@ export default function App() {
                   </ul>
                 </div>
                 {/* SMR */}
-                <div className="border border-[#00FF41]/50 p-6 bg-black/50 hover:border-[#00FF41] [&.mobile-active]:border-[#00FF41] transition-colors group auto-animate">
-                  <div className="text-[#00FF41] font-mono font-bold mb-2">{t.core.smr.date}</div>
-                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-[#00FF41] group-[.mobile-active]:text-[#00FF41] transition-colors">{t.core.smr.title}</h4>
-                  <p className="font-mono text-sm text-[#BD00FF] mb-6">{t.core.smr.subtitle}</p>
+                <div className="border border-primary/50 p-6 bg-black/50 hover:border-primary [&.mobile-active]:border-primary transition-colors group auto-animate">
+                  <div className="text-primary font-mono font-bold mb-2">{t.core.smr.date}</div>
+                  <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-primary group-[.mobile-active]:text-primary transition-colors">{t.core.smr.title}</h4>
+                  <p className="font-mono text-sm text-secondary mb-6">{t.core.smr.subtitle}</p>
                   <ul className="font-sans text-gray-300 space-y-3 text-sm md:text-base list-disc list-inside">
                     <li>{t.core.smr.p1}</li>
                     <li>{t.core.smr.p2}</li>
@@ -457,8 +492,8 @@ export default function App() {
             </div>
 
             {/* INTELIGENCIA ARTIFICIAL */}
-            <div className="border-2 border-[#BD00FF] p-8 md:p-12 bg-[#BD00FF]/5 relative reveal delay-500 hover:shadow-[0_0_20px_rgba(189,0,255,0.2)] transition-shadow">
-              <div className="absolute -top-5 left-8 bg-[#050505] px-4 text-[#BD00FF] font-mono font-bold text-xl md:text-2xl">
+            <div className="border-2 border-secondary p-8 md:p-12 bg-secondary/5 relative reveal delay-500 hover:shadow-[0_0_20px_rgba(var(--theme-secondary-rgb),0.2)] transition-shadow">
+              <div className="absolute -top-5 left-8 bg-bg px-4 text-secondary font-mono font-bold text-xl md:text-2xl">
                 {t.skills.ai.title}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
@@ -486,16 +521,16 @@ export default function App() {
           <section id="experience" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 scroll-mt-20">
             <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal" data-text={t.experience.title}>{t.experience.title}</h2>
             
-            <div className="relative pl-8 border-l-2 border-[#00FF41] space-y-12 font-sans">
+            <div className="relative pl-8 border-l-2 border-primary space-y-12 font-sans">
               {/* Timeline data load effect */}
-              <div className="absolute left-[-10px] top-0 bottom-0 w-4 overflow-hidden text-[10px] text-[#00FF41]/30 leading-none break-all font-mono" aria-hidden="true">
+              <div className="absolute left-[-10px] top-0 bottom-0 w-4 overflow-hidden text-[10px] text-primary/30 leading-none break-all font-mono" aria-hidden="true">
                 {Array.from({length: 200}).map(() => "01001011010100101010100101010").join("")}
               </div>
 
               {t.experience.jobs.map((job, idx) => (
-                <div key={idx} className="relative reveal bg-black/40 p-6 md:p-8 border border-[#00FF41]/30 hover:border-[#00FF41] [&.mobile-active]:border-[#00FF41] hover:shadow-[0_0_15px_rgba(0,255,65,0.15)] [&.mobile-active]:shadow-[0_0_15px_rgba(0,255,65,0.15)] transition-all group auto-animate">
-                  <div className="absolute -left-[41px] top-8 w-4 h-4 bg-[#00FF41] group-hover:scale-150 group-[.mobile-active]:scale-150 transition-transform"></div>
-                  <div className="text-[#00FF41] font-mono font-bold mb-2">{job.date}</div>
+                <div key={idx} className="relative reveal bg-black/40 p-6 md:p-8 border border-primary/30 hover:border-primary [&.mobile-active]:border-primary hover:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.15)] [&.mobile-active]:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.15)] transition-all group auto-animate">
+                  <div className="absolute -left-[41px] top-8 w-4 h-4 bg-primary group-hover:scale-150 group-[.mobile-active]:scale-150 transition-transform"></div>
+                  <div className="text-primary font-mono font-bold mb-2">{job.date}</div>
                   <h3 className="text-white text-2xl md:text-3xl font-bold mb-2">{job.title}</h3>
                   <ul className="text-gray-300 space-y-2 mt-4 list-disc list-inside text-sm md:text-base">
                     {job.points.map((point, pIdx) => (
@@ -517,10 +552,10 @@ export default function App() {
               const isBlue = catKey === 'additional';
               const themeClass = isViolet ? 'violet-theme' : isBlue ? 'blue-theme' : '';
               const gridClass = isViolet ? 'bg-cyber-grid-violet' : isBlue ? 'bg-cyber-grid-blue' : 'bg-cyber-grid';
-              const textClass = isViolet ? 'text-[#BD00FF]' : isBlue ? 'text-[#00A0DC]' : 'text-[#00FF41]';
-              const borderClass = isViolet ? 'border-[#BD00FF]' : isBlue ? 'border-[#00A0DC]' : 'border-[#00FF41]';
-              const bgClass = isViolet ? 'bg-[#BD00FF]' : isBlue ? 'bg-[#00A0DC]' : 'bg-[#00FF41]';
-              const shadowClass = isViolet ? 'shadow-[inset_0_0_10px_rgba(189,0,255,0.2)]' : isBlue ? 'shadow-[inset_0_0_10px_rgba(0,160,220,0.2)]' : 'shadow-[inset_0_0_10px_rgba(0,255,65,0.2)]';
+              const textClass = isViolet ? 'text-secondary' : isBlue ? 'text-[var(--theme-tertiary)]' : 'text-primary';
+              const borderClass = isViolet ? 'border-secondary' : isBlue ? 'border-[var(--theme-tertiary)]' : 'border-primary';
+              const bgClass = isViolet ? 'bg-secondary' : isBlue ? 'bg-[var(--theme-tertiary)]' : 'bg-primary';
+              const shadowClass = isViolet ? 'shadow-[inset_0_0_10px_rgba(var(--theme-secondary-rgb),0.2)]' : isBlue ? 'shadow-[inset_0_0_10px_rgba(var(--theme-tertiary-rgb),0.2)]' : 'shadow-[inset_0_0_10px_rgba(var(--theme-primary-rgb),0.2)]';
 
               return (
                 <div key={catKey} className="mb-20">
@@ -577,13 +612,13 @@ export default function App() {
                                 <div className="flex flex-col gap-3 mt-auto">
                                   <button 
                                     onClick={() => setFlippedCards(prev => ({ ...prev, [project.id]: true }))}
-                                    className={`balatro-btn ${textClass} hover:text-[#050505] hover:${bgClass} [&.mobile-active]:text-[#050505] [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
+                                    className={`balatro-btn ${textClass} hover:text-bg hover:${bgClass} [&.mobile-active]:text-bg [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
                                   >
                                     {t.projects.more}
                                   </button>
                                   
                                   {project.links && project.links.map((link: any, lIdx: number) => (
-                                    <a key={lIdx} href={link.url} target="_blank" rel="noreferrer" className={`balatro-btn ${link.type === 'repo' ? 'text-white hover:text-white hover:bg-white/20 border-white/50' : `${textClass} hover:text-[#050505] hover:${bgClass} border-${borderClass}`} font-mono font-bold block border px-4 py-2 text-center transition-colors`}>
+                                    <a key={lIdx} href={link.url} target="_blank" rel="noreferrer" className={`balatro-btn ${link.type === 'repo' ? 'text-white hover:text-white hover:bg-white/20 border-white/50' : `${textClass} hover:text-bg hover:${bgClass} border-${borderClass}`} font-mono font-bold block border px-4 py-2 text-center transition-colors`}>
                                       {link.type === 'repo' ? t.projects.repo : link.type === 'demo' ? t.projects.demo : t.projects.doc}
                                     </a>
                                   ))}
@@ -618,7 +653,7 @@ export default function App() {
                                 <div className="flex flex-col gap-3 mt-auto pt-4">
                                   <button 
                                     onClick={() => setFlippedCards(prev => ({ ...prev, [project.id]: false }))}
-                                    className={`balatro-btn ${textClass} hover:text-[#050505] hover:${bgClass} [&.mobile-active]:text-[#050505] [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
+                                    className={`balatro-btn ${textClass} hover:text-bg hover:${bgClass} [&.mobile-active]:text-bg [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
                                   >
                                     {t.projects.close}
                                   </button>
@@ -636,21 +671,21 @@ export default function App() {
           </section>
 
           {/* 6. CONTACTO / LA LÍNEA DIRECTA */}
-          <footer className="border-t-2 border-[#00FF41] bg-[#050505] p-6 font-mono text-sm md:text-base flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 reveal">
-            <div className="text-[#00FF41] font-bold">
+          <footer className="border-t-2 border-primary bg-bg p-6 font-mono text-sm md:text-base flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 reveal">
+            <div className="text-primary font-bold">
               <span className="animate-pulse mr-2">█</span> {t.footer.status}
             </div>
             <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-center md:text-left">
-              <a href="https://es.linkedin.com/in/ibai-gallego-faces-78623419a" target="_blank" rel="noreferrer" className="text-[#00A0DC] hover:text-white transition-colors flex items-center justify-center md:justify-start gap-2">
+              <a href="https://es.linkedin.com/in/ibai-gallego-faces-78623419a" target="_blank" rel="noreferrer" className="text-[var(--theme-tertiary)] hover:text-white transition-colors flex items-center justify-center md:justify-start gap-2">
                 <Linkedin className="w-5 h-5" /> LINKEDIN
               </a>
-              <a href="mailto:ibairakelmario@gmail.com" className="text-white hover:text-[#BD00FF] transition-colors flex items-center justify-center md:justify-start gap-2">
+              <a href="mailto:ibairakelmario@gmail.com" className="text-white hover:text-secondary transition-colors flex items-center justify-center md:justify-start gap-2">
                 <Mail className="w-5 h-5" /> ibairakelmario@gmail.com
               </a>
-              <a href="tel:+34673350491" className="text-white hover:text-[#BD00FF] transition-colors flex items-center justify-center md:justify-start gap-2">
+              <a href="tel:+34673350491" className="text-white hover:text-secondary transition-colors flex items-center justify-center md:justify-start gap-2">
                 <Phone className="w-5 h-5" /> +34 673 350 491
               </a>
-              <span className="text-[#00FF41] flex items-center justify-center md:justify-start">
+              <span className="text-primary flex items-center justify-center md:justify-start">
                 {t.footer.loc}
               </span>
             </div>

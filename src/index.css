@@ -5,9 +5,34 @@
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-cyber-black: #050505;
-  --color-cyber-green: #00FF41;
-  --color-cyber-violet: #BD00FF;
+  --color-bg: var(--theme-bg);
+  --color-primary: var(--theme-primary);
+  --color-secondary: var(--theme-secondary);
+}
+
+:root {
+  /* Default Blue Theme */
+  --theme-bg: #0000FF;
+  --theme-primary: #FFFFFF;
+  --theme-secondary: #FFFF00;
+  --theme-tertiary: #FF00FF;
+  --theme-primary-rgb: 255, 255, 255;
+  --theme-secondary-rgb: 255, 255, 0;
+  --theme-tertiary-rgb: 255, 0, 255;
+  
+  --color-cyber-black: var(--theme-bg);
+  --color-cyber-green: var(--theme-primary);
+  --color-cyber-violet: var(--theme-secondary);
+}
+
+[data-theme="cyber"] {
+  --theme-bg: #050505;
+  --theme-primary: #00FF41;
+  --theme-secondary: #BD00FF;
+  --theme-tertiary: #00A0DC;
+  --theme-primary-rgb: 0, 255, 65;
+  --theme-secondary-rgb: 189, 0, 255;
+  --theme-tertiary-rgb: 0, 160, 220;
 }
 
 body {
@@ -199,7 +224,7 @@ body {
   animation: flash 0.5s ease-out forwards;
 }
 @keyframes flash {
-  0% { background-color: #00FF41; opacity: 1; }
+  0% { background-color: var(--theme-primary); opacity: 1; }
   50% { background-color: #fff; opacity: 1; }
   100% { background-color: transparent; opacity: 0; pointer-events: none; }
 }
@@ -420,7 +445,7 @@ body {
   overflow: hidden;
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
-  background: #050505;
+  background: var(--theme-bg);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
