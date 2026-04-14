@@ -124,10 +124,10 @@ export const translations = {
           title: "PROYECTOS PERSONALES",
           items: [
             {
-              id: "tfg", title: "TFG-GRAVITY (2025)", desc: "Trabajo de fin de grado: Sistema de simulación y visualización física de alto rendimiento.",
+              id: "tfg", title: "TFG-GRAVITY (2025)", desc: "Plataforma web integral para gestionar todo el ciclo de vida de licencias de software SaaS.",
               image: "https://i.imgur.com/uPvFJ1U.jpeg",
-              contributions: ["Desarrollo de algoritmos gravitacionales complejos", "Implementación de visualización de datos en tiempo real", "Investigación sobre métodos de integración numérica"],
-              tech: "Python, Motores Físicos, Visualización de Datos",
+              contributions: ["Sistema de Autenticación Robusto", "Gestión de Licencias e Integración con PayPal", "Chatbot IA con OpenAI GPT-4o-mini", "Panel Administrativo y Sistema de Tickets"],
+              tech: "Python, Flask, MySQL, JavaScript, OpenAI, PayPal",
               links: [{ type: "repo", url: "https://github.com/ibim4ster/TFG-GRAVITY" }, { type: "doc", url: "https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" }]
             },
             {
@@ -148,6 +148,7 @@ export const translations = {
             },
             {
               id: "kandido", title: "KANDIDO (2026)", desc: "Sistema de gestión de reclutamiento y seguimiento de candidatos con IA.",
+              image: "https://i.imgur.com/mGUTNHa.png",
               contributions: ["Arquitectura backend para base de datos de candidatos", "Implementación de algoritmos de filtrado y búsqueda", "Panel de usuario para gestión de flujo de trabajo de RRHH"],
               tech: "Desarrollo Web, Bases de Datos, IA",
               links: [{ type: "demo", url: "https://kandido.vercel.app/" }]
@@ -386,10 +387,10 @@ export const translations = {
           title: "PERSONAL PROJECTS",
           items: [
             {
-              id: "tfg", title: "TFG-GRAVITY (2025)", desc: "Final Degree Project: High-performance physics simulation and visualization system.",
+              id: "tfg", title: "TFG-GRAVITY (2025)", desc: "Comprehensive web platform to manage the entire lifecycle of SaaS software licenses.",
               image: "https://i.imgur.com/uPvFJ1U.jpeg",
-              contributions: ["Development of complex gravitational algorithms", "Implementation of real-time data visualization", "Research on numerical integration methods"],
-              tech: "Python, Physics Engines, Data Visualization",
+              contributions: ["Robust Authentication System", "License Management & PayPal Integration", "AI Chatbot with OpenAI GPT-4o-mini", "Admin Dashboard & Ticketing System"],
+              tech: "Python, Flask, MySQL, JavaScript, OpenAI, PayPal",
               links: [{ type: "repo", url: "https://github.com/ibim4ster/TFG-GRAVITY" }, { type: "doc", url: "https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" }]
             },
             {
@@ -410,6 +411,7 @@ export const translations = {
             },
             {
               id: "kandido", title: "KANDIDO (2026)", desc: "Recruitment and candidate tracking management system with AI.",
+              image: "https://i.imgur.com/mGUTNHa.png",
               contributions: ["Backend architecture for candidate database", "Implementation of filtering and search algorithms", "User dashboard for HR workflow management"],
               tech: "Web Development, Databases, AI",
               links: [{ type: "demo", url: "https://kandido.vercel.app/" }]
