@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { translations, Language } from './translations';
-import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X } from 'lucide-react';
-import { FaJava, FaDatabase, FaCashRegister, FaVideo, FaPhotoVideo } from 'react-icons/fa';
-import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudio, SiIntellijidea, SiCanva, SiDavinciresolve, SiCss, SiJavascript, SiMongodb, SiVegas, SiSage, SiAgora } from 'react-icons/si';
+import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X, Smartphone, Briefcase, Gamepad2, LineChart, FolderSync, Volume2, Calendar, MessageSquare, Send, BrainCircuit } from 'lucide-react';
+import { FaJava, FaDatabase, FaCashRegister, FaVideo, FaPhotoVideo, FaAws } from 'react-icons/fa';
+import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudio, SiIntellijidea, SiCanva, SiDavinciresolve, SiCss, SiJavascript, SiMongodb, SiVegas, SiSage, SiAgora, SiFlutter, SiAngular, SiRaspberrypi, SiGo, SiCplusplus, SiUnrealengine, SiUnity, SiReact } from 'react-icons/si';
 import { BsFiletypeXml } from 'react-icons/bs';
 import { TbChartLine, TbBrandCSharp, TbBrandAdobePremier } from 'react-icons/tb';
 import { DiMsqlServer, DiVisualstudio, DiPhotoshop } from 'react-icons/di';
@@ -21,6 +21,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   
   // Terminal state
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
@@ -181,10 +182,15 @@ export default function App() {
         { name: 'Java', icon: FaJava },
         { name: 'Python', icon: SiPython },
         { name: 'C#', icon: TbBrandCSharp },
+        { name: 'C++', icon: SiCplusplus },
         { name: 'PHP', icon: SiPhp },
+        { name: 'Go', icon: SiGo },
         { name: 'HTML', icon: SiHtml5 },
         { name: 'CSS', icon: SiCss },
         { name: 'JavaScript', icon: SiJavascript },
+        { name: 'React', icon: SiReact },
+        { name: 'Angular', icon: SiAngular },
+        { name: 'Flutter', icon: SiFlutter },
         { name: 'XML', icon: BsFiletypeXml },
       ]
     },
@@ -201,6 +207,7 @@ export default function App() {
         { name: 'SQLServer', icon: DiMsqlServer },
         { name: 'HeidiSQL', icon: FaDatabase },
         { name: 'MongoDB', icon: SiMongodb },
+        { name: 'AWS', icon: FaAws },
       ]
     },
     {
@@ -217,6 +224,9 @@ export default function App() {
         { name: 'Android St.', icon: SiAndroidstudio },
         { name: 'VS', icon: DiVisualstudio },
         { name: 'IntelliJ', icon: SiIntellijidea },
+        { name: 'Raspberry Pi', icon: SiRaspberrypi },
+        { name: 'Unity', icon: SiUnity },
+        { name: 'Unreal', icon: SiUnrealengine },
       ]
     },
     {
@@ -494,85 +504,132 @@ export default function App() {
             </div>
           </section>
 
-          {/* 5. PROYECTOS PERSONALES */}
+          {/* 5. PROYECTOS */}
           <section id="projects" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 cosmic-bg scroll-mt-20">
             <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal relative z-10" data-text={t.projects.title}>{t.projects.title}</h2>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-              {/* Project 1 */}
-              <div className="balatro-card flex flex-col group reveal delay-100 auto-animate">
-                <div className="balatro-banner">TFG-GRAVITY</div>
-                <div className="balatro-illustration">
-                  <div className="absolute inset-0 bg-cyber-grid opacity-50"></div>
-                  <Orbit className="w-24 h-24 text-[#00FF41] relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 group-hover:rotate-180 group-[.mobile-active]:rotate-180 transition-all duration-700" strokeWidth={1.5} />
-                </div>
-                <div className="balatro-content">
-                  <p className="text-gray-300 font-sans text-sm md:text-base mb-6 flex-grow">{t.projects.items[0].desc}</p>
-                  <div className="flex flex-col gap-3 mt-auto">
-                    <a href="https://github.com/ibim4ster/TFG-GRAVITY" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] [&.mobile-active]:text-white [&.mobile-active]:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
-                      {t.projects.repo}
-                    </a>
-                    <a href="https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] [&.mobile-active]:text-[#050505] [&.mobile-active]:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
-                      {t.projects.doc}
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Project 2 */}
-              <div className="balatro-card violet-theme flex flex-col group reveal delay-200 auto-animate">
-                <div className="balatro-banner violet-theme">GATE PASS</div>
-                <div className="balatro-illustration violet-theme">
-                  <div className="absolute inset-0 bg-cyber-grid-violet opacity-50"></div>
-                  <Fingerprint className="w-24 h-24 text-[#BD00FF] relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 transition-transform duration-500" strokeWidth={1.5} />
-                </div>
-                <div className="balatro-content">
-                  <p className="text-gray-300 font-sans text-sm md:text-base mb-4 flex-grow">{t.projects.items[1].desc}</p>
-                  
-                  <div className="mb-6 p-3 border border-[#BD00FF] bg-[#BD00FF]/10 text-[#BD00FF] text-xs font-mono shadow-[inset_0_0_10px_rgba(189,0,255,0.2)]">
-                    <span className="text-white font-bold">CREDENTIALS_</span><br/>
-                    &gt; {t.projects.credentials.user}: admin<br/>
-                    &gt; {t.projects.credentials.pass}: admin123
-                  </div>
+            {Object.entries(t.projects.categories).map(([catKey, catValue], catIdx) => {
+              const category = catValue as any;
+              const isViolet = catKey === 'mobile';
+              const isBlue = catKey === 'additional';
+              const themeClass = isViolet ? 'violet-theme' : isBlue ? 'blue-theme' : '';
+              const gridClass = isViolet ? 'bg-cyber-grid-violet' : isBlue ? 'bg-cyber-grid-blue' : 'bg-cyber-grid';
+              const textClass = isViolet ? 'text-[#BD00FF]' : isBlue ? 'text-[#00A0DC]' : 'text-[#00FF41]';
+              const borderClass = isViolet ? 'border-[#BD00FF]' : isBlue ? 'border-[#00A0DC]' : 'border-[#00FF41]';
+              const bgClass = isViolet ? 'bg-[#BD00FF]' : isBlue ? 'bg-[#00A0DC]' : 'bg-[#00FF41]';
+              const shadowClass = isViolet ? 'shadow-[inset_0_0_10px_rgba(189,0,255,0.2)]' : isBlue ? 'shadow-[inset_0_0_10px_rgba(0,160,220,0.2)]' : 'shadow-[inset_0_0_10px_rgba(0,255,65,0.2)]';
 
-                  <div className="flex flex-col gap-3 mt-auto">
-                    <a href="https://github.com/ibim4ster/gravity-gate-pass" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] [&.mobile-active]:text-white [&.mobile-active]:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
-                      {t.projects.repo}
-                    </a>
-                    <a href="https://gravity-gate-pass.lovable.app/" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] [&.mobile-active]:text-[#050505] [&.mobile-active]:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
-                      {t.projects.demo}
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Project 3 */}
-              <div className="balatro-card flex flex-col group reveal delay-300 auto-animate">
-                <div className="balatro-banner">PRESUPUESTOS</div>
-                <div className="balatro-illustration">
-                  <div className="absolute inset-0 bg-cyber-grid opacity-50"></div>
-                  <ReceiptEuro className="w-24 h-24 text-[#00FF41] relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 transition-transform duration-500" strokeWidth={1.5} />
-                </div>
-                <div className="balatro-content">
-                  <p className="text-gray-300 font-sans text-sm md:text-base mb-4 flex-grow">{t.projects.items[2].desc}</p>
-                  
-                  <div className="mb-6 p-3 border border-[#00FF41] bg-[#00FF41]/10 text-[#00FF41] text-xs font-mono shadow-[inset_0_0_10px_rgba(0,255,65,0.2)]">
-                    <span className="text-white font-bold">CREDENTIALS_</span><br/>
-                    &gt; {t.projects.credentials.user}: admin<br/>
-                    &gt; {t.projects.credentials.pass}: admin
-                  </div>
+              return (
+                <div key={catKey} className="mb-20">
+                  <h3 className={`font-mono text-xl md:text-2xl font-bold mb-8 ${textClass} reveal`}>
+                    &gt; {category.title}
+                  </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
+                    {category.items.map((project: any, idx: number) => {
+                      
+                      const getIcon = (id: string) => {
+                        if (id === 'tfg') return Orbit;
+                        if (id === 'gatepass') return Fingerprint;
+                        if (id === 'presupuestos') return ReceiptEuro;
+                        if (id === 'kandido') return BrainCircuit;
+                        if (id === 'portfolio') return Briefcase;
+                        if (id === 'zombie' || id === 'memories' || id === 'energy') return Gamepad2;
+                        if (id === 'daytrading' || id === 'migasa') return LineChart;
+                        if (id.includes('mob')) return Smartphone;
+                        if (id.includes('foldr') || id.includes('folder')) return FolderSync;
+                        if (id.includes('silent')) return Volume2;
+                        if (id.includes('calendar')) return Calendar;
+                        if (id === 'kidix') return MessageSquare;
+                        if (id === 'smspubli') return Send;
+                        return Code2;
+                      };
+                      
+                      const Icon = getIcon(project.id);
 
-                  <div className="flex flex-col gap-3 mt-auto">
-                    <a href="https://github.com/ibim4ster/PRESUPUESTOS-" target="_blank" rel="noreferrer" className="balatro-btn text-[#BD00FF] hover:text-white hover:bg-[#BD00FF] [&.mobile-active]:text-white [&.mobile-active]:bg-[#BD00FF] font-mono font-bold block border border-[#BD00FF] px-4 py-2 text-center transition-colors">
-                      {t.projects.repo}
-                    </a>
-                    <a href="https://presupuestos-tau.vercel.app/" target="_blank" rel="noreferrer" className="balatro-btn text-[#00FF41] hover:text-[#050505] hover:bg-[#00FF41] [&.mobile-active]:text-[#050505] [&.mobile-active]:bg-[#00FF41] font-mono font-bold block border border-[#00FF41] px-4 py-2 text-center transition-colors">
-                      {t.projects.demo}
-                    </a>
+                      return (
+                        <div key={idx} className={`balatro-card ${themeClass} group reveal delay-${(idx % 3 + 1) * 100} auto-animate`}>
+                          <div className={`flip-card-inner ${flippedCards[project.id] ? 'flipped' : ''}`}>
+                            {/* Front of Card */}
+                            <div className="flip-card-front">
+                              <div className={`balatro-banner ${themeClass}`}>{project.title.toUpperCase()}</div>
+                              <div className={`balatro-illustration ${themeClass}`}>
+                                <div className={`absolute inset-0 ${gridClass} opacity-50`}></div>
+                                {project.image ? (
+                                  <img src={project.image} alt={project.title} className="w-full h-full object-cover relative z-10" />
+                                ) : (
+                                  <Icon className={`w-24 h-24 ${textClass} relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 transition-all duration-700`} strokeWidth={1.5} />
+                                )}
+                              </div>
+                              <div className="balatro-content">
+                                <p className="text-gray-300 font-sans text-sm md:text-base mb-4 flex-grow">{project.desc}</p>
+                                
+                                {project.creds && (
+                                  <div className={`mb-6 p-3 border ${borderClass} ${bgClass}/10 ${textClass} ${shadowClass} text-xs font-mono`}>
+                                    <span className="text-white font-bold">CREDENTIALS_</span><br/>
+                                    &gt; {t.projects.credentials.user}: {project.creds.user}<br/>
+                                    &gt; {t.projects.credentials.pass}: {project.creds.pass}
+                                  </div>
+                                )}
+
+                                <div className="flex flex-col gap-3 mt-auto">
+                                  <button 
+                                    onClick={() => setFlippedCards(prev => ({ ...prev, [project.id]: true }))}
+                                    className={`balatro-btn ${textClass} hover:text-[#050505] hover:${bgClass} [&.mobile-active]:text-[#050505] [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
+                                  >
+                                    {t.projects.more}
+                                  </button>
+                                  
+                                  {project.links && project.links.map((link: any, lIdx: number) => (
+                                    <a key={lIdx} href={link.url} target="_blank" rel="noreferrer" className={`balatro-btn ${link.type === 'repo' ? 'text-white hover:text-white hover:bg-white/20 border-white/50' : `${textClass} hover:text-[#050505] hover:${bgClass} border-${borderClass}`} font-mono font-bold block border px-4 py-2 text-center transition-colors`}>
+                                      {link.type === 'repo' ? t.projects.repo : link.type === 'demo' ? t.projects.demo : t.projects.doc}
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Back of Card */}
+                            <div className="flip-card-back">
+                              <div className={`balatro-banner ${themeClass}`}>{project.title.toUpperCase()}</div>
+                              <div className="balatro-content overflow-y-auto">
+                                <p className="text-gray-300 font-sans text-sm md:text-base mb-6">{project.desc}</p>
+                                
+                                {project.contributions && project.contributions.length > 0 && (
+                                  <div className="mb-6">
+                                    <h4 className={`font-mono font-bold mb-3 ${textClass}`}>&gt; {t.projects.contributions}</h4>
+                                    <ul className="list-disc pl-5 space-y-2 text-gray-300 text-sm">
+                                      {project.contributions.map((contrib: string, i: number) => (
+                                        <li key={i}>{contrib}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                                
+                                {project.tech && (
+                                  <div className="mb-6">
+                                    <h4 className={`font-mono font-bold mb-3 ${textClass}`}>&gt; {t.projects.tech}</h4>
+                                    <p className="font-mono text-sm text-gray-300">{project.tech}</p>
+                                  </div>
+                                )}
+                                
+                                <div className="flex flex-col gap-3 mt-auto pt-4">
+                                  <button 
+                                    onClick={() => setFlippedCards(prev => ({ ...prev, [project.id]: false }))}
+                                    className={`balatro-btn ${textClass} hover:text-[#050505] hover:${bgClass} [&.mobile-active]:text-[#050505] [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
+                                  >
+                                    {t.projects.close}
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              </div>
-            </div>
+              );
+            })}
           </section>
 
           {/* 6. CONTACTO / LA LÍNEA DIRECTA */}

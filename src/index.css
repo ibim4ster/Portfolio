@@ -261,6 +261,14 @@ body {
   animation: grid-pan 15s linear infinite;
 }
 
+.bg-cyber-grid-blue {
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 160, 220, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 160, 220, 0.15) 1px, transparent 1px);
+  animation: grid-pan 15s linear infinite;
+}
+
 @keyframes grid-pan {
   0% { background-position: 0 0; }
   100% { background-position: 30px 30px; }
@@ -281,6 +289,11 @@ body {
 .scanner-line-violet {
   background: var(--color-cyber-violet);
   box-shadow: 0 0 10px var(--color-cyber-violet);
+}
+
+.scanner-line-blue {
+  background: #00A0DC;
+  box-shadow: 0 0 10px #00A0DC;
 }
 
 @keyframes scan-vertical {
@@ -316,26 +329,30 @@ body {
 .balatro-card {
   position: relative;
   border-radius: 12px;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(5, 5, 5, 0.95) 100%);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  background: transparent;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
-  border: 1px solid rgba(0, 255, 65, 0.3);
-}
-
-.balatro-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(125deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.05) 100%);
-  pointer-events: none;
-  z-index: 10;
-  mix-blend-mode: overlay;
+  perspective: 1000px;
+  min-height: 450px;
 }
 
 .balatro-card:hover, .balatro-card.mobile-active {
   transform: translateY(-10px) scale(1.02) perspective(1000px) rotateX(5deg) rotateY(-5deg);
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(5, 5, 5, 0.95) 100%);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.balatro-card:hover .flip-card-inner, .balatro-card.mobile-active .flip-card-inner {
   box-shadow: 
     -5px 5px 20px rgba(0, 255, 65, 0.4),
     5px -5px 20px rgba(189, 0, 255, 0.4),
@@ -343,16 +360,70 @@ body {
   border-color: rgba(0, 255, 65, 0.8);
 }
 
-.balatro-card.violet-theme {
+.balatro-card.violet-theme .flip-card-inner {
   border-color: rgba(189, 0, 255, 0.3);
   box-shadow: 0 0 15px rgba(189, 0, 255, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
-.balatro-card.violet-theme:hover, .balatro-card.violet-theme.mobile-active {
+.balatro-card.violet-theme:hover .flip-card-inner, .balatro-card.violet-theme.mobile-active .flip-card-inner {
   border-color: rgba(189, 0, 255, 0.8);
   box-shadow: 
     -5px 5px 20px rgba(189, 0, 255, 0.4),
     5px -5px 20px rgba(0, 255, 65, 0.4),
     inset 0 0 15px rgba(189, 0, 255, 0.2);
+}
+
+.balatro-card.blue-theme .flip-card-inner {
+  border-color: rgba(0, 160, 220, 0.3);
+  box-shadow: 0 0 15px rgba(0, 160, 220, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+.balatro-card.blue-theme:hover .flip-card-inner, .balatro-card.blue-theme.mobile-active .flip-card-inner {
+  border-color: rgba(0, 160, 220, 0.8);
+  box-shadow: 
+    -5px 5px 20px rgba(0, 160, 220, 0.4),
+    5px -5px 20px rgba(0, 255, 65, 0.4),
+    inset 0 0 15px rgba(0, 160, 220, 0.2);
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  transform: rotateY(180deg);
+  background: #050505;
+}
+
+.flip-card-inner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(125deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: overlay;
 }
 
 .balatro-banner {
@@ -376,6 +447,10 @@ body {
   border-bottom-color: var(--color-cyber-violet);
 }
 
+.balatro-banner.blue-theme {
+  border-bottom-color: #00A0DC;
+}
+
 .balatro-illustration {
   height: 180px;
   position: relative;
@@ -387,6 +462,10 @@ body {
 }
 .balatro-illustration.violet-theme {
   background: radial-gradient(circle at center, rgba(189,0,255,0.1) 0%, transparent 70%);
+}
+
+.balatro-illustration.blue-theme {
+  background: radial-gradient(circle at center, rgba(0,160,220,0.1) 0%, transparent 70%);
 }
 
 .balatro-content {
