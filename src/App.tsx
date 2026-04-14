@@ -151,7 +151,10 @@ export default function App() {
     setTimeout(() => {
       setHasAccessed(true);
       setTimeout(() => {
-        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+        const aboutEl = document.getElementById('about');
+        if (aboutEl) {
+          aboutEl.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth' });
+        }
         setFlash(false);
       }, 100);
     }, 400);
@@ -262,7 +265,7 @@ export default function App() {
 
       {/* Navigation Menu */}
       {hasAccessed && (
-        <nav className="fixed top-0 left-0 right-0 z-[50] bg-[#050505]/80 backdrop-blur-md border-b border-[#00FF41]/30 px-6 py-4 flex justify-between items-center">
+        <nav className="fixed top-0 left-0 right-0 z-[50] bg-[#050505]/95 border-b border-[#00FF41]/30 px-6 py-4 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-[#00FF41] font-bold font-mono text-xl tracking-widest glitch-text" data-text="IGF">IGF</button>
           
           {/* Desktop Menu & Lang */}
