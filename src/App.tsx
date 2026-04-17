@@ -11,6 +11,7 @@ import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudi
 import { BsFiletypeXml } from 'react-icons/bs';
 import { TbChartLine, TbBrandCSharp, TbBrandAdobePremier } from 'react-icons/tb';
 import { DiMsqlServer, DiVisualstudio, DiPhotoshop } from 'react-icons/di';
+import RetroCursor from './components/RetroCursor';
 
 export default function App() {
   const [typedText, setTypedText] = useState("");
@@ -263,7 +264,8 @@ export default function App() {
   ];
 
   return (
-    <div className={`min-h-screen bg-bg text-primary font-mono selection:bg-secondary selection:text-white ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
+    <div className={`min-h-screen bg-bg text-primary font-mono selection:bg-secondary selection:text-bg ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
+      <RetroCursor />
       {/* Global CRT Scanlines */}
       <div className="scanlines"></div>
       

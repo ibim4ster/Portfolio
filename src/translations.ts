@@ -155,7 +155,7 @@ export const translations = {
             },
             {
               id: "portfolio", title: "Professional Portfolio (2026)", desc: "Sitio web personal que muestra una selección curada de proyectos de ingeniería y desarrollo.",
-              image: "https://i.imgur.com/Ei6BBtL.png",
+              image: "https://i.imgur.com/g7Mhaah.png",
               contributions: ["Diseño UI/UX moderno y responsivo", "Carga de recursos y rendimiento optimizados", "Componentes interactivos de demostración de proyectos"],
               tech: "HTML/CSS, JavaScript, Diseño Web",
               links: [{ type: "demo", url: "https://ibai-gallego.vercel.app/" }]
@@ -418,7 +418,7 @@ export const translations = {
             },
             {
               id: "portfolio", title: "Professional Portfolio (2026)", desc: "Personal showcase website featuring a curated selection of engineering and development projects.",
-              image: "https://i.imgur.com/Ei6BBtL.png",
+              image: "https://i.imgur.com/g7Mhaah.png",
               contributions: ["Modern and responsive UI/UX design", "Optimized asset loading and performance", "Interactive project demonstration components"],
               tech: "HTML/CSS, JavaScript, Web Design",
               links: [{ type: "demo", url: "https://ibai-gallego.vercel.app/" }]
