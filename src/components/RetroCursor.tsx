@@ -13,11 +13,23 @@ const RetroCursor = () => {
       return;
     }
 
-    const mouseMove = (e: MouseEvent) => {
+    let animationFrameId: number;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const updatePosition = () => {
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        cursorRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
-      
+      animationFrameId = requestAnimationFrame(updatePosition);
+    };
+
+    const mouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    const mouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.closest('input, textarea, .cursor-text')) {
         setCursorType('text');
@@ -32,11 +44,16 @@ const RetroCursor = () => {
       setPulse(p => p + 1);
     };
 
-    window.addEventListener('mousemove', mouseMove);
-    window.addEventListener('mousedown', mouseDown);
+    animationFrameId = requestAnimationFrame(updatePosition);
+
+    window.addEventListener('mousemove', mouseMove, { passive: true });
+    window.addEventListener('mouseover', mouseOver, { passive: true });
+    window.addEventListener('mousedown', mouseDown, { passive: true });
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', mouseMove);
+      window.removeEventListener('mouseover', mouseOver);
       window.removeEventListener('mousedown', mouseDown);
     };
   }, []);
