@@ -11,7 +11,6 @@ import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudi
 import { BsFiletypeXml } from 'react-icons/bs';
 import { TbChartLine, TbBrandCSharp, TbBrandAdobePremier } from 'react-icons/tb';
 import { DiMsqlServer, DiVisualstudio, DiPhotoshop } from 'react-icons/di';
-import RetroCursor from './components/RetroCursor';
 
 export default function App() {
   const [typedText, setTypedText] = useState("");
@@ -142,15 +141,7 @@ export default function App() {
     };
   }, [hasAccessed, lang, isMobile]); // Re-run when language or screen type changes
 
-  // Mouse Glow effect
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  // Mouse effect variables and listeners removed
 
   const handleAccess = () => {
     setFlash(true);
@@ -265,15 +256,11 @@ export default function App() {
 
   return (
     <div className={`min-h-screen bg-bg text-primary font-mono selection:bg-secondary selection:text-bg ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
-      <RetroCursor />
       {/* Global CRT Scanlines */}
       <div className="scanlines"></div>
       
       {/* Power On Glitch Overlay */}
       {(isPoweringOn || isGlitching) && <div className="glitch-overlay"></div>}
-      
-      {/* Mouse Glow */}
-      <div className="mouse-glow"></div>
       
       {/* Flash Overlay */}
       <div className={`fixed inset-0 z-[100] pointer-events-none ${flash ? 'flash-active' : 'hidden'}`}></div>

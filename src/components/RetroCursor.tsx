@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const RetroCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const [cursorType, setCursorType] = useState<'default' | 'pointer' | 'text'>('default');
   const [pulse, setPulse] = useState(0);
   const [isDesktop, setIsDesktop] = useState(true);
@@ -14,12 +15,15 @@ const RetroCursor = () => {
     }
 
     let animationFrameId: number;
-    let mouseX = 0;
-    let mouseY = 0;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
 
     const updatePosition = () => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      }
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
       animationFrameId = requestAnimationFrame(updatePosition);
     };
@@ -61,11 +65,16 @@ const RetroCursor = () => {
   if (!isDesktop) return null;
 
   return (
-    <div 
-      ref={cursorRef}
-      className="fixed top-0 left-0 pointer-events-none z-[99999]"
-      style={{ willChange: 'transform' }}
-    >
+    <>
+      <div 
+        ref={glowRef} 
+        className="mouse-glow"
+      ></div>
+      <div 
+        ref={cursorRef}
+        className="fixed top-0 left-0 pointer-events-none z-[99999]"
+        style={{ willChange: 'transform' }}
+      >
       <div 
         key={pulse}
         className={`origin-top-left ${pulse > 0 ? 'animate-cursor-pulse' : ''}`}
@@ -127,6 +136,7 @@ const RetroCursor = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

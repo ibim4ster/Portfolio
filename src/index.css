@@ -44,12 +44,7 @@ body {
   padding: 0;
 }
 
-/* Custom Retro Cursor for Desktop */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
+/* Removed custom cursor behavior to revert to system default */
 
 @keyframes cursorPulse {
   0% { transform: scale(1); }
@@ -95,22 +90,7 @@ body {
   z-index: 9999;
 }
 
-/* Mouse Glow Effect */
-.mouse-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(0, 255, 65, 0.06),
-    transparent 40%
-  );
-  z-index: 0;
-  transition: background 0.1s ease;
-}
+/* Removed Mouse Glow Effect to improve performance and restore default behavior */
 
 /* Static Noise Texture */
 .bg-noise {
