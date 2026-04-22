@@ -11,6 +11,7 @@ import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudi
 import { BsFiletypeXml } from 'react-icons/bs';
 import { TbChartLine, TbBrandCSharp, TbBrandAdobePremier } from 'react-icons/tb';
 import { DiMsqlServer, DiVisualstudio, DiPhotoshop } from 'react-icons/di';
+import { ProjectCard } from './components/ProjectCard';
 
 export default function App() {
   const [typedText, setTypedText] = useState("");
@@ -23,6 +24,9 @@ export default function App() {
   const [isGlitching, setIsGlitching] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const [matrixMode, setMatrixMode] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [projectFilter, setProjectFilter] = useState<string>('all');
   
   // Terminal state
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
@@ -32,6 +36,25 @@ export default function App() {
   
   const t = translations[lang];
   const fullText = t.boot.init;
+
+  // Dynamic document title & Back to top visibility
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      document.title = document.hidden ? "⚠️ Conexión perdida..." : "Portfolio | Ibai Gallego Faces";
+    };
+    
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 800);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Power on sequence
   useEffect(() => {
@@ -68,13 +91,26 @@ export default function App() {
       const newHistory = [...terminalHistory, `guest@igf-os:~$ ${terminalInput}`];
       
       if (cmd === 'help') {
-        newHistory.push('Available commands: help, ls, whoami, date, clear, sudo, access, start');
+        newHistory.push('Available commands: help, ls, whoami, date, clear, sudo, access, start, matrix');
       } else if (cmd === 'ls') {
         newHistory.push('about.txt  skills.sh  projects.exe  contact.cfg');
       } else if (cmd === 'whoami') {
         newHistory.push('guest');
       } else if (cmd === 'date') {
         newHistory.push(new Date().toString());
+      } else if (cmd === 'matrix') {
+        newHistory.push('Wake up, Neo...');
+        setMatrixMode(true);
+        setTimeout(() => setMatrixMode(false), 5000);
+      } else if (cmd === 'run projects.exe' || cmd === './projects.exe') {
+        scrollToSection('projects');
+      } else if (cmd === 'sudo rm -rf /') {
+        newHistory.push('Critical System Failure. Kernel panic...');
+        setIsGlitching(true);
+        setTimeout(() => {
+          setIsGlitching(false);
+          setTerminalHistory([...newHistory, 'Rebooting...']);
+        }, 2000);
       } else if (cmd === 'clear') {
         setTerminalHistory([]);
         setTerminalInput('');
@@ -255,7 +291,7 @@ export default function App() {
   ];
 
   return (
-    <div className={`min-h-screen bg-bg text-primary font-mono selection:bg-secondary selection:text-bg ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''}`}>
+    <div className={`min-h-screen bg-bg text-primary font-mono selection:bg-secondary selection:text-bg ${isPoweringOn ? 'crt-turn-on' : ''} ${isGlitching ? 'glitch-transition' : ''} ${matrixMode ? 'matrix-active' : ''}`}>
       {/* Global CRT Scanlines */}
       <div className="scanlines"></div>
       
@@ -533,9 +569,24 @@ export default function App() {
 
           {/* 5. PROYECTOS */}
           <section id="projects" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 cosmic-bg scroll-mt-20">
-            <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal relative z-10" data-text={t.projects.title}>{t.projects.title}</h2>
+            <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-6 md:mb-12 uppercase glitch-text reveal relative z-10" data-text={t.projects.title}>{t.projects.title}</h2>
             
+            {/* Project Filters */}
+            <div className="flex flex-wrap gap-4 mb-12 relative z-10 reveal">
+              {['all', ...Object.keys(t.projects.categories)].map((filterKey) => (
+                <button
+                  key={filterKey}
+                  onClick={() => setProjectFilter(filterKey)}
+                  className={`px-4 py-2 font-mono text-sm md:text-base border transition-all ${projectFilter === filterKey ? 'bg-primary text-bg border-primary shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.5)]' : 'bg-transparent text-primary border-primary/50 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary'}`}
+                >
+                  {filterKey === 'all' ? 'ALL' : filterKey.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
             {Object.entries(t.projects.categories).map(([catKey, catValue], catIdx) => {
+              if (projectFilter !== 'all' && projectFilter !== catKey) return null;
+              
               const category = catValue as any;
               const isViolet = catKey === 'mobile';
               const isBlue = catKey === 'additional';
@@ -553,104 +604,21 @@ export default function App() {
                   </h3>
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
                     {category.items.map((project: any, idx: number) => {
-                      
-                      const getIcon = (id: string) => {
-                        if (id === 'tfg') return Orbit;
-                        if (id === 'gatepass') return Fingerprint;
-                        if (id === 'presupuestos') return ReceiptEuro;
-                        if (id === 'kandido') return BrainCircuit;
-                        if (id === 'portfolio') return Briefcase;
-                        if (id === 'zombie' || id === 'memories' || id === 'energy') return Gamepad2;
-                        if (id === 'daytrading' || id === 'migasa') return LineChart;
-                        if (id.includes('mob')) return Smartphone;
-                        if (id.includes('foldr') || id.includes('folder')) return FolderSync;
-                        if (id.includes('silent')) return Volume2;
-                        if (id.includes('calendar')) return Calendar;
-                        if (id === 'kidix') return MessageSquare;
-                        if (id === 'smspubli') return Send;
-                        return Code2;
-                      };
-                      
-                      const Icon = getIcon(project.id);
-
                       return (
-                        <div key={idx} className={`balatro-card ${themeClass} group reveal delay-${(idx % 3 + 1) * 100} auto-animate`}>
-                          <div className={`flip-card-inner ${flippedCards[project.id] ? 'flipped' : ''}`}>
-                            {/* Front of Card */}
-                            <div className="flip-card-front">
-                              <div className={`balatro-banner ${themeClass}`}>{project.title.toUpperCase()}</div>
-                              <div className={`balatro-illustration ${themeClass}`}>
-                                <div className={`absolute inset-0 ${gridClass} opacity-50`}></div>
-                                {project.image ? (
-                                  <img src={project.image} alt={project.title} className="w-full h-full object-cover relative z-10" />
-                                ) : (
-                                  <Icon className={`w-24 h-24 ${textClass} relative z-10 group-hover:scale-110 group-[.mobile-active]:scale-110 transition-all duration-700`} strokeWidth={1.5} />
-                                )}
-                              </div>
-                              <div className="balatro-content">
-                                <p className="text-gray-300 font-sans text-sm md:text-base mb-4 flex-grow">{project.desc}</p>
-                                
-                                {project.creds && (
-                                  <div className={`mb-6 p-3 border ${borderClass} ${bgClass}/10 ${textClass} ${shadowClass} text-xs font-mono`}>
-                                    <span className="text-white font-bold">CREDENTIALS_</span><br/>
-                                    &gt; {t.projects.credentials.user}: {project.creds.user}<br/>
-                                    &gt; {t.projects.credentials.pass}: {project.creds.pass}
-                                  </div>
-                                )}
-
-                                <div className="flex flex-col gap-3 mt-auto">
-                                  <button 
-                                    onClick={() => setFlippedCards(prev => ({ ...prev, [project.id]: true }))}
-                                    className={`balatro-btn ${textClass} hover:text-bg hover:${bgClass} [&.mobile-active]:text-bg [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
-                                  >
-                                    {t.projects.more}
-                                  </button>
-                                  
-                                  {project.links && project.links.map((link: any, lIdx: number) => (
-                                    <a key={lIdx} href={link.url} target="_blank" rel="noreferrer" className={`balatro-btn ${link.type === 'repo' ? 'text-white hover:text-white hover:bg-white/20 border-white/50' : `${textClass} hover:text-bg hover:${bgClass} border-${borderClass}`} font-mono font-bold block border px-4 py-2 text-center transition-colors`}>
-                                      {link.type === 'repo' ? t.projects.repo : link.type === 'demo' ? t.projects.demo : t.projects.doc}
-                                    </a>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                            
-                            {/* Back of Card */}
-                            <div className="flip-card-back">
-                              <div className={`balatro-banner ${themeClass}`}>{project.title.toUpperCase()}</div>
-                              <div className="balatro-content overflow-y-auto">
-                                <p className="text-gray-300 font-sans text-sm md:text-base mb-6">{project.desc}</p>
-                                
-                                {project.contributions && project.contributions.length > 0 && (
-                                  <div className="mb-6">
-                                    <h4 className={`font-mono font-bold mb-3 ${textClass}`}>&gt; {t.projects.contributions}</h4>
-                                    <ul className="list-disc pl-5 space-y-2 text-gray-300 text-sm">
-                                      {project.contributions.map((contrib: string, i: number) => (
-                                        <li key={i}>{contrib}</li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-                                
-                                {project.tech && (
-                                  <div className="mb-6">
-                                    <h4 className={`font-mono font-bold mb-3 ${textClass}`}>&gt; {t.projects.tech}</h4>
-                                    <p className="font-mono text-sm text-gray-300">{project.tech}</p>
-                                  </div>
-                                )}
-                                
-                                <div className="flex flex-col gap-3 mt-auto pt-4">
-                                  <button 
-                                    onClick={() => setFlippedCards(prev => ({ ...prev, [project.id]: false }))}
-                                    className={`balatro-btn ${textClass} hover:text-bg hover:${bgClass} [&.mobile-active]:text-bg [&.mobile-active]:${bgClass} font-mono font-bold block border ${borderClass} px-4 py-2 text-center transition-colors w-full`}
-                                  >
-                                    {t.projects.close}
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <ProjectCard 
+                          key={idx}
+                          project={project}
+                          idx={idx}
+                          flippedCards={flippedCards}
+                          setFlippedCards={setFlippedCards}
+                          themeClass={themeClass}
+                          gridClass={gridClass}
+                          textClass={textClass}
+                          borderClass={borderClass}
+                          bgClass={bgClass}
+                          shadowClass={shadowClass}
+                          t={t}
+                        />
                       );
                     })}
                   </div>
@@ -659,7 +627,83 @@ export default function App() {
             })}
           </section>
 
-          {/* 6. CONTACTO / LA LÍNEA DIRECTA */}
+          {/* 6. CONTACTO / FORMULARIO */}
+          <section id="contact" className="min-h-[70vh] p-6 md:p-24 flex flex-col justify-center relative z-10 bg-black/80 border-t border-primary/20 scroll-mt-20">
+            <div className="max-w-4xl mx-auto w-full reveal">
+              <h2 className="font-sans text-3xl md:text-5xl font-bold text-white mb-8 uppercase glitch-text" data-text={lang === 'es' ? "TRANSMISIÓN DIRECTA" : "DIRECT TRANSMISSION"}>
+                {lang === 'es' ? "TRANSMISIÓN DIRECTA" : "DIRECT TRANSMISSION"}
+              </h2>
+              <p className="text-gray-400 font-mono mb-8">
+                {lang === 'es' ? "> Establezca conexión segura y envíe su propuesta." : "> Establish a secure connection and send your proposal."}
+              </p>
+              
+              <form 
+                action="mailto:ibairakelmario@gmail.com" 
+                method="post" 
+                encType="text/plain" 
+                className="space-y-6 font-mono"
+                onSubmit={(e) => {
+                  // Prevenir default y abrir mailto de manera segura con JS
+                  e.preventDefault();
+                  const form = e.target as HTMLFormElement;
+                  const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+                  const subject = (form.elements.namedItem('subject') as HTMLInputElement).value;
+                  const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+                  window.location.href = `mailto:ibairakelmario@gmail.com?subject=[PORTFOLIO] ${encodeURIComponent(subject)}&body=${encodeURIComponent("De: " + name + "\n\n" + message)}`;
+                }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-primary text-sm flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
+                      {lang === 'es' ? "IDENTIFICADOR (Nombre)" : "IDENTIFIER (Name)"}
+                    </label>
+                    <input 
+                      type="text" 
+                      name="name"
+                      required
+                      className="w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600"
+                      placeholder={lang === 'es' ? "Introduzca su alias..." : "Enter your alias..."}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-primary text-sm flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
+                      {lang === 'es' ? "ASUNTO" : "SUBJECT"}
+                    </label>
+                    <input 
+                      type="text" 
+                      name="subject"
+                      required
+                      className="w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600"
+                      placeholder={lang === 'es' ? "Motivo de la conexión..." : "Reason for connection..."}
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-primary text-sm flex items-center gap-2">
+                    <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
+                    {lang === 'es' ? "DATOS A TRANSMITIR (Mensaje)" : "DATA TO TRANSMIT (Message)"}
+                  </label>
+                  <textarea 
+                    name="message"
+                    required
+                    rows={6}
+                    className="w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600 resize-none"
+                    placeholder={lang === 'es' ? "Redacte su mensaje aquí..." : "Draft your message here..."}
+                  ></textarea>
+                </div>
+                
+                <button type="submit" className="w-full md:w-auto px-8 py-3 bg-primary/20 text-primary border border-primary hover:bg-primary hover:text-bg transition-all font-bold flex items-center justify-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-bg">
+                  <Send className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
+                  {lang === 'es' ? "INICIAR TRANSMISIÓN" : "INITIATE TRANSMISSION"}
+                </button>
+              </form>
+            </div>
+          </section>
+
+          {/* 7. FOOTER */}
           <footer className="border-t-2 border-primary bg-bg p-6 font-mono text-sm md:text-base flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 reveal">
             <div className="text-primary font-bold">
               <span className="animate-pulse mr-2">█</span> {t.footer.status}
@@ -679,6 +723,18 @@ export default function App() {
               </span>
             </div>
           </footer>
+
+          {/* Back to Top Button */}
+          {showBackToTop && (
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="fixed bottom-6 right-6 z-50 p-3 bg-primary/20 text-primary border border-primary hover:bg-primary hover:text-bg transition-all shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg focus:ring-primary"
+              aria-label="Back to top"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+            </button>
+          )}
+
         </div>
       )}
     </div>

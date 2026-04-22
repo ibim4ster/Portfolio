@@ -44,6 +44,12 @@ body {
   padding: 0;
 }
 
+/* Accessible focus states */
+*:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 4px;
+}
+
 /* Removed custom cursor behavior to revert to system default */
 
 @keyframes cursorPulse {
@@ -211,6 +217,21 @@ body {
   0% { background-color: var(--theme-primary); opacity: 1; }
   50% { background-color: #fff; opacity: 1; }
   100% { background-color: transparent; opacity: 0; pointer-events: none; }
+}
+
+/* Matrix Effect Easter Egg */
+.matrix-active {
+  animation: matrixRain 0.1s infinite;
+  filter: hue-rotate(70deg) saturate(300%) contrast(200%) brightness(80%);
+}
+.matrix-active * {
+  text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41 !important;
+}
+
+@keyframes matrixRain {
+  0% { transform: translate(1px, 1px); }
+  50% { transform: translate(-1px, -1px); }
+  100% { transform: translate(1px, 1px); }
 }
 
 /* Image Filters */
