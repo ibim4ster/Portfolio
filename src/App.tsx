@@ -12,6 +12,7 @@ import { BsFiletypeXml } from 'react-icons/bs';
 import { TbChartLine, TbBrandCSharp, TbBrandAdobePremier } from 'react-icons/tb';
 import { DiMsqlServer, DiVisualstudio, DiPhotoshop } from 'react-icons/di';
 import { ProjectCard } from './components/ProjectCard';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [typedText, setTypedText] = useState("");
@@ -737,6 +738,7 @@ export default function App() {
 
         </div>
       )}
+      <Analytics />
     </div>
   );
 }
