@@ -161,6 +161,13 @@ export const translations = {
               links: [{ type: "demo", url: "https://ibai-gallego.vercel.app/" }]
             },
             {
+              id: "soccerworld", title: "Soccer World (2025)", desc: "Prototipo de tienda online de camisetas de fútbol de múltiples ligas y clubes del mundo.",
+              image: "https://i.imgur.com/NG3wmEC.png",
+              contributions: ["Diseño de interfaz de usuario enfocado en catálogo deportivo", "Implementación de carrito de compras intuitivo", "Visualización detallada de productos por ligas y selecciones", "Interfaz totalmente optimizada y adaptada a dispositivos móviles"],
+              tech: "HTML/CSS, JavaScript, Diseño Responsivo",
+              links: [{ type: "demo", url: "https://soccerworld.vercel.app/" }]
+            },
+            {
               id: "zombie", title: "Zombie Wave Prototype (2024)", desc: "Juego de acción trepidante desarrollado en un sprint de 48 horas (Unity).",
               contributions: ["Programación C# en Unity", "IA de enemigos y lógica de escalada de oleadas", "Prototipado rápido de bucles de juego principales"],
               tech: "Unity, C#, Diseño de Juegos"
@@ -422,6 +429,13 @@ export const translations = {
               contributions: ["Modern and responsive UI/UX design", "Optimized asset loading and performance", "Interactive project demonstration components"],
               tech: "HTML/CSS, JavaScript, Web Design",
               links: [{ type: "demo", url: "https://ibai-gallego.vercel.app/" }]
+            },
+            {
+              id: "soccerworld", title: "Soccer World (2025)", desc: "E-commerce prototype for football jerseys of multiple leagues and national teams around the world.",
+              image: "https://i.imgur.com/NG3wmEC.png",
+              contributions: ["UI design focused on the sports catalog and jerseys details", "Implementation of an intuitive shopping cart", "Detailed product filtering by league, club, and national team", "Fully optimized and mobile-responsive interface"],
+              tech: "HTML/CSS, JavaScript, Responsive Design",
+              links: [{ type: "demo", url: "https://soccerworld.vercel.app/" }]
             },
             {
               id: "zombie", title: "Zombie Wave Prototype (2024)", desc: "Fast-paced action game developed in a 48-hour sprint (Unity).",
