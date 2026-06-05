@@ -32,7 +32,7 @@ export const translations = {
         p5: "Unity, Unreal Engine."
       },
       smr: {
-        date: "[ 2020 - 2021 ]",
+        date: "[ 2019 - 2021 ]",
         title: "Grado Medio (SMR)",
         subtitle: "IES Comercio - Sistemas Microinformáticos y Redes",
         p1: "Montar, reparar y diagnosticar ordenadores y servidores.",
@@ -171,31 +171,6 @@ export const translations = {
               id: "zombie", title: "Zombie Wave Prototype (2024)", desc: "Juego de acción trepidante desarrollado en un sprint de 48 horas (Unity).",
               contributions: ["Programación C# en Unity", "IA de enemigos y lógica de escalada de oleadas", "Prototipado rápido de bucles de juego principales"],
               tech: "Unity, C#, Diseño de Juegos"
-            },
-            {
-              id: "daytrading", title: "Daytrading Automation Platform (2024)", desc: "Plataforma de trading automatizado para ejecutar estrategias algorítmicas en mercados financieros.",
-              contributions: ["Implementación de algoritmos de trading personalizados", "Integración con la plataforma WeBull usando SDK de Python", "Despliegue de infraestructura AWS para servidores de trading"],
-              tech: "Python, AWS, Trading Algorítmico, APIs"
-            },
-            {
-              id: "migasa", title: "Grupo Migasa — Optimization (2024)", desc: "Investigación y prototipado de optimización industrial.",
-              contributions: ["Prototipo de optimización en Python", "Modelado matemático", "Pruebas de rendimiento"],
-              tech: "Python, Optimización"
-            },
-            {
-              id: "memories", title: "Memories of the Forgotten (2021)", desc: "Proyecto de juego narrativo discontinuado tras la fase de Kickstarter.",
-              contributions: ["Sistemas de juego en C++", "Desarrollo en Unreal Engine", "Diseño de mecánicas principales"],
-              tech: "C++, Unreal Engine"
-            },
-            {
-              id: "energy", title: "Energy Crisis", desc: "Juego de simulación basado en sistemas actualmente en desarrollo.",
-              contributions: ["Programación C# en Unity", "Diseño de sistemas de juego", "Desarrollo continuo"],
-              tech: "Unity, C#"
-            },
-            {
-              id: "robotics", title: "AI Robotics Vision System", desc: "Sistema de visión por computadora para percepción robótica usando datos sintéticos y deep learning.",
-              contributions: ["Modelo de volumen de cuadrícula de ocupación basado en CNN", "Desarrollo de pipeline ML", "Generación de dataset sintético en Unreal Engine", "Investigación en percepción robótica"],
-              tech: "Python, CNNs, Unreal Engine, Machine Learning"
             }
           ]
         },
@@ -225,8 +200,33 @@ export const translations = {
           ]
         },
         additional: {
-          title: "PROYECTOS ADICIONALES Y EMPRENDIMIENTO",
+          title: "CONTRIBUCIONES A PROYECTOS",
           items: [
+            {
+              id: "daytrading", title: "Daytrading Automation Platform (2024)", desc: "Plataforma de trading automatizado para ejecutar estrategias algorítmicas en mercados financieros.",
+              contributions: ["Implementación de algoritmos de trading personalizados", "Integración con la plataforma WeBull usando SDK de Python", "Despliegue de infraestructura AWS para servidores de trading"],
+              tech: "Python, AWS, Trading Algorítmico, APIs"
+            },
+            {
+              id: "migasa", title: "Grupo Migasa — Optimization (2024)", desc: "Investigación y prototipado de optimización industrial.",
+              contributions: ["Prototipo de optimización en Python", "Modelado matemático", "Pruebas de rendimiento"],
+              tech: "Python, Optimización"
+            },
+            {
+              id: "memories", title: "Memories of the Forgotten (2021)", desc: "Proyecto de juego narrativo discontinuado tras la fase de Kickstarter.",
+              contributions: ["Sistemas de juego en C++", "Desarrollo en Unreal Engine", "Diseño de mecánicas principales"],
+              tech: "C++, Unreal Engine"
+            },
+            {
+              id: "energy", title: "Energy Crisis", desc: "Juego de simulación basado en sistemas actualmente en desarrollo.",
+              contributions: ["Programación C# en Unity", "Diseño de sistemas de juego", "Desarrollo continuo"],
+              tech: "Unity, C#"
+            },
+            {
+              id: "robotics", title: "AI Robotics Vision System", desc: "Sistema de visión por computadora para percepción robótica usando datos sintéticos y deep learning.",
+              contributions: ["Modelo de volumen de cuadrícula de ocupación basado en CNN", "Desarrollo de pipeline ML", "Generación de dataset sintético en Unreal Engine", "Investigación en percepción robótica"],
+              tech: "Python, CNNs, Unreal Engine, Machine Learning"
+            },
             {
               id: "myfoldr", title: "MyFoldr.io (2022)", desc: "Plataforma de intercambio de archivos en la nube para equipos pequeños y profesionales.",
               contributions: ["Desarrollo frontend en Angular", "Configuración de infraestructura AWS", "Servicios API REST", "Contribuciones a la arquitectura del sistema"],
@@ -441,31 +441,6 @@ export const translations = {
               id: "zombie", title: "Zombie Wave Prototype (2024)", desc: "Fast-paced action game developed in a 48-hour sprint (Unity).",
               contributions: ["C# programming in Unity", "Enemy AI and wave escalation logic", "Rapid prototyping of core gameplay loops"],
               tech: "Unity, C#, Game Design"
-            },
-            {
-              id: "daytrading", title: "Daytrading Automation Platform (2024)", desc: "Automated trading platform for executing algorithmic strategies in financial markets.",
-              contributions: ["Implementation of custom trading algorithms", "Integration with WeBull trading platform using Python SDK", "Deployment of AWS infrastructure for automated trading servers"],
-              tech: "Python, AWS, Algorithmic Trading, APIs"
-            },
-            {
-              id: "migasa", title: "Grupo Migasa — Optimization (2024)", desc: "Industrial optimization research and prototyping.",
-              contributions: ["Python optimization prototype", "Mathematical modeling", "Performance testing"],
-              tech: "Python, Optimization"
-            },
-            {
-              id: "memories", title: "Memories of the Forgotten (2021)", desc: "Narrative-driven game project discontinued after Kickstarter phase.",
-              contributions: ["C++ gameplay systems", "Unreal Engine development", "Core mechanics design"],
-              tech: "C++, Unreal Engine"
-            },
-            {
-              id: "energy", title: "Energy Crisis", desc: "Systems-driven simulation game currently in development.",
-              contributions: ["C# programming in Unity", "Gameplay systems design", "Ongoing development"],
-              tech: "Unity, C#"
-            },
-            {
-              id: "robotics", title: "AI Robotics Vision System", desc: "Computer vision system for robotics perception using synthetic data and deep learning.",
-              contributions: ["CNN-based stereo image to occupancy grid volume model", "ML pipeline development", "Unreal Engine synthetic dataset generation", "Robotics perception research"],
-              tech: "Python, CNNs, Unreal Engine, Machine Learning"
             }
           ]
         },
@@ -495,8 +470,33 @@ export const translations = {
           ]
         },
         additional: {
-          title: "ADDITIONAL PROJECTS & ENTREPRENEURSHIP",
+          title: "PROJECT CONTRIBUTIONS",
           items: [
+            {
+              id: "daytrading", title: "Daytrading Automation Platform (2024)", desc: "Automated trading platform for executing algorithmic strategies in financial markets.",
+              contributions: ["Implementation of custom trading algorithms", "Integration with WeBull trading platform using Python SDK", "Deployment of AWS infrastructure for automated trading servers"],
+              tech: "Python, AWS, Algorithmic Trading, APIs"
+            },
+            {
+              id: "migasa", title: "Grupo Migasa — Optimization (2024)", desc: "Industrial optimization research and prototyping.",
+              contributions: ["Python optimization prototype", "Mathematical modeling", "Performance testing"],
+              tech: "Python, Optimization"
+            },
+            {
+              id: "memories", title: "Memories of the Forgotten (2021)", desc: "Narrative-driven game project discontinued after Kickstarter phase.",
+              contributions: ["C++ gameplay systems", "Unreal Engine development", "Core mechanics design"],
+              tech: "C++, Unreal Engine"
+            },
+            {
+              id: "energy", title: "Energy Crisis", desc: "Systems-driven simulation game currently in development.",
+              contributions: ["C# programming in Unity", "Gameplay systems design", "Ongoing development"],
+              tech: "Unity, C#"
+            },
+            {
+              id: "robotics", title: "AI Robotics Vision System", desc: "Computer vision system for robotics perception using synthetic data and deep learning.",
+              contributions: ["CNN-based stereo image to occupancy grid volume model", "ML pipeline development", "Unreal Engine synthetic dataset generation", "Robotics perception research"],
+              tech: "Python, CNNs, Unreal Engine, Machine Learning"
+            },
             {
               id: "myfoldr", title: "MyFoldr.io (2022)", desc: "Cloud file-sharing platform for small teams and professionals.",
               contributions: ["Angular frontend development", "AWS infrastructure setup", "REST API services", "System architecture contributions"],

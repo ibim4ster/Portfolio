@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { translations, Language } from './translations';
-import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X, Smartphone, Briefcase, Gamepad2, LineChart, FolderSync, Volume2, Calendar, MessageSquare, Send, BrainCircuit } from 'lucide-react';
+import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X, Smartphone, Briefcase, Gamepad2, LineChart, FolderSync, Volume2, Calendar, MessageSquare, Send, BrainCircuit, Download } from 'lucide-react';
 import { FaJava, FaDatabase, FaCashRegister, FaVideo, FaPhotoVideo, FaAws } from 'react-icons/fa';
 import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudio, SiIntellijidea, SiCanva, SiDavinciresolve, SiCss, SiJavascript, SiMongodb, SiVegas, SiSage, SiAgora, SiFlutter, SiAngular, SiRaspberrypi, SiGo, SiCplusplus, SiUnrealengine, SiUnity, SiReact } from 'react-icons/si';
 import { BsFiletypeXml } from 'react-icons/bs';
@@ -317,6 +317,16 @@ export default function App() {
                 {t.nav.menu[item as keyof typeof t.nav.menu]}
               </button>
             ))}
+            <a 
+              href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-[var(--theme-tertiary)] bg-bg text-[var(--theme-tertiary)] px-3 py-1 font-bold hover:bg-[var(--theme-tertiary)] hover:text-bg transition-colors text-sm flex items-center gap-2 cursor-pointer"
+              id="btn-download-cv"
+              title={lang === 'es' ? "Ver currículum" : "View CV"}
+            >
+              <Download className="w-4 h-4" /> {lang === 'es' ? 'CV' : 'CV'}
+            </a>
             <button 
               onClick={toggleTheme}
               className="border border-secondary bg-bg text-secondary px-3 py-1 font-bold hover:bg-secondary hover:text-bg transition-colors text-sm"
@@ -332,7 +342,16 @@ export default function App() {
           </div>
 
           {/* Mobile Menu Toggle & Lang */}
-          <div className="flex md:hidden items-center gap-4">
+          <div className="flex md:hidden items-center gap-3">
+            <a 
+              href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-[var(--theme-tertiary)] bg-bg text-[var(--theme-tertiary)] px-2 py-1 font-bold hover:bg-[var(--theme-tertiary)] hover:text-bg transition-colors text-xs flex items-center gap-1 cursor-pointer"
+              id="btn-download-cv-mobile"
+            >
+              <Download className="w-3 h-3" /> CV
+            </a>
             <button 
               onClick={toggleTheme}
               className="border border-secondary bg-bg text-secondary px-2 py-1 font-bold hover:bg-secondary hover:text-bg transition-colors text-xs"
@@ -367,6 +386,15 @@ export default function App() {
               {t.nav.menu[item as keyof typeof t.nav.menu]}
             </button>
           ))}
+          <a 
+            href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsMenuOpen(false)}
+            className="text-[var(--theme-tertiary)] hover:bg-[#FF00FF]/10 font-mono text-sm uppercase tracking-wider transition-colors py-4 px-6 text-left flex items-center gap-2 border-t border-gray-800"
+          >
+            <Download className="w-4 h-4" /> {lang === 'es' ? 'VER CV (GOOGLE DRIVE)' : 'VIEW CV (GOOGLE DRIVE)'}
+          </a>
         </div>
       )}
 
@@ -456,9 +484,21 @@ export default function App() {
             <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal" data-text={t.core.title}>{t.core.title}</h2>
             
             <div className="clip-cyber border-2 border-primary p-8 md:p-12 bg-noise relative reveal delay-100 hover:shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.15)] transition-shadow duration-500">
-              <p className="font-sans text-xl md:text-2xl text-gray-200 leading-relaxed mb-12">
+              <p className="font-sans text-xl md:text-2xl text-gray-200 leading-relaxed mb-6">
                 {t.core.bio}
               </p>
+
+              <div className="flex flex-wrap gap-4 mb-12">
+                <a 
+                  href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-bg bg-primary border-2 border-primary px-6 py-3 shadow-[4px_4px_0px_var(--theme-secondary)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all uppercase font-bold tracking-widest hover:bg-bg hover:text-primary flex items-center gap-2 cursor-pointer z-10"
+                  id="btn-about-cv"
+                >
+                  <Download className="w-5 h-5 animate-pulse" /> {lang === 'es' ? 'VER CV (GOOGLE DRIVE)' : 'VIEW CV (GOOGLE DRIVE)'}
+                </a>
+              </div>
               
               <h3 className="font-sans text-2xl md:text-4xl font-bold text-primary mb-8 uppercase border-b-2 border-primary inline-block pb-2">{t.core.academicTitle}</h3>
               
@@ -737,6 +777,367 @@ export default function App() {
 
         </div>
       )}
+
+      {/* 8. PRINTABLE CV CONTAINER (Only visible during print) */}
+      <div id="printable-cv" className="hidden printable-content bg-white text-black p-8 font-sans" style={{ color: '#000000', backgroundColor: '#ffffff' }}>
+        {lang === 'es' ? (
+          <div>
+            <div className="border-b-2 border-black pb-4 mb-6">
+              <h1 className="text-4xl font-extrabold tracking-tight text-center uppercase" style={{ fontFamily: 'sans-serif' }}>Ibai Gallego Faces</h1>
+              <p className="text-xl font-bold text-center text-gray-700 mt-1 uppercase">Desarrollador de Software</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 text-xs text-gray-600 text-center">
+                <div><strong>Nacimiento:</strong> 26/09/2003</div>
+                <div><strong>Email:</strong> ibairakelmario@gmail.com</div>
+                <div><strong>Teléfono:</strong> +34 673 350 491</div>
+                <div className="col-span-2 sm:col-span-3"><strong>Dirección:</strong> Plaza Torre Giralda, Oyón-Oion, Álava</div>
+                <div className="col-span-2 sm:col-span-3"><strong>Portfolio:</strong> https://ibai-gallego.vercel.app</div>
+              </div>
+            </div>
+
+            {/* Sobre Mí */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Sobre Mí</h2>
+              <p className="text-xs leading-relaxed text-gray-800">
+                Soy desarrollador de software con mentalidad freelance y perfil versátil. Me apasiona construir productos digitales y encontrar soluciones técnicas a problemas reales. Disfruto tanto trabajando en equipo como de forma autónoma, y me adapto rápido a nuevos entornos, tecnologías y retos. Siempre estoy aprendiendo y buscando la forma de aportar más valor en cada proyecto en el que participo.
+              </p>
+            </div>
+
+            {/* Experiencia Laboral */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Experiencia Laboral</h2>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Logic Soluciones Software | Grupo Pancorbo</h3>
+                    <span className="text-xs text-gray-600 font-semibold">Junio 2025 - Actualidad</span>
+                  </div>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
+                    <li>Formación avanzada de Sage 50, 200, Despachos y Ágora + titulación.</li>
+                    <li>Automatizar procesos de los trabajadores (Aplicaciones web internas) para elevar la productividad.</li>
+                    <li>Instalación, configuración y formación de programas ERP y facturadores para empresas.</li>
+                    <li>Personalización de informes complejos en lenguaje SQL y adición de módulos a medida en C#.</li>
+                    <li>Soporte y administración de servidores basados tanto en Windows Server como en Linux.</li>
+                    <li>Mantenimiento de páginas web construidas sobre WordPress y gestión de sus plugins.</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Logic Soluciones Software (Prácticas) | Grupo Pancorbo</h3>
+                    <span className="text-xs text-gray-600 font-semibold">Marzo 2025 - Junio 2025 (400 Horas)</span>
+                  </div>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
+                    <li>Formación intensiva en toda la suite Sage 50 y Ágora ERP.</li>
+                    <li>Instalación de programas de facturación corporativos y resolución de incidencias en soporte comercial.</li>
+                    <li>Elaboración de presupuestos comerciales, control contable de facturas y albaranes de clientes.</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Arluy (Prácticas) | Departamento de Informática</h3>
+                    <span className="text-xs text-gray-600 font-semibold">Marzo 2021 - Junio 2021 (400 Horas)</span>
+                  </div>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
+                    <li>Atención técnica al usuario presencial y mediante soporte remoto de ordenadores.</li>
+                    <li>Instalación y configuración completa de tiendas online virtuales basadas en PrestaShop.</li>
+                    <li>Instalación de antenas MikroTek para interconectar dispositivos de manera inalámbrica.</li>
+                    <li>Desarrollo de un sistema automatizado para control y flujo de incidencias por medio de Power Automate, SharePoint y Excel.</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Trabajo en Hostelería | Camarero</h3>
+                    <span className="text-xs text-gray-600 font-semibold">2021 - 2023 (Temporadas)</span>
+                  </div>
+                  <p className="text-xs text-gray-700 pl-2 mt-0.5">Soporte y atención integral de barra y terraza, potenciando habilidades interpersonales y de resolución bajo presión.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Datos Académicos */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Datos Académicos</h2>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-xs">Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)</h3>
+                    <span className="text-xs text-gray-600 font-semibold">2022 - 2025</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500">IES Comercio</p>
+                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Competencias:</strong> Programación en lenguajes orientados a objetos (Java, C#), desarrollo frontend/backend en frameworks modernos, bases de datos (SQLServer, Oracle, MongoDB), y programación de videojuegos en Unity / Unreal Engine.</p>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-xs">Grado Medio en Sistemas Microinformáticos y Redes (SMR)</h3>
+                    <span className="text-xs text-gray-600 font-semibold">2019 - 2021</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500">IES Comercio</p>
+                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Competencias:</strong> Montaje y reparación de equipos informáticos, cableado y configuración estructurada de redes (conmutadores y routers), despliegue de sistemas operativos Linux y Windows, políticas de seguridad y copias de seguridad.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Habilidades Técnicas e Inteligencia Artificial */}
+            <div className="mb-6 page-break-before">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Habilidades Técnicas e Inteligencia Artificial</h2>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-800 uppercase">Lenguajes y Herramientas</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    <strong>Lenguajes:</strong> Java, Python, C#, C++, PHP, Go, JavaScript, TypeScript, HTML/CSS, XML.<br/>
+                    <strong>Entornos y Control:</strong> Git, Visual Studio, Android Studio, NetBeans, IntelliJ, VirtualBox, VMware, AWS.<br/>
+                    <strong>Diseño / Multimedia:</strong> Photoshop, Premiere, Sony Vegas, DaVinci Resolve, Canva.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-800 uppercase">Sistemas ERP y Base de Datos</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    <strong>Sistemas ERP:</strong> Sage 50, Sage 200, Sage Despachos, SAP, Odoo, Facturador Ágora.<br/>
+                    <strong>Bases de Datos:</strong> SQL Server, MySQL, Oracle, HeidiSQL, MongoDB.<br/>
+                    <strong>Idiomas:</strong> Castellano y Euskera (Nativo), Inglés (Nivel Medio).
+                  </p>
+                </div>
+                <div className="col-span-2 mt-1">
+                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">Sistemas de Inteligencia Artificial (IA)</h3>
+                  <div className="grid grid-cols-2 gap-x-4 text-gray-750 font-sans text-xs leading-normal">
+                    <div>• <strong>Desarrollo Asistido:</strong> Integración avanzada de Cursor, Claude y modelado LLM para aceleración de despliegues.</div>
+                    <div>• <strong>Diseño/Prototipado con IA:</strong> Flujo rápido desde Figma y AI Studio hacia templates estables usando Lovable, Base44 y Antigravity.</div>
+                    <div>• <strong>Conexión API Modelos:</strong> Implementación e integración avanzada de APIs de Anthropic, Google Gemini o GPT-4o.</div>
+                    <div>• <strong>Automatización de Tareas:</strong> Creación autónoma de documentación técnica, automatización de pruebas unitarias y traducción de scripts.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Proyectos Personales Clave */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Proyectos Personales Clave</h2>
+              <div className="space-y-3 text-xs">
+                <div>
+                  <h3 className="font-bold">TFG-GRAVITY <span className="font-normal text-gray-600">(Python, Flask, MySQL, OpenAI)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Plataforma SaaS automatizada para facturación global, gestión e implementación de licencias de software, con pasarela de pago PayPal y un asistente IA integrado para soporte al cliente.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-600">(JavaScript, Seguridad Web)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Sistema autogestionado de tickets y seguridad con credenciales digitales cifradas por QR para control y validación de accesos en eventos masivos.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">PRESUPUESTOS <span className="font-normal text-gray-600">(Web App, MySQL)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Herramienta interna ágil diseñada para la fuerza comercial que acelera la estimación de costes complejos y automatiza la exportación de presupuestos listos en PDF.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">KANDIDO <span className="font-normal text-gray-600">(SaaS Talent Tracking con IA)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Portal modular de reclutamiento y clasificación de candidatos utilizando modelos lingüísticos para el procesamiento automático de CVs y asignación de perfiles.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Soccer World <span className="font-normal text-gray-600">(HTML/CSS, JavaScript)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Prototipo moderno de comercio electrónico para camisetas de fútbol con filtrado por marcas, ligas y carrito intuitivo.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contribuciones a Proyectos */}
+            <div>
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Contribuciones a Proyectos</h2>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs">
+                <div>
+                  <h3 className="font-bold">Daytrading Automation Platform</h3>
+                  <p className="text-gray-700 mt-0.5">Trading algorítmico, automatización mediante Python y conexión directa de órdenes usando WeBull SDK.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Grupo Migasa Logistics Optimization</h3>
+                  <p className="text-gray-700 mt-0.5">Modelado matemático y programación lineal para optimización de cisternas de gran consumo de aceite de oliva.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">AI Robotics Vision System</h3>
+                  <p className="text-gray-700 mt-0.5">Pipeline de redes neuronales (CNN) para detección volumétrica de objetos usando Unreal Engine para datasets sintéticos.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">MyFoldr.io & Silent Education</h3>
+                  <p className="text-gray-700 mt-0.5">Aportaciones completas en Angular / Go para compartición segura en la nube y sensores IoT de monitoreo de sonido para escuelas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className="border-b-2 border-black pb-4 mb-6">
+              <h1 className="text-4xl font-extrabold tracking-tight text-center uppercase" style={{ fontFamily: 'sans-serif' }}>Ibai Gallego Faces</h1>
+              <p className="text-xl font-bold text-center text-gray-700 mt-1 uppercase">Software Developer</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 text-xs text-gray-600 text-center">
+                <div><strong>Born:</strong> 26/09/2003</div>
+                <div><strong>Email:</strong> ibairakelmario@gmail.com</div>
+                <div><strong>Phone:</strong> +34 673 350 491</div>
+                <div className="col-span-2 sm:col-span-3"><strong>Address:</strong> Plaza Torre Giralda, Oyón-Oion, Álava</div>
+                <div className="col-span-2 sm:col-span-3"><strong>Portfolio:</strong> https://ibai-gallego.vercel.app</div>
+              </div>
+            </div>
+
+            {/* About Me */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">About Me</h2>
+              <p className="text-xs leading-relaxed text-gray-800">
+                I am a software developer with a freelance mindset and a versatile profile. I am passionate about building digital products and finding technical solutions to real problems. I enjoy working both in a team and autonomously, adapting quickly to new environments, technologies, and challenges. I am always learning and looking for ways to bring more value to every project I participate in.
+              </p>
+            </div>
+
+            {/* Work Experience */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Work Experience</h2>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Logic Soluciones Software | Grupo Pancorbo</h3>
+                    <span className="text-xs text-gray-600 font-semibold">June 2025 - Present</span>
+                  </div>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
+                    <li>Advanced training and certification in Sage 50, 200, Despachos, and Ágora ERP systems.</li>
+                    <li>Automated internal workflows by building web tools to increase employee productivity.</li>
+                    <li>Installed, configured, and troubleshooted corporate ERP and billing software for clients.</li>
+                    <li>Customized complex database reports in SQL and built custom integration modules in C#.</li>
+                    <li>Provided server support and administration for both Windows Server and Linux environments.</li>
+                    <li>Maintained client websites built on WordPress and managed related integrations & plugins.</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Logic Soluciones Software (Internship) | Grupo Pancorbo</h3>
+                    <span className="text-xs text-gray-600 font-semibold">March 2025 - June 2025 (400 Hours)</span>
+                  </div>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
+                    <li>Intensive training in the complete Sage 50 suite and Ágora billing ERP.</li>
+                    <li>Set up deployment services and handled client infrastructure tickets in technical support.</li>
+                    <li>Drafted commercial budgets, invoices, and managed client delivery notes.</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Arluy (Internship) | IT Department</h3>
+                    <span className="text-xs text-gray-600 font-semibold">March 2021 - June 2021 (400 Hours)</span>
+                  </div>
+                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
+                    <li>Offered helpdesk support and user assistance through on-site and remote computer diagnostics.</li>
+                    <li>Designed and configured custom e-commerce online stores using PrestaShop.</li>
+                    <li>Installed MikroTek antennas to establish wireless connectivity between company segments.</li>
+                    <li>Created an automated ticket-handling solution using Power Automate, SharePoint, and Excel.</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-sm">Hospitality Industry | Waiter</h3>
+                    <span className="text-xs text-gray-600 font-semibold">2021 - 2023 (Seasonal)</span>
+                  </div>
+                  <p className="text-xs text-gray-700 pl-2 mt-0.5">Provided barside/tableside service under high-pressure conditions, developing strong communication and problem-solving skills.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Academic History */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Academic History</h2>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-xs">Higher Degree in Multiplatform Application Development (DAM)</h3>
+                    <span className="text-xs text-gray-600 font-semibold">2022 - 2025</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500">IES Comercio</p>
+                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Core skills:</strong> Object-oriented programming (Java, C#), frontend/backend development in modern frameworks, databases (SQLServer, Oracle, MongoDB), and game design in Unity / Unreal Engine.</p>
+                </div>
+                <div>
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="font-bold text-xs">Middle Degree in Microcomputer Systems and Networks (SMR)</h3>
+                    <span className="text-xs text-gray-600 font-semibold">2019 - 2021</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500">IES Comercio</p>
+                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Core skills:</strong> Computer hardware assembly & maintenance, networking infrastructure (switches/routers setup), OS deployment (Linux & Windows Server), security auditing, and backup policies.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Technical Skills & AI */}
+            <div className="mb-6 page-break-before">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Technical Skills & Artificial Intelligence</h2>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">Languages & Devtools</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    <strong>Languages:</strong> Java, Python, C#, C++, PHP, Go, JavaScript, TypeScript, HTML/CSS, XML.<br/>
+                    <strong>Environments/Version Control:</strong> Git, Visual Studio, Android Studio, NetBeans, IntelliJ, VirtualBox, VMware, AWS.<br/>
+                    <strong>Design / Multimedia:</strong> Photoshop, Premiere, Sony Vegas, DaVinci Resolve, Canva.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">ERP Systems & Databases</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    <strong>ERP Systems:</strong> Sage 50, Sage 200, Sage Despachos, SAP, Odoo, Facturador Ágora.<br/>
+                    <strong>Databases:</strong> SQL Server, MySQL, Oracle, HeidiSQL, MongoDB.<br/>
+                    <strong>Languages spoken:</strong> Spanish and Basque (Native), English (Intermediate).
+                  </p>
+                </div>
+                <div className="col-span-2 mt-1">
+                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">Artificial Intelligence Systems (AI)</h3>
+                  <div className="grid grid-cols-2 gap-x-4 text-gray-750 font-sans text-xs leading-normal">
+                    <div>• <strong>Assisted Development:</strong> Advanced workflow using Cursor, Claude, and LLM coding agents for rapid delivery.</div>
+                    <div>• <strong>Prototyping & Generative Design:</strong> Figma and AI Studio pipelines to deliver stable React/Vite interfaces using Lovable, Base44, and Antigravity.</div>
+                    <div>• <strong>Model API Connections:</strong> Dynamic implementation of Anthropic, Google Gemini, and OpenAI API integrations.</div>
+                    <div>• <strong>Task Automation:</strong> Writing clean technical documentation, automated testing hooks, and continuous integration scripts.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Personal Projects */}
+            <div className="mb-6">
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Key Personal Projects</h2>
+              <div className="space-y-3 text-xs">
+                <div>
+                  <h3 className="font-bold">TFG-GRAVITY <span className="font-normal text-gray-600">(Python, Flask, MySQL, OpenAI)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Automated SaaS billing and software licensing platform featuring PayPal integrations and a customized support AI chatbot.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-650">(JavaScript, Web Security)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Self-managed digital ticket validation system using secure QR credentials for fast validation at large-scale entries.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">PRESUPUESTOS <span className="font-normal text-gray-150">(Web App, MySQL)</span></h3>
+                  <p className="text-gray-700 mt-0.5">An agile client estimating tool designed to automate cost approximations and generate printable PDFs of quotations.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">KANDIDO <span className="font-normal text-gray-150">(AI-Powered SaaS Recruiter Tracking)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Modular recruitment interface evaluating CVs using large language models to categorize talent metrics effortlessly.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Soccer World <span className="font-normal text-gray-150">(HTML/CSS, JavaScript)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Modern sports e-commerce prototype tracking and serving global league uniforms and jersey collections with responsive workflows.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Project Contributions */}
+            <div>
+              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Project Contributions</h2>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs">
+                <div>
+                  <h3 className="font-bold">Daytrading Automation Platform</h3>
+                  <p className="text-gray-700 mt-0.5">Algorithmic trading strategies setup using Python and direct order flows using the WeBull SDK.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Grupo Migasa Logistics Optimization</h3>
+                  <p className="text-gray-700 mt-0.5">Mathematical modeling and linear programming to optimize olive oil heavy logistics and distribution tankers.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">AI Robotics Vision System</h3>
+                  <p className="text-gray-700 mt-0.5">Deep neural network (CNN) pipelines for voxel object recognition using Unreal Engine for synthetic data modeling.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">MyFoldr.io & Silent Education</h3>
+                  <p className="text-gray-700 mt-0.5">Frontend integrations in Angular / Go backends for secure cloud file sharing and IoT smart classroom noise sensors.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
