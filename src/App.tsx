@@ -4,7 +4,6 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Analytics } from '@vercel/analytics/react';
 import { translations, Language } from './translations';
 import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X, Smartphone, Briefcase, Gamepad2, LineChart, FolderSync, Volume2, Calendar, MessageSquare, Send, BrainCircuit, Download } from 'lucide-react';
 import { FaJava, FaDatabase, FaCashRegister, FaVideo, FaPhotoVideo, FaAws } from 'react-icons/fa';
@@ -918,16 +917,28 @@ export default function App() {
                   <p className="text-gray-700 mt-0.5">Plataforma SaaS automatizada para facturación global, gestión e implementación de licencias de software, con pasarela de pago PayPal y un asistente IA integrado para soporte al cliente.</p>
                 </div>
                 <div>
-                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-600">(JavaScript, Seguridad Web)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Sistema autogestionado de tickets y seguridad con credenciales digitales cifradas por QR para control y validación de accesos en eventos masivos.</p>
-                </div>
-                <div>
                   <h3 className="font-bold">PRESUPUESTOS <span className="font-normal text-gray-600">(Web App, MySQL)</span></h3>
                   <p className="text-gray-700 mt-0.5">Herramienta interna ágil diseñada para la fuerza comercial que acelera la estimación de costes complejos y automatiza la exportación de presupuestos listos en PDF.</p>
                 </div>
                 <div>
                   <h3 className="font-bold">KANDIDO <span className="font-normal text-gray-600">(SaaS Talent Tracking con IA)</span></h3>
                   <p className="text-gray-700 mt-0.5">Portal modular de reclutamiento y clasificación de candidatos utilizando modelos lingüísticos para el procesamiento automático de CVs y asignación de perfiles.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">SWAAP DIGITAL <span className="font-normal text-gray-600">(React, JavaScript, Web Design)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Agencia y plataforma de servicios de digitalización y desarrollo web profesional para empresas.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">SWAAP SPORTS <span className="font-normal text-gray-600">(React, Tailwind CSS, APIs Deportivas)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Portal deportivo y plataforma para gestión, noticias y cobertura en tiempo real de eventos de fútbol.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">SWAAP LOGISTICS <span className="font-normal text-gray-600">(React, Node.js, Google Maps API)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Plataforma de optimización de rutas y gestión de flotas logísticas para el transporte terrestre eficiente.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-600">(JavaScript, Seguridad Web)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Sistema autogestionado de tickets y seguridad con credenciales digitales cifradas por QR para control y validación de accesos en eventos masivos.</p>
                 </div>
                 <div>
                   <h3 className="font-bold">Soccer World <span className="font-normal text-gray-600">(HTML/CSS, JavaScript)</span></h3>
@@ -1096,16 +1107,28 @@ export default function App() {
                   <p className="text-gray-700 mt-0.5">Automated SaaS billing and software licensing platform featuring PayPal integrations and a customized support AI chatbot.</p>
                 </div>
                 <div>
-                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-650">(JavaScript, Web Security)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Self-managed digital ticket validation system using secure QR credentials for fast validation at large-scale entries.</p>
-                </div>
-                <div>
                   <h3 className="font-bold">PRESUPUESTOS <span className="font-normal text-gray-150">(Web App, MySQL)</span></h3>
                   <p className="text-gray-700 mt-0.5">An agile client estimating tool designed to automate cost approximations and generate printable PDFs of quotations.</p>
                 </div>
                 <div>
                   <h3 className="font-bold">KANDIDO <span className="font-normal text-gray-150">(AI-Powered SaaS Recruiter Tracking)</span></h3>
                   <p className="text-gray-700 mt-0.5">Modular recruitment interface evaluating CVs using large language models to categorize talent metrics effortlessly.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">SWAAP DIGITAL <span className="font-normal text-gray-150">(React, JavaScript, Web Design)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Professional web development and digitalization services agency and platform for companies.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">SWAAP SPORTS <span className="font-normal text-gray-150">(React, Tailwind CSS, Sports APIs)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Sports portal and platform for management, news, and real-time coverage of football events.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">SWAAP LOGISTICS <span className="font-normal text-gray-150">(React, Node.js, Google Maps API)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Route optimization and logistics fleet management platform for efficient land transportation.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-650">(JavaScript, Web Security)</span></h3>
+                  <p className="text-gray-700 mt-0.5">Self-managed digital ticket validation system using secure QR credentials for fast validation at large-scale entries.</p>
                 </div>
                 <div>
                   <h3 className="font-bold">Soccer World <span className="font-normal text-gray-150">(HTML/CSS, JavaScript)</span></h3>
@@ -1139,7 +1162,6 @@ export default function App() {
           </div>
         )}
       </div>
-      <Analytics />
     </div>
   );
 }

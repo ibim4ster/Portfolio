@@ -131,14 +131,6 @@ export const translations = {
               links: [{ type: "repo", url: "https://github.com/ibim4ster/TFG-GRAVITY" }, { type: "doc", url: "https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" }]
             },
             {
-              id: "gatepass", title: "Gravity Gate Pass (2026)", desc: "Sistema de control de acceso y seguridad de código abierto para gestión de eventos.",
-              image: "https://i.imgur.com/sjP0WpL.png",
-              contributions: ["Desarrollo de sistemas de credenciales digitales seguras", "Implementación de lógica de acceso en puertas", "Diseño de interfaz frontend para administración"],
-              tech: "JavaScript, Seguridad Web",
-              creds: { user: "admin", pass: "admin123" },
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/gravity-gate-pass" }, { type: "demo", url: "https://gravity-gate-pass.lovable.app/" }]
-            },
-            {
               id: "presupuestos", title: "PRESUPUESTOS (2025)", desc: "Herramienta financiera para generar y gestionar propuestas de presupuestos comerciales.",
               image: "https://i.imgur.com/R94YLdP.png",
               contributions: ["Motor de cálculo para estimación de costes", "Generación de PDF e informes automatizados", "Persistencia de datos para registros de clientes y productos"],
@@ -152,6 +144,35 @@ export const translations = {
               contributions: ["Arquitectura backend para base de datos de candidatos", "Implementación de algoritmos de filtrado y búsqueda", "Panel de usuario para gestión de flujo de trabajo de RRHH"],
               tech: "Desarrollo Web, Bases de Datos, IA",
               links: [{ type: "demo", url: "https://kandido.vercel.app/" }]
+            },
+            {
+              id: "swaap-digital", title: "SWAAP DIGITAL (2026)", desc: "Agencia y plataforma de servicios de digitalización y desarrollo web profesional para empresas.",
+              image: "https://i.imgur.com/O93b7Sp.png",
+              contributions: ["Diseño UI/UX de alta conversión", "Estrategia de posicionamiento SEO y rendimiento", "Plataforma web corporativa moderna y autogestionable"],
+              tech: "HTML/CSS, JavaScript, React, Diseño Web",
+              links: [{ type: "demo", url: "https://swaapdigital.com/" }]
+            },
+            {
+              id: "swaap-sports", title: "SWAAP SPORTS (2026)", desc: "Portal deportivo y plataforma para gestión, noticias y cobertura en tiempo real de eventos de fútbol.",
+              image: "https://i.imgur.com/t1BFacx.png",
+              contributions: ["Desarrollo frontend interactivo de la comunidad deportiva", "Integración de marcadores e información en tiempo real", "Optimización de carga multimedia y diseño adaptable"],
+              tech: "React, Tailwind CSS, APIs Deportivas",
+              links: [{ type: "demo", url: "https://swaapsports.com/" }]
+            },
+            {
+              id: "swaap-logistics", title: "SWAAP LOGISTICS (2026)", desc: "Plataforma de optimización de rutas y gestión de flotas logísticas para el transporte terrestre eficiente.",
+              image: "https://i.imgur.com/f7kyJjd.png",
+              contributions: ["Integración de mapas interactivos y ruteo dinámico", "Algoritmos de optimización de carga y asignación", "Panel de administración y telemetría de vehículos"],
+              tech: "React, Node.js, Google Maps API, Logística",
+              links: [{ type: "demo", url: "https://swaaplogistics.com/" }]
+            },
+            {
+              id: "gatepass", title: "Gravity Gate Pass (2026)", desc: "Sistema de control de acceso y seguridad de código abierto para gestión de eventos.",
+              image: "https://i.imgur.com/sjP0WpL.png",
+              contributions: ["Desarrollo de sistemas de credenciales digitales seguras", "Implementación de lógica de acceso en puertas", "Diseño de interfaz frontend para administración"],
+              tech: "JavaScript, Seguridad Web",
+              creds: { user: "admin", pass: "admin123" },
+              links: [{ type: "repo", url: "https://github.com/ibim4ster/gravity-gate-pass" }, { type: "demo", url: "https://gravity-gate-pass.lovable.app/" }]
             },
             {
               id: "portfolio", title: "Professional Portfolio (2026)", desc: "Sitio web personal que muestra una selección curada de proyectos de ingeniería y desarrollo.",
@@ -401,14 +422,6 @@ export const translations = {
               links: [{ type: "repo", url: "https://github.com/ibim4ster/TFG-GRAVITY" }, { type: "doc", url: "https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" }]
             },
             {
-              id: "gatepass", title: "Gravity Gate Pass (2026)", desc: "Open-source security and access control system for event management.",
-              image: "https://i.imgur.com/sjP0WpL.png",
-              contributions: ["Development of secure digital credential systems", "Implementation of gate-access logic", "Frontend interface design for administration"],
-              tech: "JavaScript, Web Security",
-              creds: { user: "admin", pass: "admin123" },
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/gravity-gate-pass" }, { type: "demo", url: "https://gravity-gate-pass.lovable.app/" }]
-            },
-            {
               id: "presupuestos", title: "PRESUPUESTOS (2025)", desc: "Financial tool for generating and managing commercial budget proposals.",
               image: "https://i.imgur.com/R94YLdP.png",
               contributions: ["Calculation engine for cost estimation", "PDF generation and automated reporting", "Data persistence for client and product records"],
@@ -422,6 +435,35 @@ export const translations = {
               contributions: ["Backend architecture for candidate database", "Implementation of filtering and search algorithms", "User dashboard for HR workflow management"],
               tech: "Web Development, Databases, AI",
               links: [{ type: "demo", url: "https://kandido.vercel.app/" }]
+            },
+            {
+              id: "swaap-digital", title: "SWAAP DIGITAL (2026)", desc: "Professional web development and digitalization services agency and platform for companies.",
+              image: "https://i.imgur.com/O93b7Sp.png",
+              contributions: ["High-conversion UI/UX design", "SEO positioning and performance strategy", "Modern, self-managed corporate web platform"],
+              tech: "HTML/CSS, JavaScript, React, Web Design",
+              links: [{ type: "demo", url: "https://swaapdigital.com/" }]
+            },
+            {
+              id: "swaap-sports", title: "SWAAP SPORTS (2026)", desc: "Sports portal and platform for management, news, and real-time coverage of football events.",
+              image: "https://i.imgur.com/t1BFacx.png",
+              contributions: ["Interactive sports community frontend development", "Integration of real-time scores and statistics", "Multimedia asset optimization and responsive layout"],
+              tech: "React, Tailwind CSS, Sports APIs",
+              links: [{ type: "demo", url: "https://swaapsports.com/" }]
+            },
+            {
+              id: "swaap-logistics", title: "SWAAP LOGISTICS (2026)", desc: "Route optimization and logistics fleet management platform for efficient land transportation.",
+              image: "https://i.imgur.com/f7kyJjd.png",
+              contributions: ["Interactive maps and dynamic routing integration", "Cargo load and allocation optimization algorithms", "Vehicle telematics and admin control panel"],
+              tech: "React, Node.js, Google Maps API, Logistics",
+              links: [{ type: "demo", url: "https://swaaplogistics.com/" }]
+            },
+            {
+              id: "gatepass", title: "Gravity Gate Pass (2026)", desc: "Open-source security and access control system for event management.",
+              image: "https://i.imgur.com/sjP0WpL.png",
+              contributions: ["Development of secure digital credential systems", "Implementation of gate-access logic", "Frontend interface design for administration"],
+              tech: "JavaScript, Web Security",
+              creds: { user: "admin", pass: "admin123" },
+              links: [{ type: "repo", url: "https://github.com/ibim4ster/gravity-gate-pass" }, { type: "demo", url: "https://gravity-gate-pass.lovable.app/" }]
             },
             {
               id: "portfolio", title: "Professional Portfolio (2026)", desc: "Personal showcase website featuring a curated selection of engineering and development projects.",
