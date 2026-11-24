@@ -5,13 +5,86 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { translations, Language } from './translations';
-import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X, Smartphone, Briefcase, Gamepad2, LineChart, FolderSync, Volume2, Calendar, MessageSquare, Send, BrainCircuit, Download } from 'lucide-react';
+import { Cpu, ShieldCheck, Calculator, Orbit, Fingerprint, ReceiptEuro, Linkedin, Github, Mail, Phone, Code2, Database, Wrench, Palette, Menu, X, Smartphone, Briefcase, Gamepad2, LineChart, FolderSync, Volume2, Calendar, MessageSquare, Send, BrainCircuit, Download } from 'lucide-react';
 import { FaJava, FaDatabase, FaCashRegister, FaVideo, FaPhotoVideo, FaAws } from 'react-icons/fa';
 import { SiPython, SiPhp, SiHtml5, SiVirtualbox, SiVmware, SiGit, SiAndroidstudio, SiIntellijidea, SiCanva, SiDavinciresolve, SiCss, SiJavascript, SiMongodb, SiVegas, SiSage, SiAgora, SiFlutter, SiAngular, SiRaspberrypi, SiGo, SiCplusplus, SiUnrealengine, SiUnity, SiReact } from 'react-icons/si';
 import { BsFiletypeXml } from 'react-icons/bs';
 import { TbChartLine, TbBrandCSharp, TbBrandAdobePremier } from 'react-icons/tb';
 import { DiMsqlServer, DiVisualstudio, DiPhotoshop } from 'react-icons/di';
-import { ProjectCard } from './components/ProjectCard';
+import { Projects } from './components/Projects';
+
+const NAV = ['home', 'about', 'skills', 'experience', 'projects', 'contact'] as const;
+type SectionId = typeof NAV[number];
+
+const UI = {
+  es: {
+    menuTitle: 'IGF-OS · MENÚ PRINCIPAL',
+    menuHint: 'Elige por dónde empezar · o pulsa su número en el teclado',
+    routesTitle: '¿QUÉ BUSCAS?',
+    routes: [
+      { who: 'Busco a alguien para mi empresa', go: 'experience', cta: 'Ver experiencia' },
+      { who: 'Necesito una web, app, ERP o vídeo', go: 'projects', cta: 'Ver proyectos' },
+      { who: 'Quiero hablar contigo', go: 'contact', cta: 'Escribirme' },
+    ],
+    files: {
+      about: ['SOBRE_MI.TXT', 'Quién soy, estudios y certificación'],
+      skills: ['HABILIDADES.SYS', 'Con qué trabajo'],
+      experience: ['EXPERIENCIA.LOG', 'Dónde he trabajado'],
+      projects: ['PROYECTOS.EXE', 'Lo que he construido'],
+      contact: ['CONTACTO.CFG', 'Escríbeme un mensaje'],
+    },
+    paths: { home: 'INICIO', about: 'SOBRE_MI', skills: 'HABILIDADES', experience: 'EXPERIENCIA', projects: 'PROYECTOS', contact: 'CONTACTO' },
+    subs: {
+      about: 'Quién soy, qué he estudiado y qué certificaciones tengo.',
+      skills: 'Los lenguajes, programas y herramientas que uso en el día a día.',
+      experience: 'Dónde he trabajado y qué hacía en cada sitio, de lo más reciente a lo más antiguo.',
+      projects: 'Primero lo más importante, en grande. Debajo, todo lo demás en una lista que puedes abrir.',
+    },
+    keys: 'TECLAS',
+    read: 'LEÍDO',
+  },
+  en: {
+    menuTitle: 'IGF-OS · MAIN MENU',
+    menuHint: 'Pick where to start · or press its number on your keyboard',
+    routesTitle: 'WHAT ARE YOU LOOKING FOR?',
+    routes: [
+      { who: "I'm hiring for my company", go: 'experience', cta: 'See experience' },
+      { who: 'I need a website, app, ERP or video', go: 'projects', cta: 'See projects' },
+      { who: 'I just want to talk', go: 'contact', cta: 'Message me' },
+    ],
+    files: {
+      about: ['ABOUT_ME.TXT', 'Who I am, studies and certification'],
+      skills: ['SKILLS.SYS', 'What I work with'],
+      experience: ['EXPERIENCE.LOG', "Where I've worked"],
+      projects: ['PROJECTS.EXE', "What I've built"],
+      contact: ['CONTACT.CFG', 'Send me a message'],
+    },
+    paths: { home: 'HOME', about: 'ABOUT_ME', skills: 'SKILLS', experience: 'EXPERIENCE', projects: 'PROJECTS', contact: 'CONTACT' },
+    subs: {
+      about: "Who I am, what I've studied and which certifications I hold.",
+      skills: 'The languages, software and tools I use every day.',
+      experience: "Where I've worked and what I did there, newest first.",
+      projects: 'The most important work first, in full. Below it, everything else in a list you can open.',
+    },
+    keys: 'KEYS',
+    read: 'READ',
+  },
+} as const;
+
+function SectionHead({ idx, path, title, sub, className = '' }: { idx: number; path: string; title: string; sub?: string; className?: string }) {
+  return (
+    <div className={`mb-12 reveal relative z-10 ${className}`}>
+      <div className="font-mono text-primary/80 text-xs md:text-sm mb-3 flex items-center gap-3 flex-wrap">
+        <span className="bg-primary text-bg font-bold px-2 py-0.5">{String(idx).padStart(2, '0')}/05</span>
+        <span>C:\IBAI\{path}&gt;<span className="animate-pulse">_</span></span>
+      </div>
+      <h2 className="font-sans text-3xl md:text-6xl font-bold text-white uppercase glitch-text" data-text={title}>{title}</h2>
+      {sub && <p className="font-mono text-gray-300 text-sm md:text-lg mt-4 max-w-3xl">{sub}</p>}
+    </div>
+  );
+}
+const CONTACT_ENDPOINT = 'https://formsubmit.co/ajax/ibairakelmario@gmail.com';
+const FIELD = 'w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600';
 
 export default function App() {
   const [typedText, setTypedText] = useState("");
@@ -23,10 +96,11 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [matrixMode, setMatrixMode] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [projectFilter, setProjectFilter] = useState<string>('all');
+  const [activeSection, setActiveSection] = useState<string>('home');
+  const [progress, setProgress] = useState(0);
+  const [formState, setFormState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   
   // Terminal state
   const [terminalHistory, setTerminalHistory] = useState<string[]>([]);
@@ -35,6 +109,8 @@ export default function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   
   const t = translations[lang];
+  const ui = UI[lang];
+  const projectCount = Object.values(t.projects.categories).reduce((n, c: any) => n + c.items.length, 0);
   const fullText = t.boot.init;
 
   // Dynamic document title & Back to top visibility
@@ -45,6 +121,8 @@ export default function App() {
     
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 800);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.round((window.scrollY / max) * 100) : 0);
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -132,6 +210,55 @@ export default function App() {
     }
   };
 
+  // Enter (outside inputs) or scrolling on the boot screen also opens the site
+  useEffect(() => {
+    if (hasAccessed) return;
+    let touchY = 0;
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (document.activeElement as HTMLElement | null)?.tagName;
+      if (e.key === 'Enter' && tag !== 'INPUT' && tag !== 'TEXTAREA') handleAccess();
+    };
+    const onWheel = (e: WheelEvent) => { if (e.deltaY > 20) handleAccess(); };
+    const onTouchStart = (e: TouchEvent) => { touchY = e.touches[0].clientY; };
+    const onTouchMove = (e: TouchEvent) => { if (touchY - e.touches[0].clientY > 40) handleAccess(); };
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('wheel', onWheel, { passive: true });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
+  }, [hasAccessed]);
+
+  // Number keys jump between sections (0 = top, 1-5 = sections)
+  useEffect(() => {
+    if (!hasAccessed) return;
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (document.activeElement as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
+      const n = Number(e.key);
+      if (e.key.length === 1 && n >= 0 && n <= 5) {
+        document.getElementById(NAV[n])?.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [hasAccessed]);
+
+  // Highlight the menu item of the section on screen
+  useEffect(() => {
+    if (!hasAccessed) return;
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActiveSection(e.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    NAV.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
+    return () => observer.disconnect();
+  }, [hasAccessed]);
+
   // Scroll Reveal effect
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -179,15 +306,15 @@ export default function App() {
 
   // Mouse effect variables and listeners removed
 
+  const accessing = useRef(false);
   const handleAccess = () => {
+    if (accessing.current) return;
+    accessing.current = true;
     setFlash(true);
     setTimeout(() => {
       setHasAccessed(true);
       setTimeout(() => {
-        const aboutEl = document.getElementById('about');
-        if (aboutEl) {
-          aboutEl.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth' });
-        }
+        document.getElementById('launcher')?.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth', block: 'start' });
         setFlash(false);
       }, 100);
     }, 400);
@@ -307,28 +434,30 @@ export default function App() {
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary font-bold font-mono text-xl tracking-widest glitch-text" data-text="IGF">IGF</button>
           
           {/* Desktop Menu & Lang */}
-          <div className="hidden md:flex items-center gap-8">
-            {['home', 'about', 'skills', 'experience', 'projects'].map((item) => (
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            {NAV.map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)}
-                className="text-gray-300 hover:text-primary font-mono text-sm uppercase tracking-wider transition-colors"
+                aria-current={activeSection === item ? 'true' : undefined}
+                className={`font-mono text-sm uppercase tracking-wider transition-colors border-b-2 pb-1 ${activeSection === item ? 'text-primary border-primary' : 'text-gray-300 border-transparent hover:text-primary'}`}
               >
                 {t.nav.menu[item as keyof typeof t.nav.menu]}
               </button>
             ))}
             <a 
-              href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+              href={t.nav.cvFile}
               target="_blank"
               rel="noopener noreferrer"
               className="border border-[var(--theme-tertiary)] bg-bg text-[var(--theme-tertiary)] px-3 py-1 font-bold hover:bg-[var(--theme-tertiary)] hover:text-bg transition-colors text-sm flex items-center gap-2 cursor-pointer"
               id="btn-download-cv"
-              title={lang === 'es' ? "Ver currículum" : "View CV"}
+              title={t.nav.cvLong}
             >
               <Download className="w-4 h-4" /> {lang === 'es' ? 'CV' : 'CV'}
             </a>
             <button 
               onClick={toggleTheme}
+              title={t.nav.themeTitle}
               className="border border-secondary bg-bg text-secondary px-3 py-1 font-bold hover:bg-secondary hover:text-bg transition-colors text-sm"
             >
               {theme === 'blue' ? 'CYBER' : 'BLUE'}
@@ -342,9 +471,9 @@ export default function App() {
           </div>
 
           {/* Mobile Menu Toggle & Lang */}
-          <div className="flex md:hidden items-center gap-3">
+          <div className="flex lg:hidden items-center gap-3">
             <a 
-              href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+              href={t.nav.cvFile}
               target="_blank"
               rel="noopener noreferrer"
               className="border border-[var(--theme-tertiary)] bg-bg text-[var(--theme-tertiary)] px-2 py-1 font-bold hover:bg-[var(--theme-tertiary)] hover:text-bg transition-colors text-xs flex items-center gap-1 cursor-pointer"
@@ -354,6 +483,7 @@ export default function App() {
             </a>
             <button 
               onClick={toggleTheme}
+              title={t.nav.themeTitle}
               className="border border-secondary bg-bg text-secondary px-2 py-1 font-bold hover:bg-secondary hover:text-bg transition-colors text-xs"
             >
               {theme === 'blue' ? 'CYBER' : 'BLUE'}
@@ -376,24 +506,24 @@ export default function App() {
 
       {/* Mobile Menu Dropdown */}
       {hasAccessed && isMenuOpen && (
-        <div className="fixed top-[60px] left-0 right-0 bg-bg border-b border-primary/30 z-[49] flex flex-col md:hidden">
-          {['home', 'about', 'skills', 'experience', 'projects'].map((item) => (
+        <div className="fixed top-[60px] left-0 right-0 bg-bg border-b border-primary/30 z-[49] flex flex-col lg:hidden">
+          {NAV.map((item) => (
             <button 
               key={item}
               onClick={() => scrollToSection(item)}
-              className="text-gray-300 hover:text-primary hover:bg-primary/10 font-mono text-sm uppercase tracking-wider transition-colors py-4 px-6 text-left border-b border-gray-800 last:border-none"
+              className={`hover:text-primary hover:bg-primary/10 font-mono text-sm uppercase tracking-wider transition-colors py-4 px-6 text-left border-b border-gray-800 last:border-none ${activeSection === item ? 'text-primary bg-primary/10' : 'text-gray-300'}`}
             >
               {t.nav.menu[item as keyof typeof t.nav.menu]}
             </button>
           ))}
           <a 
-            href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+            href={t.nav.cvFile}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setIsMenuOpen(false)}
             className="text-[var(--theme-tertiary)] hover:bg-[#FF00FF]/10 font-mono text-sm uppercase tracking-wider transition-colors py-4 px-6 text-left flex items-center gap-2 border-t border-gray-800"
           >
-            <Download className="w-4 h-4" /> {lang === 'es' ? 'VER CV (GOOGLE DRIVE)' : 'VIEW CV (GOOGLE DRIVE)'}
+            <Download className="w-4 h-4" /> {t.nav.cvLong}
           </a>
         </div>
       )}
@@ -403,6 +533,7 @@ export default function App() {
         <div className="fixed top-6 right-6 z-[60] flex gap-4">
           <button 
             onClick={toggleTheme}
+              title={t.nav.themeTitle}
             className="border-2 border-secondary bg-bg text-secondary px-4 py-2 font-bold hover:bg-secondary hover:text-bg transition-colors shadow-[4px_4px_0px_var(--theme-secondary)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
           >
             {theme === 'blue' ? 'CYBER' : 'BLUE'}
@@ -454,6 +585,9 @@ export default function App() {
         >
           IBAI GALLEGO
         </h1>
+        <p className="font-mono text-secondary text-base md:text-2xl -mt-8 mb-12 max-w-3xl">
+          {t.boot.tagline}
+        </p>
         
         {!hasAccessed && (
           <div className="relative z-10 boot-fade-in delay-1000">
@@ -464,14 +598,63 @@ export default function App() {
             >
               {t.boot.btn}
             </button>
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-primary text-xs font-mono animate-pulse whitespace-nowrap">
-              &gt; CLICK TO INITIALIZE &lt;
+            <div className="absolute -bottom-9 left-0 text-primary/80 text-xs font-mono whitespace-nowrap">
+              &gt; {t.boot.hint}
             </div>
           </div>
         )}
         {hasAccessed && (
-          <div className="text-primary font-bold animate-pulse">
-            {t.boot.granted}
+          <div id="launcher" className="w-full max-w-6xl grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6 boot-fade-in scroll-mt-24">
+            {/* Retro window: main menu */}
+            <div className="border-2 border-primary bg-bg shadow-[8px_8px_0px_var(--theme-primary)]">
+              <div className="bg-primary text-bg font-mono font-bold text-xs md:text-sm px-3 py-1.5 flex justify-between items-center">
+                <span>{ui.menuTitle}</span>
+                <span aria-hidden="true">▣ ▢ ✕</span>
+              </div>
+              <ul className="font-mono p-2 md:p-3">
+                {(['about', 'skills', 'experience', 'projects', 'contact'] as const).map((id, i) => (
+                  <li key={id}>
+                    <button
+                      onClick={() => scrollToSection(id)}
+                      className="w-full grid grid-cols-[2.2rem_1fr] md:grid-cols-[2.5rem_auto_1fr] items-center gap-x-3 text-left px-3 py-3 md:py-2.5 text-primary hover:bg-primary hover:text-bg focus:bg-primary focus:text-bg focus:outline-none transition-colors group"
+                    >
+                      <span className="font-bold">[{i + 1}]</span>
+                      <span className="font-bold text-white group-hover:text-bg group-focus:text-bg whitespace-nowrap">
+                        {ui.files[id][0]}
+                        {id === 'projects' && <span className="ml-2 text-xs opacity-70">({projectCount})</span>}
+                      </span>
+                      <span className="col-start-2 md:col-start-auto text-xs md:text-sm text-gray-400 group-hover:text-bg group-focus:text-bg">{ui.files[id][1]}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-primary/40 px-4 py-2 font-mono text-[11px] md:text-xs text-primary/70">
+                &gt; {ui.menuHint}
+              </div>
+            </div>
+
+            {/* Shortcuts by visitor type */}
+            <div className="border-2 border-secondary/70 p-5 md:p-6 font-mono flex flex-col gap-3">
+              <div className="text-secondary font-bold text-sm tracking-widest mb-1">{ui.routesTitle}</div>
+              {ui.routes.map((r) => (
+                <button
+                  key={r.go}
+                  onClick={() => scrollToSection(r.go)}
+                  className="text-left border border-secondary/40 hover:border-secondary hover:bg-secondary/10 px-4 py-3 transition-colors group"
+                >
+                  <span className="block text-white text-sm md:text-base">{r.who}</span>
+                  <span className="block text-secondary text-xs mt-1 group-hover:translate-x-1 transition-transform">→ {r.cta}</span>
+                </button>
+              ))}
+              <a
+                href={t.nav.cvFile}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 text-center bg-[var(--theme-tertiary)] text-bg font-bold px-4 py-3 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                <Download className="w-4 h-4" /> {t.nav.cvLong}
+              </a>
+            </div>
           </div>
         )}
       </section>
@@ -481,23 +664,38 @@ export default function App() {
         <div className="boot-fade-in">
           {/* 2. SOBRE MÍ / EL NÚCLEO & DATOS ACADÉMICOS */}
           <section id="about" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 scroll-mt-20">
-            <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal" data-text={t.core.title}>{t.core.title}</h2>
+            <SectionHead idx={1} path={ui.paths.about} title={t.core.title} sub={ui.subs.about} />
             
             <div className="clip-cyber border-2 border-primary p-8 md:p-12 bg-noise relative reveal delay-100 hover:shadow-[0_0_20px_rgba(var(--theme-primary-rgb),0.15)] transition-shadow duration-500">
               <p className="font-sans text-xl md:text-2xl text-gray-200 leading-relaxed mb-6">
                 {t.core.bio}
               </p>
 
+              <dl className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-primary/30 border border-primary/30 mb-8 font-mono">
+                {t.core.facts.map((f) => (
+                  <div key={f.k} className="bg-bg p-4">
+                    <dt className="text-[10px] md:text-xs text-primary/70 tracking-widest mb-1">{f.k}</dt>
+                    <dd className="text-white text-sm md:text-base font-bold">{f.v}</dd>
+                  </div>
+                ))}
+              </dl>
+
               <div className="flex flex-wrap gap-4 mb-12">
                 <a 
-                  href="https://drive.google.com/file/d/1oAYQ1lWYi6UJLiYdJCScsuwgHT1i3IYN/view?usp=sharing"
+                  href={t.nav.cvFile}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-mono text-bg bg-primary border-2 border-primary px-6 py-3 shadow-[4px_4px_0px_var(--theme-secondary)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all uppercase font-bold tracking-widest hover:bg-bg hover:text-primary flex items-center gap-2 cursor-pointer z-10"
                   id="btn-about-cv"
                 >
-                  <Download className="w-5 h-5 animate-pulse" /> {lang === 'es' ? 'VER CV (GOOGLE DRIVE)' : 'VIEW CV (GOOGLE DRIVE)'}
+                  <Download className="w-5 h-5 animate-pulse" /> {t.nav.cvLong}
                 </a>
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="font-mono text-secondary border-2 border-secondary px-6 py-3 hover:bg-secondary hover:text-bg transition-all uppercase font-bold tracking-widest flex items-center gap-2"
+                >
+                  <Send className="w-5 h-5" /> {t.core.contactCta}
+                </button>
               </div>
               
               <h3 className="font-sans text-2xl md:text-4xl font-bold text-primary mb-8 uppercase border-b-2 border-primary inline-block pb-2">{t.core.academicTitle}</h3>
@@ -529,12 +727,33 @@ export default function App() {
                   </ul>
                 </div>
               </div>
+
+              <h3 className="font-sans text-2xl md:text-4xl font-bold text-primary mt-12 mb-8 uppercase border-b-2 border-primary inline-block pb-2">{t.core.certTitle}</h3>
+              {t.core.certs.map((c) => (
+                <div key={c.title} className="border border-secondary/60 p-6 bg-black/50 hover:border-secondary [&.mobile-active]:border-secondary transition-colors auto-animate flex flex-col md:flex-row gap-6 md:items-start">
+                  <div className="shrink-0 w-20 h-20 border-2 border-secondary text-secondary flex flex-col items-center justify-center font-mono font-black leading-none rotate-[-6deg]">
+                    <span className="text-xl">CCP</span>
+                    <span className="text-[10px] tracking-widest mt-1">MASTER</span>
+                  </div>
+                  <div>
+                    <div className="text-primary font-mono font-bold mb-2">[ {c.date.toUpperCase()} ]</div>
+                    <h4 className="font-sans text-xl md:text-2xl font-bold text-white mb-1">{c.title}</h4>
+                    <p className="font-mono text-sm text-secondary mb-4">{c.issuer}</p>
+                    <p className="font-sans text-gray-300 text-sm md:text-base mb-4">{c.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {c.tags.map((tag) => (
+                        <span key={tag} className="font-mono text-xs border border-primary/50 text-primary px-2 py-1">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
           {/* 3. HABILIDADES TÉCNICAS E IA */}
           <section id="skills" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 scroll-mt-20">
-            <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal" data-text={t.skills.title}>{t.skills.title}</h2>
+            <SectionHead idx={2} path={ui.paths.skills} title={t.skills.title} sub={ui.subs.skills} />
             
             <div className="flex flex-col gap-12 mb-20">
               {skillCategories.map((cat, idx) => (
@@ -584,7 +803,7 @@ export default function App() {
 
           {/* 4. EXPERIENCIA LABORAL */}
           <section id="experience" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 scroll-mt-20">
-            <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-12 uppercase glitch-text reveal" data-text={t.experience.title}>{t.experience.title}</h2>
+            <SectionHead idx={3} path={ui.paths.experience} title={t.experience.title} sub={ui.subs.experience} />
             
             <div className="relative pl-8 border-l-2 border-primary space-y-12 font-sans">
               {/* Timeline data load effect */}
@@ -595,8 +814,16 @@ export default function App() {
               {t.experience.jobs.map((job, idx) => (
                 <div key={idx} className="relative reveal bg-black/40 p-6 md:p-8 border border-primary/30 hover:border-primary [&.mobile-active]:border-primary hover:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.15)] [&.mobile-active]:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.15)] transition-all group auto-animate">
                   <div className="absolute -left-[41px] top-8 w-4 h-4 bg-primary group-hover:scale-150 group-[.mobile-active]:scale-150 transition-transform"></div>
-                  <div className="text-primary font-mono font-bold mb-2">{job.date}</div>
-                  <h3 className="text-white text-2xl md:text-3xl font-bold mb-2">{job.title}</h3>
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <span className="text-primary font-mono font-bold">{job.date}</span>
+                    {job.current && (
+                      <span className="font-mono text-[10px] md:text-xs font-bold bg-primary text-bg px-2 py-0.5 tracking-widest flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-bg rounded-full animate-pulse"></span>{t.projects.current}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-white text-2xl md:text-3xl font-bold mb-1">{job.company}</h3>
+                  <div className="text-secondary font-mono text-sm md:text-base">{job.title}</div>
                   <ul className="text-gray-300 space-y-2 mt-4 list-disc list-inside text-sm md:text-base">
                     {job.points.map((point, pIdx) => (
                       <li key={pIdx}>{point}</li>
@@ -609,154 +836,131 @@ export default function App() {
 
           {/* 5. PROYECTOS */}
           <section id="projects" className="min-h-screen p-6 md:p-24 flex flex-col justify-center relative z-10 cosmic-bg scroll-mt-20">
-            <h2 className="font-sans text-3xl md:text-6xl font-bold text-white mb-6 md:mb-12 uppercase glitch-text reveal relative z-10" data-text={t.projects.title}>{t.projects.title}</h2>
+            <SectionHead idx={4} path={ui.paths.projects} title={t.projects.title} sub={ui.subs.projects} />
             
-            {/* Project Filters */}
-            <div className="flex flex-wrap gap-4 mb-12 relative z-10 reveal">
-              {['all', ...Object.keys(t.projects.categories)].map((filterKey) => (
-                <button
-                  key={filterKey}
-                  onClick={() => setProjectFilter(filterKey)}
-                  className={`px-4 py-2 font-mono text-sm md:text-base border transition-all ${projectFilter === filterKey ? 'bg-primary text-bg border-primary shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.5)]' : 'bg-transparent text-primary border-primary/50 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary'}`}
-                >
-                  {filterKey === 'all' ? 'ALL' : filterKey.toUpperCase()}
-                </button>
-              ))}
-            </div>
-
-            {Object.entries(t.projects.categories).map(([catKey, catValue], catIdx) => {
-              if (projectFilter !== 'all' && projectFilter !== catKey) return null;
-              
-              const category = catValue as any;
-              const isViolet = catKey === 'mobile';
-              const isBlue = catKey === 'additional';
-              const themeClass = isViolet ? 'violet-theme' : isBlue ? 'blue-theme' : '';
-              const gridClass = isViolet ? 'bg-cyber-grid-violet' : isBlue ? 'bg-cyber-grid-blue' : 'bg-cyber-grid';
-              const textClass = isViolet ? 'text-secondary' : isBlue ? 'text-[var(--theme-tertiary)]' : 'text-primary';
-              const borderClass = isViolet ? 'border-secondary' : isBlue ? 'border-[var(--theme-tertiary)]' : 'border-primary';
-              const bgClass = isViolet ? 'bg-secondary' : isBlue ? 'bg-[var(--theme-tertiary)]' : 'bg-primary';
-              const shadowClass = isViolet ? 'shadow-[inset_0_0_10px_rgba(var(--theme-secondary-rgb),0.2)]' : isBlue ? 'shadow-[inset_0_0_10px_rgba(var(--theme-tertiary-rgb),0.2)]' : 'shadow-[inset_0_0_10px_rgba(var(--theme-primary-rgb),0.2)]';
-
-              return (
-                <div key={catKey} className="mb-20">
-                  <h3 className={`font-mono text-xl md:text-2xl font-bold mb-8 ${textClass} reveal`}>
-                    &gt; {category.title}
-                  </h3>
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-                    {category.items.map((project: any, idx: number) => {
-                      return (
-                        <ProjectCard 
-                          key={idx}
-                          project={project}
-                          idx={idx}
-                          flippedCards={flippedCards}
-                          setFlippedCards={setFlippedCards}
-                          themeClass={themeClass}
-                          gridClass={gridClass}
-                          textClass={textClass}
-                          borderClass={borderClass}
-                          bgClass={bgClass}
-                          shadowClass={shadowClass}
-                          t={t}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+            <Projects t={t} lang={lang} />
           </section>
 
           {/* 6. CONTACTO / FORMULARIO */}
           <section id="contact" className="min-h-[70vh] p-6 md:p-24 flex flex-col justify-center relative z-10 bg-black/80 border-t border-primary/20 scroll-mt-20">
             <div className="max-w-4xl mx-auto w-full reveal">
+              <div className="font-mono text-primary/80 text-xs md:text-sm mb-3 flex items-center gap-3 flex-wrap">
+                <span className="bg-primary text-bg font-bold px-2 py-0.5">05/05</span>
+                <span>C:\IBAI\{ui.paths.contact}&gt;<span className="animate-pulse">_</span></span>
+              </div>
               <h2 className="font-sans text-3xl md:text-5xl font-bold text-white mb-8 uppercase glitch-text" data-text={lang === 'es' ? "TRANSMISIÓN DIRECTA" : "DIRECT TRANSMISSION"}>
                 {lang === 'es' ? "TRANSMISIÓN DIRECTA" : "DIRECT TRANSMISSION"}
               </h2>
               <p className="text-gray-400 font-mono mb-8">
-                {lang === 'es' ? "> Establezca conexión segura y envíe su propuesta." : "> Establish a secure connection and send your proposal."}
+                {lang === 'es' ? "> ¿Un proyecto, una oferta o una duda? Escríbeme y te contesto por email." : "> A project, a job offer or a question? Write to me and I'll reply by email."}
               </p>
               
-              <form 
-                action="mailto:ibairakelmario@gmail.com" 
-                method="post" 
-                encType="text/plain" 
+              {formState === 'sent' ? (
+                <div className="border-2 border-primary p-8 font-mono bg-primary/5" role="status">
+                  <div className="text-primary text-xl md:text-2xl font-bold mb-2">&gt; {lang === 'es' ? 'TRANSMISIÓN COMPLETADA ✓' : 'TRANSMISSION COMPLETE ✓'}</div>
+                  <p className="text-gray-300 mb-6">{lang === 'es' ? 'Mensaje recibido. Te respondo al email que has dejado lo antes posible.' : "Message received. I'll reply to the email you left as soon as I can."}</p>
+                  <button onClick={() => setFormState('idle')} className="border border-primary text-primary px-4 py-2 hover:bg-primary hover:text-bg transition-colors font-bold">
+                    {lang === 'es' ? '[ ENVIAR OTRO ]' : '[ SEND ANOTHER ]'}
+                  </button>
+                </div>
+              ) : (
+              <form
                 className="space-y-6 font-mono"
-                onSubmit={(e) => {
-                  // Prevenir default y abrir mailto de manera segura con JS
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  const form = e.target as HTMLFormElement;
-                  const name = (form.elements.namedItem('name') as HTMLInputElement).value;
-                  const subject = (form.elements.namedItem('subject') as HTMLInputElement).value;
-                  const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
-                  window.location.href = `mailto:ibairakelmario@gmail.com?subject=[PORTFOLIO] ${encodeURIComponent(subject)}&body=${encodeURIComponent("De: " + name + "\n\n" + message)}`;
+                  const form = e.currentTarget;
+                  const data = Object.fromEntries(new FormData(form));
+                  if (data._honey) return;
+                  setFormState('sending');
+                  try {
+                    const res = await fetch(CONTACT_ENDPOINT, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                      body: JSON.stringify({
+                        name: data.name,
+                        email: data.email,
+                        message: data.message,
+                        _subject: `[PORTFOLIO] ${data.subject}`,
+                        _replyto: data.email,
+                        _template: 'table',
+                        _captcha: 'false',
+                      }),
+                    });
+                    if (!res.ok) throw new Error(String(res.status));
+                    form.reset();
+                    setFormState('sent');
+                  } catch {
+                    setFormState('error');
+                  }
                 }}
               >
+                <input type="text" name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-primary text-sm flex items-center gap-2">
+                    <label htmlFor="f-name" className="text-primary text-sm flex items-center gap-2">
                       <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
-                      {lang === 'es' ? "IDENTIFICADOR (Nombre)" : "IDENTIFIER (Name)"}
+                      {lang === 'es' ? 'NOMBRE' : 'NAME'}
                     </label>
-                    <input 
-                      type="text" 
-                      name="name"
-                      required
-                      className="w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600"
-                      placeholder={lang === 'es' ? "Introduzca su alias..." : "Enter your alias..."}
-                    />
+                    <input id="f-name" type="text" name="name" required autoComplete="name" className={FIELD} placeholder={lang === 'es' ? '¿Cómo te llamas?' : "What's your name?"} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-primary text-sm flex items-center gap-2">
+                    <label htmlFor="f-email" className="text-primary text-sm flex items-center gap-2">
                       <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
-                      {lang === 'es' ? "ASUNTO" : "SUBJECT"}
+                      {lang === 'es' ? 'EMAIL (para responderte)' : 'EMAIL (so I can reply)'}
                     </label>
-                    <input 
-                      type="text" 
-                      name="subject"
-                      required
-                      className="w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600"
-                      placeholder={lang === 'es' ? "Motivo de la conexión..." : "Reason for connection..."}
-                    />
+                    <input id="f-email" type="email" name="email" required autoComplete="email" className={FIELD} placeholder={lang === 'es' ? 'tu@email.com' : 'you@email.com'} />
                   </div>
                 </div>
-                
                 <div className="space-y-2">
-                  <label className="text-primary text-sm flex items-center gap-2">
+                  <label htmlFor="f-subject" className="text-primary text-sm flex items-center gap-2">
                     <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
-                    {lang === 'es' ? "DATOS A TRANSMITIR (Mensaje)" : "DATA TO TRANSMIT (Message)"}
+                    {lang === 'es' ? 'ASUNTO' : 'SUBJECT'}
                   </label>
-                  <textarea 
-                    name="message"
-                    required
-                    rows={6}
-                    className="w-full bg-transparent border border-primary/50 text-white p-3 focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] transition-all placeholder:text-gray-600 resize-none"
-                    placeholder={lang === 'es' ? "Redacte su mensaje aquí..." : "Draft your message here..."}
-                  ></textarea>
+                  <input id="f-subject" type="text" name="subject" required className={FIELD} placeholder={lang === 'es' ? 'Web, app, ERP, vídeo, oferta de trabajo...' : 'Website, app, ERP, video, job offer...'} />
                 </div>
-                
-                <button type="submit" className="w-full md:w-auto px-8 py-3 bg-primary/20 text-primary border border-primary hover:bg-primary hover:text-bg transition-all font-bold flex items-center justify-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-bg">
+                <div className="space-y-2">
+                  <label htmlFor="f-message" className="text-primary text-sm flex items-center gap-2">
+                    <span className="w-2 h-2 bg-primary inline-block animate-pulse"></span>
+                    {lang === 'es' ? 'MENSAJE' : 'MESSAGE'}
+                  </label>
+                  <textarea id="f-message" name="message" required rows={6} className={`${FIELD} resize-none`} placeholder={lang === 'es' ? 'Cuéntame qué necesitas...' : 'Tell me what you need...'}></textarea>
+                </div>
+
+                {formState === 'error' && (
+                  <p className="text-[#FF003C] text-sm" role="alert">
+                    &gt; {lang === 'es' ? 'Error al enviar. Prueba otra vez o escríbeme a ibairakelmario@gmail.com' : "Couldn't send it. Try again or email me at ibairakelmario@gmail.com"}
+                  </p>
+                )}
+
+                <button type="submit" disabled={formState === 'sending'} className="w-full md:w-auto px-8 py-3 bg-primary/20 text-primary border border-primary hover:bg-primary hover:text-bg transition-all font-bold flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-wait focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-bg">
                   <Send className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
-                  {lang === 'es' ? "INICIAR TRANSMISIÓN" : "INITIATE TRANSMISSION"}
+                  {formState === 'sending' ? (lang === 'es' ? 'TRANSMITIENDO...' : 'TRANSMITTING...') : (lang === 'es' ? 'ENVIAR MENSAJE' : 'SEND MESSAGE')}
                 </button>
               </form>
+              )}
             </div>
           </section>
 
           {/* 7. FOOTER */}
-          <footer className="border-t-2 border-primary bg-bg p-6 font-mono text-sm md:text-base flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 reveal">
+          <footer className="border-t-2 border-primary bg-bg p-6 lg:pb-12 font-mono text-sm md:text-base flex flex-col xl:flex-row justify-between items-center gap-6 relative z-10 reveal">
             <div className="text-primary font-bold">
               <span className="animate-pulse mr-2">█</span> {t.footer.status}
             </div>
-            <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-center md:text-left">
+            <div className="flex flex-col md:flex-row md:flex-wrap md:justify-center gap-4 md:gap-x-8 text-center md:text-left">
               <a href="https://es.linkedin.com/in/ibai-gallego-faces-78623419a" target="_blank" rel="noreferrer" className="text-[var(--theme-tertiary)] hover:text-white transition-colors flex items-center justify-center md:justify-start gap-2">
                 <Linkedin className="w-5 h-5" /> LINKEDIN
               </a>
               <a href="mailto:ibairakelmario@gmail.com" className="text-white hover:text-secondary transition-colors flex items-center justify-center md:justify-start gap-2">
                 <Mail className="w-5 h-5" /> ibairakelmario@gmail.com
               </a>
+              <a href="https://github.com/ibim4ster" target="_blank" rel="noreferrer" className="text-[var(--theme-tertiary)] hover:text-white transition-colors flex items-center justify-center md:justify-start gap-2">
+                <Github className="w-5 h-5" /> GITHUB
+              </a>
               <a href="tel:+34673350491" className="text-white hover:text-secondary transition-colors flex items-center justify-center md:justify-start gap-2">
                 <Phone className="w-5 h-5" /> +34 673 350 491
+              </a>
+              <a href="tel:+13053960014" className="text-white hover:text-secondary transition-colors flex items-center justify-center md:justify-start gap-2">
+                <Phone className="w-5 h-5" /> +1 (305) 396-0014
               </a>
               <span className="text-primary flex items-center justify-center md:justify-start">
                 {t.footer.loc}
@@ -764,404 +968,49 @@ export default function App() {
             </div>
           </footer>
 
-          {/* Back to Top Button */}
-          {showBackToTop && (
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="fixed bottom-6 right-6 z-50 p-3 bg-primary/20 text-primary border border-primary hover:bg-primary hover:text-bg transition-all shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg focus:ring-primary"
-              aria-label="Back to top"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-            </button>
-          )}
 
         </div>
       )}
 
-      {/* 8. PRINTABLE CV CONTAINER (Only visible during print) */}
-      <div id="printable-cv" className="hidden printable-content bg-white text-black p-8 font-sans" style={{ color: '#000000', backgroundColor: '#ffffff' }}>
-        {lang === 'es' ? (
-          <div>
-            <div className="border-b-2 border-black pb-4 mb-6">
-              <h1 className="text-4xl font-extrabold tracking-tight text-center uppercase" style={{ fontFamily: 'sans-serif' }}>Ibai Gallego Faces</h1>
-              <p className="text-xl font-bold text-center text-gray-700 mt-1 uppercase">Desarrollador de Software</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 text-xs text-gray-600 text-center">
-                <div><strong>Nacimiento:</strong> 26/09/2003</div>
-                <div><strong>Email:</strong> ibairakelmario@gmail.com</div>
-                <div><strong>Teléfono:</strong> +34 673 350 491</div>
-                <div className="col-span-2 sm:col-span-3"><strong>Dirección:</strong> Plaza Torre Giralda, Oyón-Oion, Álava</div>
-                <div className="col-span-2 sm:col-span-3"><strong>Portfolio:</strong> https://ibai-gallego.vercel.app</div>
-              </div>
-            </div>
+      {hasAccessed && (
+        <>
+        {/* DOS-style status bar (desktop) */}
+        <div className="hidden lg:flex fixed bottom-0 left-0 right-0 z-[45] bg-primary text-bg font-mono text-xs font-bold h-7 items-stretch select-none">
+          <span className="px-3 flex items-center bg-bg text-primary">IGF-OS</span>
+          <span className="px-3 flex items-center border-r border-bg/30">C:\IBAI\{ui.paths[activeSection as SectionId] ?? ui.paths.home}&gt;</span>
+          <span className="px-3 flex items-center gap-1 flex-1 min-w-0 overflow-hidden">
+            <span className="opacity-70 mr-1 hidden xl:inline">{ui.keys}:</span>
+            {NAV.map((id, i) => (
+              <button
+                key={id}
+                onClick={() => scrollToSection(id)}
+                className={`px-1.5 h-full flex items-center whitespace-nowrap hover:bg-bg hover:text-primary ${activeSection === id ? 'bg-bg/20' : ''}`}
+              >
+                <span className="bg-bg text-primary px-1 mr-1">{i}</span>{t.nav.menu[id]}
+              </button>
+            ))}
+          </span>
+          <span className="px-3 flex items-center gap-2 border-l border-bg/30">
+            {ui.read}
+            <span className="w-12 xl:w-20 h-2 border border-bg/60 relative" aria-hidden="true">
+              <span className="absolute inset-y-0 left-0 bg-bg" style={{ width: `${progress}%` }}></span>
+            </span>
+            {String(progress).padStart(3, '0')}%
+          </span>
+        </div>
 
-            {/* Sobre Mí */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Sobre Mí</h2>
-              <p className="text-xs leading-relaxed text-gray-800">
-                Soy desarrollador de software con mentalidad freelance y perfil versátil. Me apasiona construir productos digitales y encontrar soluciones técnicas a problemas reales. Disfruto tanto trabajando en equipo como de forma autónoma, y me adapto rápido a nuevos entornos, tecnologías y retos. Siempre estoy aprendiendo y buscando la forma de aportar más valor en cada proyecto en el que participo.
-              </p>
-            </div>
-
-            {/* Experiencia Laboral */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Experiencia Laboral</h2>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Logic Soluciones Software | Grupo Pancorbo</h3>
-                    <span className="text-xs text-gray-600 font-semibold">Junio 2025 - Actualidad</span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
-                    <li>Formación avanzada de Sage 50, 200, Despachos y Ágora + titulación.</li>
-                    <li>Automatizar procesos de los trabajadores (Aplicaciones web internas) para elevar la productividad.</li>
-                    <li>Instalación, configuración y formación de programas ERP y facturadores para empresas.</li>
-                    <li>Personalización de informes complejos en lenguaje SQL y adición de módulos a medida en C#.</li>
-                    <li>Soporte y administración de servidores basados tanto en Windows Server como en Linux.</li>
-                    <li>Mantenimiento de páginas web construidas sobre WordPress y gestión de sus plugins.</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Logic Soluciones Software (Prácticas) | Grupo Pancorbo</h3>
-                    <span className="text-xs text-gray-600 font-semibold">Marzo 2025 - Junio 2025 (400 Horas)</span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
-                    <li>Formación intensiva en toda la suite Sage 50 y Ágora ERP.</li>
-                    <li>Instalación de programas de facturación corporativos y resolución de incidencias en soporte comercial.</li>
-                    <li>Elaboración de presupuestos comerciales, control contable de facturas y albaranes de clientes.</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Arluy (Prácticas) | Departamento de Informática</h3>
-                    <span className="text-xs text-gray-600 font-semibold">Marzo 2021 - Junio 2021 (400 Horas)</span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
-                    <li>Atención técnica al usuario presencial y mediante soporte remoto de ordenadores.</li>
-                    <li>Instalación y configuración completa de tiendas online virtuales basadas en PrestaShop.</li>
-                    <li>Instalación de antenas MikroTek para interconectar dispositivos de manera inalámbrica.</li>
-                    <li>Desarrollo de un sistema automatizado para control y flujo de incidencias por medio de Power Automate, SharePoint y Excel.</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Trabajo en Hostelería | Camarero</h3>
-                    <span className="text-xs text-gray-600 font-semibold">2021 - 2023 (Temporadas)</span>
-                  </div>
-                  <p className="text-xs text-gray-700 pl-2 mt-0.5">Soporte y atención integral de barra y terraza, potenciando habilidades interpersonales y de resolución bajo presión.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Datos Académicos */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Datos Académicos</h2>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-xs">Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)</h3>
-                    <span className="text-xs text-gray-600 font-semibold">2022 - 2025</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">IES Comercio</p>
-                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Competencias:</strong> Programación en lenguajes orientados a objetos (Java, C#), desarrollo frontend/backend en frameworks modernos, bases de datos (SQLServer, Oracle, MongoDB), y programación de videojuegos en Unity / Unreal Engine.</p>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-xs">Grado Medio en Sistemas Microinformáticos y Redes (SMR)</h3>
-                    <span className="text-xs text-gray-600 font-semibold">2019 - 2021</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">IES Comercio</p>
-                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Competencias:</strong> Montaje y reparación de equipos informáticos, cableado y configuración estructurada de redes (conmutadores y routers), despliegue de sistemas operativos Linux y Windows, políticas de seguridad y copias de seguridad.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Habilidades Técnicas e Inteligencia Artificial */}
-            <div className="mb-6 page-break-before">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Habilidades Técnicas e Inteligencia Artificial</h2>
-              <div className="grid grid-cols-2 gap-4 text-xs">
-                <div>
-                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-800 uppercase">Lenguajes y Herramientas</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    <strong>Lenguajes:</strong> Java, Python, C#, C++, PHP, Go, JavaScript, TypeScript, HTML/CSS, XML.<br/>
-                    <strong>Entornos y Control:</strong> Git, Visual Studio, Android Studio, NetBeans, IntelliJ, VirtualBox, VMware, AWS.<br/>
-                    <strong>Diseño / Multimedia:</strong> Photoshop, Premiere, Sony Vegas, DaVinci Resolve, Canva.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-800 uppercase">Sistemas ERP y Base de Datos</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    <strong>Sistemas ERP:</strong> Sage 50, Sage 200, Sage Despachos, SAP, Odoo, Facturador Ágora.<br/>
-                    <strong>Bases de Datos:</strong> SQL Server, MySQL, Oracle, HeidiSQL, MongoDB.<br/>
-                    <strong>Idiomas:</strong> Castellano y Euskera (Nativo), Inglés (Nivel Medio).
-                  </p>
-                </div>
-                <div className="col-span-2 mt-1">
-                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">Sistemas de Inteligencia Artificial (IA)</h3>
-                  <div className="grid grid-cols-2 gap-x-4 text-gray-750 font-sans text-xs leading-normal">
-                    <div>• <strong>Desarrollo Asistido:</strong> Integración avanzada de Cursor, Claude y modelado LLM para aceleración de despliegues.</div>
-                    <div>• <strong>Diseño/Prototipado con IA:</strong> Flujo rápido desde Figma y AI Studio hacia templates estables usando Lovable, Base44 y Antigravity.</div>
-                    <div>• <strong>Conexión API Modelos:</strong> Implementación e integración avanzada de APIs de Anthropic, Google Gemini o GPT-4o.</div>
-                    <div>• <strong>Automatización de Tareas:</strong> Creación autónoma de documentación técnica, automatización de pruebas unitarias y traducción de scripts.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Proyectos Personales Clave */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Proyectos Personales Clave</h2>
-              <div className="space-y-3 text-xs">
-                <div>
-                  <h3 className="font-bold">TFG-GRAVITY <span className="font-normal text-gray-600">(Python, Flask, MySQL, OpenAI)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Plataforma SaaS automatizada para facturación global, gestión e implementación de licencias de software, con pasarela de pago PayPal y un asistente IA integrado para soporte al cliente.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">PRESUPUESTOS <span className="font-normal text-gray-600">(Web App, MySQL)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Herramienta interna ágil diseñada para la fuerza comercial que acelera la estimación de costes complejos y automatiza la exportación de presupuestos listos en PDF.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">KANDIDO <span className="font-normal text-gray-600">(SaaS Talent Tracking con IA)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Portal modular de reclutamiento y clasificación de candidatos utilizando modelos lingüísticos para el procesamiento automático de CVs y asignación de perfiles.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">SWAAP DIGITAL <span className="font-normal text-gray-600">(React, JavaScript, Web Design)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Agencia y plataforma de servicios de digitalización y desarrollo web profesional para empresas.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">SWAAP SPORTS <span className="font-normal text-gray-600">(React, Tailwind CSS, APIs Deportivas)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Portal deportivo y plataforma para gestión, noticias y cobertura en tiempo real de eventos de fútbol.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">SWAAP LOGISTICS <span className="font-normal text-gray-600">(React, Node.js, Google Maps API)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Plataforma de optimización de rutas y gestión de flotas logísticas para el transporte terrestre eficiente.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-600">(JavaScript, Seguridad Web)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Sistema autogestionado de tickets y seguridad con credenciales digitales cifradas por QR para control y validación de accesos en eventos masivos.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">Soccer World <span className="font-normal text-gray-600">(HTML/CSS, JavaScript)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Prototipo moderno de comercio electrónico para camisetas de fútbol con filtrado por marcas, ligas y carrito intuitivo.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Contribuciones a Proyectos */}
-            <div>
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Contribuciones a Proyectos</h2>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs">
-                <div>
-                  <h3 className="font-bold">Daytrading Automation Platform</h3>
-                  <p className="text-gray-700 mt-0.5">Trading algorítmico, automatización mediante Python y conexión directa de órdenes usando WeBull SDK.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">Grupo Migasa Logistics Optimization</h3>
-                  <p className="text-gray-700 mt-0.5">Modelado matemático y programación lineal para optimización de cisternas de gran consumo de aceite de oliva.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">AI Robotics Vision System</h3>
-                  <p className="text-gray-700 mt-0.5">Pipeline de redes neuronales (CNN) para detección volumétrica de objetos usando Unreal Engine para datasets sintéticos.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">MyFoldr.io & Silent Education</h3>
-                  <p className="text-gray-700 mt-0.5">Aportaciones completas en Angular / Go para compartición segura en la nube y sensores IoT de monitoreo de sonido para escuelas.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div className="border-b-2 border-black pb-4 mb-6">
-              <h1 className="text-4xl font-extrabold tracking-tight text-center uppercase" style={{ fontFamily: 'sans-serif' }}>Ibai Gallego Faces</h1>
-              <p className="text-xl font-bold text-center text-gray-700 mt-1 uppercase">Software Developer</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 text-xs text-gray-600 text-center">
-                <div><strong>Born:</strong> 26/09/2003</div>
-                <div><strong>Email:</strong> ibairakelmario@gmail.com</div>
-                <div><strong>Phone:</strong> +34 673 350 491</div>
-                <div className="col-span-2 sm:col-span-3"><strong>Address:</strong> Plaza Torre Giralda, Oyón-Oion, Álava</div>
-                <div className="col-span-2 sm:col-span-3"><strong>Portfolio:</strong> https://ibai-gallego.vercel.app</div>
-              </div>
-            </div>
-
-            {/* About Me */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">About Me</h2>
-              <p className="text-xs leading-relaxed text-gray-800">
-                I am a software developer with a freelance mindset and a versatile profile. I am passionate about building digital products and finding technical solutions to real problems. I enjoy working both in a team and autonomously, adapting quickly to new environments, technologies, and challenges. I am always learning and looking for ways to bring more value to every project I participate in.
-              </p>
-            </div>
-
-            {/* Work Experience */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Work Experience</h2>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Logic Soluciones Software | Grupo Pancorbo</h3>
-                    <span className="text-xs text-gray-600 font-semibold">June 2025 - Present</span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
-                    <li>Advanced training and certification in Sage 50, 200, Despachos, and Ágora ERP systems.</li>
-                    <li>Automated internal workflows by building web tools to increase employee productivity.</li>
-                    <li>Installed, configured, and troubleshooted corporate ERP and billing software for clients.</li>
-                    <li>Customized complex database reports in SQL and built custom integration modules in C#.</li>
-                    <li>Provided server support and administration for both Windows Server and Linux environments.</li>
-                    <li>Maintained client websites built on WordPress and managed related integrations & plugins.</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Logic Soluciones Software (Internship) | Grupo Pancorbo</h3>
-                    <span className="text-xs text-gray-600 font-semibold">March 2025 - June 2025 (400 Hours)</span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
-                    <li>Intensive training in the complete Sage 50 suite and Ágora billing ERP.</li>
-                    <li>Set up deployment services and handled client infrastructure tickets in technical support.</li>
-                    <li>Drafted commercial budgets, invoices, and managed client delivery notes.</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Arluy (Internship) | IT Department</h3>
-                    <span className="text-xs text-gray-600 font-semibold">March 2021 - June 2021 (400 Hours)</span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs text-gray-700 space-y-1 mt-1 pl-2">
-                    <li>Offered helpdesk support and user assistance through on-site and remote computer diagnostics.</li>
-                    <li>Designed and configured custom e-commerce online stores using PrestaShop.</li>
-                    <li>Installed MikroTek antennas to establish wireless connectivity between company segments.</li>
-                    <li>Created an automated ticket-handling solution using Power Automate, SharePoint, and Excel.</li>
-                  </ul>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-sm">Hospitality Industry | Waiter</h3>
-                    <span className="text-xs text-gray-600 font-semibold">2021 - 2023 (Seasonal)</span>
-                  </div>
-                  <p className="text-xs text-gray-700 pl-2 mt-0.5">Provided barside/tableside service under high-pressure conditions, developing strong communication and problem-solving skills.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Academic History */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Academic History</h2>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-xs">Higher Degree in Multiplatform Application Development (DAM)</h3>
-                    <span className="text-xs text-gray-600 font-semibold">2022 - 2025</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">IES Comercio</p>
-                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Core skills:</strong> Object-oriented programming (Java, C#), frontend/backend development in modern frameworks, databases (SQLServer, Oracle, MongoDB), and game design in Unity / Unreal Engine.</p>
-                </div>
-                <div>
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-xs">Middle Degree in Microcomputer Systems and Networks (SMR)</h3>
-                    <span className="text-xs text-gray-600 font-semibold">2019 - 2021</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">IES Comercio</p>
-                  <p className="text-xs text-gray-700 mt-1 pl-2"><strong>Core skills:</strong> Computer hardware assembly & maintenance, networking infrastructure (switches/routers setup), OS deployment (Linux & Windows Server), security auditing, and backup policies.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Technical Skills & AI */}
-            <div className="mb-6 page-break-before">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Technical Skills & Artificial Intelligence</h2>
-              <div className="grid grid-cols-2 gap-4 text-xs">
-                <div>
-                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">Languages & Devtools</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    <strong>Languages:</strong> Java, Python, C#, C++, PHP, Go, JavaScript, TypeScript, HTML/CSS, XML.<br/>
-                    <strong>Environments/Version Control:</strong> Git, Visual Studio, Android Studio, NetBeans, IntelliJ, VirtualBox, VMware, AWS.<br/>
-                    <strong>Design / Multimedia:</strong> Photoshop, Premiere, Sony Vegas, DaVinci Resolve, Canva.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">ERP Systems & Databases</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    <strong>ERP Systems:</strong> Sage 50, Sage 200, Sage Despachos, SAP, Odoo, Facturador Ágora.<br/>
-                    <strong>Databases:</strong> SQL Server, MySQL, Oracle, HeidiSQL, MongoDB.<br/>
-                    <strong>Languages spoken:</strong> Spanish and Basque (Native), English (Intermediate).
-                  </p>
-                </div>
-                <div className="col-span-2 mt-1">
-                  <h3 className="font-bold border-b border-gray-200 pb-0.5 mb-1 text-gray-850 uppercase">Artificial Intelligence Systems (AI)</h3>
-                  <div className="grid grid-cols-2 gap-x-4 text-gray-750 font-sans text-xs leading-normal">
-                    <div>• <strong>Assisted Development:</strong> Advanced workflow using Cursor, Claude, and LLM coding agents for rapid delivery.</div>
-                    <div>• <strong>Prototyping & Generative Design:</strong> Figma and AI Studio pipelines to deliver stable React/Vite interfaces using Lovable, Base44, and Antigravity.</div>
-                    <div>• <strong>Model API Connections:</strong> Dynamic implementation of Anthropic, Google Gemini, and OpenAI API integrations.</div>
-                    <div>• <strong>Task Automation:</strong> Writing clean technical documentation, automated testing hooks, and continuous integration scripts.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Key Personal Projects */}
-            <div className="mb-6">
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Key Personal Projects</h2>
-              <div className="space-y-3 text-xs">
-                <div>
-                  <h3 className="font-bold">TFG-GRAVITY <span className="font-normal text-gray-600">(Python, Flask, MySQL, OpenAI)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Automated SaaS billing and software licensing platform featuring PayPal integrations and a customized support AI chatbot.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">PRESUPUESTOS <span className="font-normal text-gray-150">(Web App, MySQL)</span></h3>
-                  <p className="text-gray-700 mt-0.5">An agile client estimating tool designed to automate cost approximations and generate printable PDFs of quotations.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">KANDIDO <span className="font-normal text-gray-150">(AI-Powered SaaS Recruiter Tracking)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Modular recruitment interface evaluating CVs using large language models to categorize talent metrics effortlessly.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">SWAAP DIGITAL <span className="font-normal text-gray-150">(React, JavaScript, Web Design)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Professional web development and digitalization services agency and platform for companies.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">SWAAP SPORTS <span className="font-normal text-gray-150">(React, Tailwind CSS, Sports APIs)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Sports portal and platform for management, news, and real-time coverage of football events.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">SWAAP LOGISTICS <span className="font-normal text-gray-150">(React, Node.js, Google Maps API)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Route optimization and logistics fleet management platform for efficient land transportation.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">Gravity Gate Pass <span className="font-normal text-gray-650">(JavaScript, Web Security)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Self-managed digital ticket validation system using secure QR credentials for fast validation at large-scale entries.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">Soccer World <span className="font-normal text-gray-150">(HTML/CSS, JavaScript)</span></h3>
-                  <p className="text-gray-700 mt-0.5">Modern sports e-commerce prototype tracking and serving global league uniforms and jersey collections with responsive workflows.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Project Contributions */}
-            <div>
-              <h2 className="text-lg font-bold border-b border-gray-400 pb-1 mb-2 uppercase text-gray-900">Project Contributions</h2>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs">
-                <div>
-                  <h3 className="font-bold">Daytrading Automation Platform</h3>
-                  <p className="text-gray-700 mt-0.5">Algorithmic trading strategies setup using Python and direct order flows using the WeBull SDK.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">Grupo Migasa Logistics Optimization</h3>
-                  <p className="text-gray-700 mt-0.5">Mathematical modeling and linear programming to optimize olive oil heavy logistics and distribution tankers.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">AI Robotics Vision System</h3>
-                  <p className="text-gray-700 mt-0.5">Deep neural network (CNN) pipelines for voxel object recognition using Unreal Engine for synthetic data modeling.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold">MyFoldr.io & Silent Education</h3>
-                  <p className="text-gray-700 mt-0.5">Frontend integrations in Angular / Go backends for secure cloud file sharing and IoT smart classroom noise sensors.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Back to Top Button */}
+        {showBackToTop && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-6 lg:bottom-12 right-6 z-50 p-3 bg-primary/20 text-primary border border-primary hover:bg-primary hover:text-bg transition-all shadow-[0_0_15px_rgba(var(--theme-primary-rgb),0.3)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg focus:ring-primary"
+            aria-label="Back to top"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+          </button>
         )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

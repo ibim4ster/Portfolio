@@ -1,11 +1,37 @@
-export type Language = 'es' | 'en';
+import { ownProjects, jobs, aiItems, certifications, type Language } from './content';
+export type { Language };
+
+const build = (l: Language) => ({
+  jobs: jobs.map(j => ({
+    date: `[ ${j.date[l].toUpperCase()} ]`,
+    title: j.role[l],
+    company: typeof j.company === 'string' ? j.company : j.company[l],
+    current: !!j.current,
+    points: j.points[l],
+  })),
+  projects: ownProjects.map(p => ({
+    id: p.id,
+    title: `${p.title}${p.year ? ` (${p.year})` : ''}`,
+    desc: p.desc[l],
+    image: p.image,
+    contributions: p.points[l],
+    tech: p.tech.join(', '),
+    creds: p.creds,
+    links: p.links,
+  })),
+  ai: aiItems.map(a => ({ title: a.title[l], desc: a.desc[l] })),
+  certs: certifications.map(c => ({ title: c.title[l], issuer: c.issuer, date: c.date[l], desc: c.desc[l], tags: c.tags })),
+});
+const B = { es: build('es'), en: build('en') };
 
 export const translations = {
   es: {
     boot: {
-      init: "> INITIATING SYSTEM...\n> LOADING PROFILE: IBAI GALLEGO FACES...\n> STATUS: FULL-STACK & AI SPECIALIST_",
+      init: "> INITIATING SYSTEM...\n> LOADING PROFILE: IBAI GALLEGO FACES...\n> STATUS: SOFTWARE · IA · VÍDEO_",
       btn: "[ ACCEDER AL SISTEMA ]",
-      granted: "> ACCESS GRANTED. SCROLL DOWN."
+      tagline: "Desarrollador de software · IA · Producción audiovisual",
+      hint: "Pulsa el botón, Enter o haz scroll para entrar",
+      granted: "> ACCESO CONCEDIDO. BAJA PARA VER MÁS ↓"
     },
     nav: {
       lang: "ES",
@@ -14,12 +40,26 @@ export const translations = {
         about: "SOBRE MÍ",
         projects: "PROYECTOS",
         skills: "HABILIDADES",
-        experience: "EXPERIENCIA"
-      }
+        experience: "EXPERIENCIA",
+        contact: "CONTACTO"
+      },
+      cv: "CV",
+      cvLong: "DESCARGAR CV (PDF)",
+      cvFile: "/cv/Ibai_Gallego_CV_ES.pdf",
+      themeTitle: "Cambiar colores"
     },
     core: {
       title: "EL NÚCLEO",
-      bio: "Soy un entusiasta de la informática desde temprana edad. Me caracterizo por ser sociable y disfrutar del aprendizaje constante. Siempre estoy buscando oportunidades para crecer tanto en el ámbito personal como profesional.",
+      bio: "Soy desarrollador de software con mentalidad freelance y perfil versátil. Construyo ERPs, webs, apps y automatizaciones con IA, y cuando hace falta también grabo y edito el vídeo. Me adapto rápido a nuevos entornos y retos, y siempre busco aportar más valor en cada proyecto.",
+      facts: [
+        { k: "AHORA", v: "SWAAP Media + freelance" },
+        { k: "BASE", v: "Oyón-Oion, Álava · remoto" },
+        { k: "CERTIFICACIÓN", v: "CCP Master · ICCP" },
+        { k: "ESTADO", v: "Abierto a proyectos" }
+      ],
+      contactCta: "HABLEMOS",
+      certTitle: "CERTIFICACIONES",
+      certs: B.es.certs,
       academicTitle: "DATOS ACADÉMICOS",
       dam: {
         date: "[ 2022 - 2025 ]",
@@ -51,66 +91,23 @@ export const translations = {
       },
       ai: {
         title: "[ INTELIGENCIA ARTIFICIAL ]",
-        items: [
-          { title: "Desarrollo de Software Asistido", desc: "Uso intensivo de Cursor y LLMs para la generación de código, reduciendo tiempos de entrega mediante automatización." },
-          { title: "Diseño y Prototipado", desc: "Manejo de Figma para UI/UX, integrando el diseño visual con el flujo de desarrollo posterior." },
-          { title: "Prototipado Rápido con IA", desc: "Creación de aplicaciones web funcionales y MVPs en tiempo récord utilizando Lovable, Base44 y Antigravity." },
-          { title: "Integración de Modelos y APIs", desc: "Implementación de Anthropic, Google Gemini y OpenAI dentro de aplicaciones propias." },
-          { title: "Entornos de Experimentación", desc: "Configuración y uso de Google AI Studio y Claude para diseño de prompts, depuración y refactorización." },
-          { title: "Automatización de Tareas Técnicas", desc: "Generación automática de documentación, casos de prueba y traducción de lógica entre lenguajes." }
-        ]
+        items: B.es.ai
       }
     },
     experience: {
       title: "EXPERIENCIA LABORAL",
-      jobs: [
-        {
-          date: "[ JUN 2025 - ACTUALIDAD ]",
-          title: "Logic Soluciones Software | Grupo Pancorbo",
-          points: [
-            "Formación avanzada de Sage 50, 200, Despachos y Ágora + titulación.",
-            "Automatizar procesos de los trabajadores (Aplicaciones web internas).",
-            "Instalación, configuración y formación de ERPs para empresas.",
-            "Personalización de informes en SQL y módulos a medida en C#.",
-            "Configuración de servidores (Windows Server y Linux).",
-            "Mantenimiento de páginas WordPress y plugins."
-          ]
-        },
-        {
-          date: "[ MAR 2025 - JUN 2025 ]",
-          title: "Logic Soluciones Software (Prácticas)",
-          points: [
-            "Formación intensiva de Sage 50 y Ágora.",
-            "Instalación, configuración y formación de programas ERP y facturadores.",
-            "Servicio técnico de los programas y atención al cliente.",
-            "Realizar presupuestos, albaranes, facturas y contabilidad."
-          ]
-        },
-        {
-          date: "[ 2021 - 2023 ]",
-          title: "Trabajo en Hostelería | Camarero",
-          points: [
-            "Atención en barra y terraza.",
-            "Desarrollo de habilidades de trato al cliente y trabajo bajo presión."
-          ]
-        },
-        {
-          date: "[ MAR 2021 - JUN 2021 ]",
-          title: "Arluy (Prácticas) | Dpto. Informática",
-          points: [
-            "Soporte al cliente tanto de la empresa y en remoto.",
-            "Creación y configuración de página PrestaShop con los productos.",
-            "Instalación de antenas MikroTik para teléfonos inalámbricos.",
-            "Implementación de Sistema Automático de incidencias (Power Automate, Excel, SharePoint)."
-          ]
-        }
-      ]
+      jobs: B.es.jobs
     },
     projects: {
       title: "PROYECTOS",
       repo: "> REPOSITORIO",
       demo: "> DEMO",
       doc: "> DOCUMENTACIÓN",
+      board: "> TABLERO TRELLO",
+      all: "TODOS",
+      current: "ACTUAL",
+      tryIt: "PRUÉBALO, ES UNA DEMO",
+      hint: "Pulsa \"VER MÁS\" en cada tarjeta para ver qué hice y con qué tecnologías.",
       more: "[ VER MÁS ]",
       close: "[ CERRAR ]",
       contributions: "CONTRIBUCIONES CLAVE:",
@@ -122,81 +119,10 @@ export const translations = {
       categories: {
         personal: {
           title: "PROYECTOS PERSONALES",
-          items: [
-            {
-              id: "tfg", title: "TFG-GRAVITY (2025)", desc: "Plataforma web integral para gestionar todo el ciclo de vida de licencias de software SaaS.",
-              image: "https://i.imgur.com/uPvFJ1U.jpeg",
-              contributions: ["Sistema de Autenticación Robusto", "Gestión de Licencias e Integración con PayPal", "Chatbot IA con OpenAI GPT-4o-mini", "Panel Administrativo y Sistema de Tickets"],
-              tech: "Python, Flask, MySQL, JavaScript, OpenAI, PayPal",
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/TFG-GRAVITY" }, { type: "doc", url: "https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" }]
-            },
-            {
-              id: "presupuestos", title: "PRESUPUESTOS (2025)", desc: "Herramienta financiera para generar y gestionar propuestas de presupuestos comerciales.",
-              image: "https://i.imgur.com/R94YLdP.png",
-              contributions: ["Motor de cálculo para estimación de costes", "Generación de PDF e informes automatizados", "Persistencia de datos para registros de clientes y productos"],
-              tech: "Desarrollo de Aplicaciones, Lógica de Negocio",
-              creds: { user: "admin", pass: "admin" },
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/PRESUPUESTOS-" }, { type: "demo", url: "https://presupuestos-tau.vercel.app/" }]
-            },
-            {
-              id: "kandido", title: "KANDIDO (2026)", desc: "Sistema de gestión de reclutamiento y seguimiento de candidatos con IA.",
-              image: "https://i.imgur.com/mGUTNHa.png",
-              contributions: ["Arquitectura backend para base de datos de candidatos", "Implementación de algoritmos de filtrado y búsqueda", "Panel de usuario para gestión de flujo de trabajo de RRHH"],
-              tech: "Desarrollo Web, Bases de Datos, IA",
-              links: [{ type: "demo", url: "https://kandido.vercel.app/" }]
-            },
-            {
-              id: "swaap-digital", title: "SWAAP DIGITAL (2026)", desc: "Agencia y plataforma de servicios de digitalización y desarrollo web profesional para empresas.",
-              image: "https://i.imgur.com/O93b7Sp.png",
-              contributions: ["Diseño UI/UX de alta conversión", "Estrategia de posicionamiento SEO y rendimiento", "Plataforma web corporativa moderna y autogestionable"],
-              tech: "HTML/CSS, JavaScript, React, Diseño Web",
-              links: [{ type: "demo", url: "https://swaapdigital.com/" }]
-            },
-            {
-              id: "swaap-sports", title: "SWAAP SPORTS (2026)", desc: "Portal deportivo y plataforma para gestión, noticias y cobertura en tiempo real de eventos de fútbol.",
-              image: "https://i.imgur.com/t1BFacx.png",
-              contributions: ["Desarrollo frontend interactivo de la comunidad deportiva", "Integración de marcadores e información en tiempo real", "Optimización de carga multimedia y diseño adaptable"],
-              tech: "React, Tailwind CSS, APIs Deportivas",
-              links: [{ type: "demo", url: "https://swaapsports.com/" }]
-            },
-            {
-              id: "swaap-logistics", title: "SWAAP LOGISTICS (2026)", desc: "Plataforma de optimización de rutas y gestión de flotas logísticas para el transporte terrestre eficiente.",
-              image: "https://i.imgur.com/f7kyJjd.png",
-              contributions: ["Integración de mapas interactivos y ruteo dinámico", "Algoritmos de optimización de carga y asignación", "Panel de administración y telemetría de vehículos"],
-              tech: "React, Node.js, Google Maps API, Logística",
-              links: [{ type: "demo", url: "https://swaaplogistics.com/" }]
-            },
-            {
-              id: "gatepass", title: "Gravity Gate Pass (2026)", desc: "Sistema de control de acceso y seguridad de código abierto para gestión de eventos.",
-              image: "https://i.imgur.com/sjP0WpL.png",
-              contributions: ["Desarrollo de sistemas de credenciales digitales seguras", "Implementación de lógica de acceso en puertas", "Diseño de interfaz frontend para administración"],
-              tech: "JavaScript, Seguridad Web",
-              creds: { user: "admin", pass: "admin123" },
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/gravity-gate-pass" }, { type: "demo", url: "https://gravity-gate-pass.lovable.app/" }]
-            },
-            {
-              id: "portfolio", title: "Professional Portfolio (2026)", desc: "Sitio web personal que muestra una selección curada de proyectos de ingeniería y desarrollo.",
-              image: "https://i.imgur.com/g7Mhaah.png",
-              contributions: ["Diseño UI/UX moderno y responsivo", "Carga de recursos y rendimiento optimizados", "Componentes interactivos de demostración de proyectos"],
-              tech: "HTML/CSS, JavaScript, Diseño Web",
-              links: [{ type: "demo", url: "https://ibai-gallego.vercel.app/" }]
-            },
-            {
-              id: "soccerworld", title: "Soccer World (2025)", desc: "Prototipo de tienda online de camisetas de fútbol de múltiples ligas y clubes del mundo.",
-              image: "https://i.imgur.com/NG3wmEC.png",
-              contributions: ["Diseño de interfaz de usuario enfocado en catálogo deportivo", "Implementación de carrito de compras intuitivo", "Visualización detallada de productos por ligas y selecciones", "Interfaz totalmente optimizada y adaptada a dispositivos móviles"],
-              tech: "HTML/CSS, JavaScript, Diseño Responsivo",
-              links: [{ type: "demo", url: "https://soccerworld.vercel.app/" }]
-            },
-            {
-              id: "zombie", title: "Zombie Wave Prototype (2024)", desc: "Juego de acción trepidante desarrollado en un sprint de 48 horas (Unity).",
-              contributions: ["Programación C# en Unity", "IA de enemigos y lógica de escalada de oleadas", "Prototipado rápido de bucles de juego principales"],
-              tech: "Unity, C#, Diseño de Juegos"
-            }
-          ]
+          items: B.es.projects
         },
         mobile: {
-          title: "EXTENSIONES DE APLICACIONES MÓVILES",
+          title: "APPS MÓVILES",
           items: [
             {
               id: "swaap", title: "Swaap — Relay-Trucking (2023)", desc: "Sistema de optimización de transporte por relevos para eficiencia logística.",
@@ -221,7 +147,7 @@ export const translations = {
           ]
         },
         additional: {
-          title: "CONTRIBUCIONES A PROYECTOS",
+          title: "COLABORACIONES",
           items: [
             {
               id: "daytrading", title: "Daytrading Automation Platform (2024)", desc: "Plataforma de trading automatizado para ejecutar estrategias algorítmicas en mercados financieros.",
@@ -294,9 +220,11 @@ export const translations = {
   },
   en: {
     boot: {
-      init: "> INITIATING SYSTEM...\n> LOADING PROFILE: IBAI GALLEGO FACES...\n> STATUS: FULL-STACK & AI SPECIALIST_",
+      init: "> INITIATING SYSTEM...\n> LOADING PROFILE: IBAI GALLEGO FACES...\n> STATUS: SOFTWARE · AI · VIDEO_",
       btn: "[ ACCESS SYSTEM ]",
-      granted: "> ACCESS GRANTED. SCROLL DOWN."
+      tagline: "Software developer · AI · Media production",
+      hint: "Press the button, Enter or scroll to enter",
+      granted: "> ACCESS GRANTED. SCROLL DOWN ↓"
     },
     nav: {
       lang: "EN",
@@ -305,12 +233,26 @@ export const translations = {
         about: "ABOUT ME",
         projects: "PROJECTS",
         skills: "SKILLS",
-        experience: "EXPERIENCE"
-      }
+        experience: "EXPERIENCE",
+        contact: "CONTACT"
+      },
+      cv: "CV",
+      cvLong: "DOWNLOAD CV (PDF)",
+      cvFile: "/cv/Ibai_Gallego_CV_EN.pdf",
+      themeTitle: "Switch colours"
     },
     core: {
       title: "THE CORE",
-      bio: "I have been an IT enthusiast since an early age. I consider myself a highly sociable person who thrives on continuous learning. I am constantly seeking opportunities to grow both personally and professionally.",
+      bio: "I'm a software developer with a freelance mindset and a versatile profile. I build ERPs, websites, apps and AI automations, and when needed I also shoot and edit the video. I adapt quickly to new environments and challenges, and I always look to add more value to every project.",
+      facts: [
+        { k: "NOW", v: "SWAAP Media + freelance" },
+        { k: "BASED IN", v: "Oyón-Oion, Spain · remote" },
+        { k: "CERTIFIED", v: "CCP Master · ICCP" },
+        { k: "STATUS", v: "Open to projects" }
+      ],
+      contactCta: "LET'S TALK",
+      certTitle: "CERTIFICATIONS",
+      certs: B.en.certs,
       academicTitle: "ACADEMIC BACKGROUND",
       dam: {
         date: "[ 2022 - 2025 ]",
@@ -342,66 +284,23 @@ export const translations = {
       },
       ai: {
         title: "[ ARTIFICIAL INTELLIGENCE ]",
-        items: [
-          { title: "AI-Assisted Software Development", desc: "Intensive use of Cursor and LLMs for code generation, drastically reducing delivery times through automation." },
-          { title: "Design & Prototyping", desc: "Proficient in Figma for UI/UX, seamlessly integrating visual design with the subsequent development workflow." },
-          { title: "Rapid AI Prototyping", desc: "Creation of functional web applications and MVPs in record time using platforms like Lovable, Base44, and Antigravity." },
-          { title: "Model & API Integration", desc: "Technical implementation of Anthropic, Google Gemini, and OpenAI services into custom applications." },
-          { title: "Experimentation Environments", desc: "Configuration and use of Google AI Studio and Claude for prompt engineering, debugging, and code refactoring." },
-          { title: "Technical Task Automation", desc: "Automated generation of documentation, test cases, and logic translation across different programming languages." }
-        ]
+        items: B.en.ai
       }
     },
     experience: {
       title: "WORK EXPERIENCE",
-      jobs: [
-        {
-          date: "[ JUN 2025 - PRESENT ]",
-          title: "Software Developer | Logic Soluciones",
-          points: [
-            "Advanced certification and training in Sage 50, 200, Despachos, and Ágora.",
-            "Process automation through the development of internal web applications.",
-            "Installation, configuration, and training of ERP systems for enterprise clients.",
-            "Custom report generation in SQL and bespoke module development in C#.",
-            "Server configuration and administration (Windows Server and Linux).",
-            "WordPress website maintenance and plugin management."
-          ]
-        },
-        {
-          date: "[ MAR 2025 - JUN 2025 ]",
-          title: "Software Development Intern | Logic Soluciones",
-          points: [
-            "Intensive training in Sage 50 and Ágora ERP systems.",
-            "Assisted in the installation and configuration of billing and ERP software.",
-            "Provided technical support and customer service for software issues.",
-            "Managed internal accounting tasks including budgeting and invoicing."
-          ]
-        },
-        {
-          date: "[ 2021 - 2023 ]",
-          title: "Hospitality Industry | Bartender",
-          points: [
-            "Provided excellent customer service in high-paced bar and terrace environments.",
-            "Developed strong soft skills, conflict resolution, and the ability to work under pressure."
-          ]
-        },
-        {
-          date: "[ MAR 2021 - JUN 2021 ]",
-          title: "IT Support Intern | Arluy",
-          points: [
-            "Provided remote and on-site IT support for corporate employees.",
-            "Created and configured a PrestaShop e-commerce platform for company products.",
-            "Installed MikroTik antennas for wireless telephone networks.",
-            "Implemented an automated ticketing system using Power Automate, Excel, and SharePoint."
-          ]
-        }
-      ]
+      jobs: B.en.jobs
     },
     projects: {
       title: "PROJECTS",
       repo: "> REPOSITORY",
       demo: "> DEMO",
       doc: "> DOCUMENTATION",
+      board: "> TRELLO BOARD",
+      all: "ALL",
+      current: "CURRENT",
+      tryIt: "TRY IT, IT'S A DEMO",
+      hint: "Hit \"READ MORE\" on any card to see what I built and with which tech.",
       more: "[ READ MORE ]",
       close: "[ CLOSE ]",
       contributions: "KEY CONTRIBUTIONS:",
@@ -413,81 +312,10 @@ export const translations = {
       categories: {
         personal: {
           title: "PERSONAL PROJECTS",
-          items: [
-            {
-              id: "tfg", title: "TFG-GRAVITY (2025)", desc: "Comprehensive web platform to manage the entire lifecycle of SaaS software licenses.",
-              image: "https://i.imgur.com/uPvFJ1U.jpeg",
-              contributions: ["Robust Authentication System", "License Management & PayPal Integration", "AI Chatbot with OpenAI GPT-4o-mini", "Admin Dashboard & Ticketing System"],
-              tech: "Python, Flask, MySQL, JavaScript, OpenAI, PayPal",
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/TFG-GRAVITY" }, { type: "doc", url: "https://drive.google.com/file/d/1FBqu_wv533xr_tcU2T_OpdA-1tcfONmE/view?usp=sharing" }]
-            },
-            {
-              id: "presupuestos", title: "PRESUPUESTOS (2025)", desc: "Financial tool for generating and managing commercial budget proposals.",
-              image: "https://i.imgur.com/R94YLdP.png",
-              contributions: ["Calculation engine for cost estimation", "PDF generation and automated reporting", "Data persistence for client and product records"],
-              tech: "Application Development, Business Logic",
-              creds: { user: "admin", pass: "admin" },
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/PRESUPUESTOS-" }, { type: "demo", url: "https://presupuestos-tau.vercel.app/" }]
-            },
-            {
-              id: "kandido", title: "KANDIDO (2026)", desc: "Recruitment and candidate tracking management system with AI.",
-              image: "https://i.imgur.com/mGUTNHa.png",
-              contributions: ["Backend architecture for candidate database", "Implementation of filtering and search algorithms", "User dashboard for HR workflow management"],
-              tech: "Web Development, Databases, AI",
-              links: [{ type: "demo", url: "https://kandido.vercel.app/" }]
-            },
-            {
-              id: "swaap-digital", title: "SWAAP DIGITAL (2026)", desc: "Professional web development and digitalization services agency and platform for companies.",
-              image: "https://i.imgur.com/O93b7Sp.png",
-              contributions: ["High-conversion UI/UX design", "SEO positioning and performance strategy", "Modern, self-managed corporate web platform"],
-              tech: "HTML/CSS, JavaScript, React, Web Design",
-              links: [{ type: "demo", url: "https://swaapdigital.com/" }]
-            },
-            {
-              id: "swaap-sports", title: "SWAAP SPORTS (2026)", desc: "Sports portal and platform for management, news, and real-time coverage of football events.",
-              image: "https://i.imgur.com/t1BFacx.png",
-              contributions: ["Interactive sports community frontend development", "Integration of real-time scores and statistics", "Multimedia asset optimization and responsive layout"],
-              tech: "React, Tailwind CSS, Sports APIs",
-              links: [{ type: "demo", url: "https://swaapsports.com/" }]
-            },
-            {
-              id: "swaap-logistics", title: "SWAAP LOGISTICS (2026)", desc: "Route optimization and logistics fleet management platform for efficient land transportation.",
-              image: "https://i.imgur.com/f7kyJjd.png",
-              contributions: ["Interactive maps and dynamic routing integration", "Cargo load and allocation optimization algorithms", "Vehicle telematics and admin control panel"],
-              tech: "React, Node.js, Google Maps API, Logistics",
-              links: [{ type: "demo", url: "https://swaaplogistics.com/" }]
-            },
-            {
-              id: "gatepass", title: "Gravity Gate Pass (2026)", desc: "Open-source security and access control system for event management.",
-              image: "https://i.imgur.com/sjP0WpL.png",
-              contributions: ["Development of secure digital credential systems", "Implementation of gate-access logic", "Frontend interface design for administration"],
-              tech: "JavaScript, Web Security",
-              creds: { user: "admin", pass: "admin123" },
-              links: [{ type: "repo", url: "https://github.com/ibim4ster/gravity-gate-pass" }, { type: "demo", url: "https://gravity-gate-pass.lovable.app/" }]
-            },
-            {
-              id: "portfolio", title: "Professional Portfolio (2026)", desc: "Personal showcase website featuring a curated selection of engineering and development projects.",
-              image: "https://i.imgur.com/g7Mhaah.png",
-              contributions: ["Modern and responsive UI/UX design", "Optimized asset loading and performance", "Interactive project demonstration components"],
-              tech: "HTML/CSS, JavaScript, Web Design",
-              links: [{ type: "demo", url: "https://ibai-gallego.vercel.app/" }]
-            },
-            {
-              id: "soccerworld", title: "Soccer World (2025)", desc: "E-commerce prototype for football jerseys of multiple leagues and national teams around the world.",
-              image: "https://i.imgur.com/NG3wmEC.png",
-              contributions: ["UI design focused on the sports catalog and jerseys details", "Implementation of an intuitive shopping cart", "Detailed product filtering by league, club, and national team", "Fully optimized and mobile-responsive interface"],
-              tech: "HTML/CSS, JavaScript, Responsive Design",
-              links: [{ type: "demo", url: "https://soccerworld.vercel.app/" }]
-            },
-            {
-              id: "zombie", title: "Zombie Wave Prototype (2024)", desc: "Fast-paced action game developed in a 48-hour sprint (Unity).",
-              contributions: ["C# programming in Unity", "Enemy AI and wave escalation logic", "Rapid prototyping of core gameplay loops"],
-              tech: "Unity, C#, Game Design"
-            }
-          ]
+          items: B.en.projects
         },
         mobile: {
-          title: "MOBILE APPLICATIONS EXTENSIONS",
+          title: "MOBILE APPS",
           items: [
             {
               id: "swaap", title: "Swaap — Relay-Trucking (2023)", desc: "Relay-based trucking optimization system for logistics efficiency.",
@@ -512,7 +340,7 @@ export const translations = {
           ]
         },
         additional: {
-          title: "PROJECT CONTRIBUTIONS",
+          title: "COLLABORATIONS",
           items: [
             {
               id: "daytrading", title: "Daytrading Automation Platform (2024)", desc: "Automated trading platform for executing algorithmic strategies in financial markets.",
